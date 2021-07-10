@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://lunch.tnfsa.org/</loc>
+        <lastmod>2021-07-08</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://lunch.tnfsa.org/restaurant</loc>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://lunch.tnfsa.org/login</loc>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://lunch.tnfsa.org/privacy</loc>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://lunch.tnfsa.org/COC</loc>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://lunch.tnfsa.org/feedback</loc>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://lunch.tnfsa.org/order/ce89b986-9592-4fea-9b6d-22bab1e93afc</loc>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://lunch.tnfsa.org/signup</loc>
+        <priority>0.5</priority>
+    </url>
+</urlset>
