@@ -17,7 +17,7 @@ function Order({data,name}){
             <section id="main">
                 <div className="container">
                     <div style={{display: 'flex',flexWrap:'wrap'}}>
-                        {data.map(item=>{
+                        {typeof(data) !== "undefined" && data.map(item=>{
                             return(
                                 <Section title={item.name}
                                          context={item.description}
@@ -42,9 +42,26 @@ export async function getStaticProps(context) {
         }
     })
     const data = await res.json()
-    
+
+    const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores`,{
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    const text = await res2.json()
+    console.log(`Text: ${text}`)
+    let name = ''
+
+    for(let e in text){
+        if(e.name === page){
+            name = e.name
+            return
+        }
+    }
+
     return {
-        props: { data }
+        props: { data , name}
     }
 }
 
@@ -56,7 +73,6 @@ export async function getStaticPaths(){
         }
     })
     const posts = await res.json()
-    console.log(`Posts: ${posts}`)
 
     return {
         paths: posts.map((data)=>(`/order/${data.id}`)),
