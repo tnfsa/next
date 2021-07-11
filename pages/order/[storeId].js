@@ -18,11 +18,12 @@ function Order({data,name}){
                 <div className="container">
                     <div style={{display: 'flex',flexWrap:'wrap'}}>
                         {typeof(data) !== "undefined" && data.map(item=>{
+                            console.log(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/${item.image}`)
                             return(
                                 <Section title={item.name}
                                          context={item.description}
                                          link={`/purchase/${storeId}/${item.id}`}
-                                         picture={`${process.env.NEXT_PUBLIC_HOST}/${item.image}`}/>
+                                         picture={`${process.env.NEXT_PUBLIC_API_HOST}/${item.image}`}/>
                             )
                         })}
                     </div>
@@ -50,13 +51,13 @@ export async function getStaticProps(context) {
         }
     })
     const text = await res2.json()
-    console.log(`Text: ${text}`)
-    let name = ''
 
-    for(let e in text){
-        if(e.name === page){
-            name = e.name
-            return
+    let name = ""
+
+    for(let index in text){
+        if(text[index].id === page){
+            console.log(text[index])
+            name = text[index].name
         }
     }
 
