@@ -9,7 +9,7 @@ function MyApp({Component, pageProps}) {
     return (
         <>
             <Head>
-                <title key={"title"}>台南一中點餐系統</title>
+                <title key={"title"}>臺南一中點餐系統</title>
                 <meta name="viewport"
                       content="width=device-width, initial-scale=1, user-scalable=no"/>
                 <meta name={"description"}

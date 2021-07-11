@@ -1,3 +1,4 @@
+@import url("fontawesome-all.min.css");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,900,300italic");
 
 /*
@@ -22,13 +23,11 @@ section, summary, time, mark, audio, video {
     border: 0;
     font-size: 100%;
     font: inherit;
-    vertical-align: baseline;
-}
+    vertical-align: baseline;}
 
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
-    display: block;
-}
+    display: block;}
 
 body {
     line-height: 1;
@@ -2355,6 +2354,7 @@ ul.social li a.fa-google-plus:hover {
 @media screen and (max-width: 1680px) {
 
     /* Basic */
+
     body, input, textarea, select {
         font-size: 12pt;
     }
@@ -2366,11 +2366,13 @@ ul.social li a.fa-google-plus:hover {
 @media screen and (max-width: 1280px) {
 
     /* Basic */
+
     body, input, textarea, select {
         font-size: 11pt;
     }
 
     /* Section/Article */
+
     header.major {
         margin: 0.75em 0 2.5em 0;
     }
@@ -2380,22 +2382,26 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Social */
+
     ul.social li {
         margin: 0 0 0.25em 0.75em;
     }
 
     /* Header */
+
     #header {
         padding: 4em 0 3em 0;
     }
 
     /* Banner */
+
     #banner {
         padding: 6em 0;
         margin: 3em 0 0 0;
     }
 
     /* Intro */
+
     #intro {
         padding: 0;
     }
@@ -2413,11 +2419,13 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Main */
+
     #main {
         padding: 30px 0;
     }
 
     /* Footer */
+
     #footer {
         padding: 3em 0;
     }
@@ -2435,6 +2443,7 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Copyright */
+
     #copyright {
         margin: 0;
     }
@@ -2450,11 +2459,13 @@ ul.social li a.fa-google-plus:hover {
 @media screen and (max-width: 980px) {
 
     /* Basic */
+
     html, body {
         overflow-x: hidden;
     }
 
     /* Box */
+
     .box footer ul.actions li {
         margin: 1em 0 0 0;
         display: block;
@@ -2469,16 +2480,19 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Header */
+
     #header {
         padding: 3.5em 0 3em 0;
     }
 
     /* Nav */
+
     #nav {
         display: none;
     }
 
     /* Intro */
+
     #intro {
         padding: 3em 0 0 0;
     }
@@ -2512,16 +2526,19 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Main */
+
     #main {
         padding: 40px 0;
     }
 
     /* Copyright */
+
     #copyright ul.links {
         display: block;
     }
 
     /* Nav */
+
     #page-wrapper {
         -moz-backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
@@ -2690,6 +2707,7 @@ ul.social li a.fa-google-plus:hover {
 @media screen and (max-width: 736px) {
 
     /* Basic */
+
     body, input, textarea, select {
         font-size: 11pt;
     }
@@ -2699,6 +2717,7 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Button */
+
     input[type="button"].large,
     input[type="submit"].large,
     input[type="reset"].large,
@@ -2709,6 +2728,7 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Actions */
+
     ul.actions li {
         margin: 1em 0 0 0;
         display: block;
@@ -2723,6 +2743,7 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Section/Article */
+
     section, article {
         margin-bottom: 20px;
     }
@@ -2736,6 +2757,7 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Box */
+
     .box {
         padding: 25px 15px 20px 15px;
     }
@@ -2762,11 +2784,13 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Divided */
+
     ul.divided li {
         padding: 0.5em 0 0.5em 0;
     }
 
     /* Contact */
+
     ul.contact li {
         padding: 0.8em 0 0.8em 7em;
     }
@@ -2776,6 +2800,7 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Dates */
+
     ul.dates li {
         padding-left: 6em;
     }
@@ -2785,6 +2810,7 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Links */
+
     ul.links li {
         display: block;
         padding: 0.25em 0 0 0;
@@ -2798,11 +2824,13 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Social */
+
     ul.social li {
         margin: 0 0.5em 0.75em 0;
     }
 
     /* Icons */
+
     .icon.featured {
         width: 8em;
         margin: 0 0 3em 0;
@@ -2814,6 +2842,7 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Header */
+
     #header {
         text-align: center;
         padding: 2em 0;
@@ -2827,6 +2856,7 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Intro */
+
     #intro {
         padding: 2em 0 0 0;
     }
@@ -2841,6 +2871,7 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Banner */
+
     #banner {
         padding: 6em 0;
         margin: 2em 0 0 0;
@@ -2863,11 +2894,13 @@ ul.social li a.fa-google-plus:hover {
     }
 
     /* Main */
+
     #main {
         padding: 20px 0;
     }
 
     /* Footer */
+
     #footer {
         padding: 40px 0 20px 0;
     }

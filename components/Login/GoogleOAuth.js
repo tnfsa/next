@@ -12,7 +12,7 @@ export default function GoogleOAuth(){
             const raw = {
                 'token': google_response['accessToken']
             }
-            const data = fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/google`,{
+            const data = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/google`,{
                 method: 'POST',
                 body: JSON.stringify(raw),
                 headers:{
@@ -20,9 +20,6 @@ export default function GoogleOAuth(){
                     'Accept': 'application/json'
                 }
             })
-            if(!data.ok){
-                throw 'error connecting server'
-            }
             const response = await data.json()
             localStorage.setItem('session', response['access_token'])
             // account type 1 is google
