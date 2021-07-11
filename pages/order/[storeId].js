@@ -8,7 +8,7 @@ import Restaurant from "../restaurant";
 function Order({data,name}){
     const router = useRouter()
     const {storeId} = router.query
-    console.log(data)
+
     return(
         <div id="page-wrapper">
             <Title title={`餐點瀏覽: ${name}`}
@@ -21,7 +21,8 @@ function Order({data,name}){
                             return(
                                 <Section title={item.name}
                                          context={item.description}
-                                         link={`/purchase/${storeId}/${item.id}`} />
+                                         link={`/purchase/${storeId}/${item.id}`}
+                                         picture={`${process.env.NEXT_PUBLIC_HOST}/${item.image}`}/>
                             )
                         })}
                     </div>
@@ -41,21 +42,9 @@ export async function getStaticProps(context) {
         }
     })
     const data = await res.json()
-    const data2 = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores`,{
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
-    const text = await data2.json()
-    const name = text.map(data=>{
-        if(data.id === page){
-            return data.name
-        }
-    })
-
+    
     return {
-        props: { data , name}
+        props: { data }
     }
 }
 
@@ -67,6 +56,7 @@ export async function getStaticPaths(){
         }
     })
     const posts = await res.json()
+    console.log(`Posts: ${posts}`)
 
     return {
         paths: posts.map((data)=>(`/order/${data.id}`)),
