@@ -64,7 +64,7 @@ export default function LoginForm() {
 
             localStorage.setItem('user_name', response['name'])
             localStorage.setItem('id', response['id'])
-            loginResponse.setItem('account_type', '2')
+            localStorage.setItem('account_type', '2')
             if (response['stores'][0] !== undefined) {
                 localStorage.setItem('store_id', response['stores'][0]['id'])
             }

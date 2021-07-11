@@ -40,7 +40,7 @@ function Restaurant({data}){
         </div>
     )
 }
-/*
+
 export async function getStaticProps() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores`,{
         method: 'GET',
@@ -55,5 +55,5 @@ export async function getStaticProps() {
         props: { data }
     }
 }
-*/
+
 export default Restaurant
