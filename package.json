@@ -8,9 +8,18 @@
     "start": "next start"
   },
   "dependencies": {
+    "bootstrap": "^4.6.0",
+    "googleapis": "^81.0.0",
+    "jwt-decode": "^3.1.2",
     "next": "^10.2.3",
     "react": "17.x",
+    "react-bootstrap": "^1.6.1",
+    "react-detect-offline": "^2.4.4",
     "react-dom": "17.x",
-    "sass": "^1.35.2"
+    "react-google-login": "^5.2.2",
+    "sweetalert2": "^11.0.18"
+  },
+  "browser": {
+    "child_process": false
   }
 }
