@@ -2,11 +2,17 @@ import {useEffect, useState} from 'react'
 import Link from 'next/link'
 import {useRouter} from "next/router";
 import * as ga from '../components/GA'
+import {Nav,Navbar,NavDropdown} from "react-bootstrap";
+import {IconButton,TextField} from "@material-ui/core";
+import SearchIcon from '@material-ui/icons/Search'
 
-export default function Nav() {
-    const [current, setCurrent] = useState()
+
+export default function Navigation() {
     const [accountType, setAccountType] = useState(0)
+    const [searchTerm,setSearchTerm] = useState('')
+    const [isLoggedIn,setIsLoggedIn] = useState(false)
     const router = useRouter()
+
     console.log(router.query)
 
     function handleRouteChange(url) {
@@ -14,31 +20,13 @@ export default function Nav() {
     }
 
     useEffect(() => {
-        switch (router.pathname) {
-            case "/restaurant":
-                setCurrent(1)
-                break;
-            case "/signup":
-            case "/login":
-                setCurrent(3)
-                break;
-            case "/":
-                setCurrent(0)
-                break;
-        }
-        console.log()
-        switch(localStorage.getItem('account_type')){
-            case "1":
-                setAccountType(1)
-                break;
-            case "2":
-                setAccountType(2)
-                break;
-            default:
-                setAccountType(0)
-                break;
-        }
         console.log(accountType)
+        setAccountType(localStorage.getItem('account_type'))
+        if(localStorage.getItem('session') === null){
+            setIsLoggedIn(false)
+        }else{
+            setIsLoggedIn(true)
+        }
         //When the component is mounted, subscribe to router changes
         //and log those page views
         router.events.on('routeChangeComplete', handleRouteChange)
@@ -49,53 +37,55 @@ export default function Nav() {
         }
     }, [router.events])
 
-    const goTo = (obj)=>{
-        if(obj === undefined){
-            return
+    function searchProduct() {
+        if (this.props.location.pathname.indexOf('query') > -1) {
+            this.props.history.replace('/query?q=' + searchTerm)
+            this.props.history.go(0)
+        } else {
+            this.props.history.push('/query?q=' + searchTerm)
         }
-        const target = `/${obj.target[obj.target.options.selectedIndex].value}`
-        router.push(target)
     }
 
+
     return (
-        <nav id="nav">
-            <ul>
-                <li className={current === 0 && "current"}><Link href="/">首頁</Link></li>
-                <li className={current === 1 && "current"}><Link href="/restaurant">餐廳</Link></li>
-                <li>
-                    <a href="#">外部連結</a>
-                    <ul>
-                        <li><a href="#">臺南一中學聯會</a></li>
-                        <li><a href="#">臺南一中選舉委員會</a></li>
-                    </ul>
-                </li>
-                {/*未登入*/}
-                {accountType === 0 && <>
-                    <li>
-                        <a href="/login">登入</a>
-                        <ul>
-                            <li><a href="/signup">註冊</a></li>
-                        </ul>
-                    </li>
-                </>}
-                {/*學生*/}
-                {accountType === 1 && <>
-                    <select onChange={goTo}>
-                        <option value="selected">嗨! {localStorage.getItem('user_name')}</option>
-                        <option value="settings">個人設定</option>
-                        <option value="history">訂餐紀錄</option>
-                        <option value="logout">登出</option>
-                    </select>
-                </>}
-                {/*店家*/}
-                {accountType === 2 && <>
-                    <select onChange={goTo}>
-                        <option value="selected">嗨! {localStorage.getItem('user_name')}</option>
-                        <option value="settings">設定</option>
-                        <option value="logout">登出</option>
-                    </select>
-                </>}
-            </ul>
-        </nav>
+        <Navbar bg="light" expand="lg" collapseOnSelect={true}>
+            <Navbar.Brand href="/">美廣訂餐系統</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto">
+                    <Nav.Link href="/restaurant">餐廳</Nav.Link>
+                    {accountType === '2' && <NavDropdown title="商家管理" id="basic-nav-dropdown">
+                        <NavDropdown.Item href="/config/menu">菜單設定</NavDropdown.Item>
+                        <NavDropdown.Item as={Link} to="/service">客服服務</NavDropdown.Item>
+                        <NavDropdown.Item as={Link} to="/booked">出餐</NavDropdown.Item>
+                    </NavDropdown>}
+                    <NavDropdown title="外部連結" id="basic-nav-dropdown">
+                        <NavDropdown.Item href="https://sites.google.com/view/tnfshsu/"
+                                          rel="noreferrer noopener" target="_blank">學聯會</NavDropdown.Item>
+                        <NavDropdown.Item href="https://tnfsacec.github.io" rel="noreferrer noopener"
+                                          target="_blank">選委會</NavDropdown.Item>
+                    </NavDropdown>
+                    <TextField value={searchTerm} onChange={event=>{setSearchTerm(event.target.value)}} id="term"
+                               label="搜尋想吃的" variant="outlined" size="small"
+                               InputProps={{
+                                   endAdornment:
+                                       (<IconButton onClick={searchProduct}>
+                                           <SearchIcon/>
+                                       </IconButton>)
+                               }}/>
+                </Nav>
+                {isLoggedIn ? <NavDropdown title={`嗨~ ${localStorage.getItem('user_name')}`} id="basic-nav-dropdown">
+                        <NavDropdown.Item href="/history">歷史紀錄</NavDropdown.Item>
+                        <NavDropdown.Item href="/settings">設定</NavDropdown.Item>
+                        <NavDropdown.Item href="/profile">個人檔案</NavDropdown.Item>
+                        <NavDropdown.Item onClick={signOut}>登出</NavDropdown.Item>
+                    </NavDropdown>
+                    :
+                    <Nav>
+                        <Nav.Link href="/signup">註冊</Nav.Link>
+                        <Nav.Link href="/login">登入</Nav.Link>
+                    </Nav>}
+            </Navbar.Collapse>
+        </Navbar>
     )
 }
