@@ -1,12 +1,96 @@
 import Title from "../../../components/Title";
 import Footer from '../../../components/Footer'
 import {useRouter} from "next/router";
-import {Figure, Card} from 'react-bootstrap'
+import {useState,useEffect} from 'react'
+import {Figure, Card, Button,Row,Col} from 'react-bootstrap'
+import {TextareaAutosize} from '@material-ui/core'
+import Swal from 'sweetalert2'
 
-export default function Purchase({data, storeName}) {
+function Purchase({data, storeName}) {
+    const [comment,setComment] = useState('')
     const router = useRouter()
     const {store, product} = router.query
     console.log(data)
+
+    async function Send(){
+        const confirmText=
+`請確認您的訂購資訊
+名稱：${data.name}
+售價：${data.price}
+其他建議：${comment}
+按 OK 送出；cancel 取消`
+        if(window.confirm(confirmText)){
+            try{
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/transactions`,{
+                    method: 'POST',
+                    body: JSON.stringify({
+                        'name': data.title,
+                        'qty': 2,
+                        'store_id': store,
+                        'product_id': product,
+                        'comment': comment,
+                        'options': {}
+                    }),
+                    headers:{
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('session')}`
+                    }
+                })
+                const response = await res.json()
+                console.log(response)
+                if(res.ok){
+                    // leak google analytics
+
+                    Swal.fire({
+                        title: '訂購成功',
+                        html: (
+                            `感謝您利用本系統訂購產品<br>` +
+                            `請記得於選取時間取餐，謝謝<br>` +
+                            `您的交易ID為： <b>${parsed.id}</b>`),
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    }).then(()=>{
+                        router.push('/')
+                    })
+                }else{
+                    throw await res.text()
+                }
+            }catch (err){
+                Swal.fire({
+                    title: '錯誤!',
+                    text: `${err}\n與伺服器連線錯誤，請再試一次\n如果問題無法解決，請聯絡管理員\n訂單未成立`,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                }).then(() => {
+                    document.location.href = '/'
+                })
+            }
+        }
+    }
+    useEffect(() => {
+
+        if(typeof(localStorage.getItem('session')) === "undefined"){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '請先登入',
+            }).then(() =>{
+                document.location.href = '/'
+            })
+        }
+        if(localStorage.getItem('session') === '2'){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '此功能商家無法使用',
+            }).then(() =>{
+                document.location.href = '/'
+            })
+        }
+        // eslint-disable-next-line
+    },[])
+
     return (
         <div id="page-wrapper">
             <Title title={`${storeName}-${typeof (data) === "undefined" || data.name}`}
@@ -32,9 +116,18 @@ export default function Purchase({data, storeName}) {
                                 <Card.Text>
                                     {`建議售價： ${data.price}元`}
                                 </Card.Text>
-                                <Card.Link href="#">回上一頁</Card.Link>
-                                <Card.Link href="#">立即購買</Card.Link>
                             </Card.Body>
+                            <TextareaAutosize className="form-control" placeholder="留言" rows="5"
+                                              onChange={event => setComment(event.target.value)}
+                                              value={comment}/>
+                            <Row>
+                                <Col>
+                                    <Button href={`/order/${store}`} style={{textDecoration: 'none'}}>回上一頁</Button>
+                                </Col>
+                                <Col>
+                                    <Button onClick={Send} style={{textDecoration: 'none', margin: 'auto'}}>立即購買</Button>
+                                </Col>
+                            </Row>
                         </Card></>}
                 </div>
 
@@ -117,3 +210,5 @@ export async function getStaticPaths() {
         fallback: true
     }
 }
+
+export default Purchase

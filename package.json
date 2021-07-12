@@ -8,10 +8,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.1",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
     "bootstrap": "^4.6.0",
-    "googleapis": "^81.0.0",
-    "jwt-decode": "^3.1.2",
     "next": "^10.2.3",
+    "next-sitemap": "^1.6.133",
     "react": "17.x",
     "react-bootstrap": "^1.6.1",
     "react-detect-offline": "^2.4.4",
