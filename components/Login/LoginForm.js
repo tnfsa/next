@@ -3,32 +3,31 @@ import {Spinner} from 'react-bootstrap'
 import {useRouter} from "next/router";
 
 export default function LoginForm() {
-    const [hidden, setHidden] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const router = useRouter()
+    
     const Send = async () => {
-        setHidden(true)
+        setLoading(true)
         const response = await postFile()
         console.log(response)
         if (response['status'] !== 'error') {
             await fetchInfo(response)
         }
-        setHidden(false)
+        setLoading(false)
     }
 
     const postFile = async () => {
         let toReturn = {}
         try {
-            let postData = {
-                'email': email,
-                'password': password,
-            }
-
-            let url = process.env.REACT_APP_API_ENDPOINT + '/login'
+            let url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/login'
             const data = await fetch(url, {
                 method: 'POST',
-                body: JSON.stringify(postData),
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                }),
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -51,7 +50,7 @@ export default function LoginForm() {
     }
 
     async function fetchInfo(loginResponse) {
-        const url = process.env.REACT_APP_API_ENDPOINT + '/me'
+        const url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/me'
         try {
             const data = await fetch(url, {
                 method: 'GET',
@@ -78,7 +77,7 @@ export default function LoginForm() {
     return (
         <>
             <center>
-                <Spinner animation="border" role="status" hidden={!hidden}>
+                <Spinner animation="border" role="status" hidden={!loading}>
                     <span className="sr-only">Loading...</span>
                 </Spinner>
             </center>
