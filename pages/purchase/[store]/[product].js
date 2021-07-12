@@ -38,7 +38,7 @@ function Purchase({data, storeName}) {
                     }
                 })
                 const response = await res.json()
-                console.log(response)
+                console.log(`Response: ${response}`)
                 if(res.ok){
                     // leak google analytics
 
@@ -47,7 +47,7 @@ function Purchase({data, storeName}) {
                         html: (
                             `感謝您利用本系統訂購產品<br>` +
                             `請記得於選取時間取餐，謝謝<br>` +
-                            `您的交易ID為： <b>${parsed.id}</b>`),
+                            `您的交易ID為： <b>${response.id}</b>`),
                         icon: 'success',
                         confirmButtonText: 'Ok'
                     }).then(()=>{
@@ -69,8 +69,7 @@ function Purchase({data, storeName}) {
         }
     }
     useEffect(() => {
-
-        if(typeof(localStorage.getItem('session')) === "undefined"){
+        if(localStorage.getItem('session') === null){
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',

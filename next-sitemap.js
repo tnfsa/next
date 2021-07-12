@@ -3,7 +3,16 @@ module.exports = {
     generateRobotsTxt: true,
     robotsTxtOptions: {
         policies:[
-            {userAgent: '*',Disallow: '/'}
+            {
+                userAgent: '*',
+                disallow: '/'
+            }
         ]
-    }
+    },
+    exclude:[
+        "/sells/test",
+        "/service",
+        "/settings",
+        "profile"
+    ]
 }
