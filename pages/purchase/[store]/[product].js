@@ -148,7 +148,6 @@ export async function getStaticProps(context) {
         }
     })
     const data = await res.json()
-
     const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores`, {
         method: 'GET',
         headers: {

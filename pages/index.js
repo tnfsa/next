@@ -3,14 +3,15 @@ import Link from 'next/link'
 import Spotlight from "../components/Home/Spotlight";
 import Footer from "../components/Footer";
 import Alert from '../components/Alert'
+import Purchase from "./purchase/[store]/[product]";
 
-export default function Home() {
+export default function Home({news,qna}) {
     return (
         <div id="page-wrapper">
+            <Nav/>
             <section id="header">
                 <Alert />
                 <h1><Link href="/">臺南一中點餐系統</Link></h1>
-                <Nav/>
                 <section id="banner">
                     <header>
                         <h2>臺南一中</h2>

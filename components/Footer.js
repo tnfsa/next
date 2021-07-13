@@ -2,7 +2,7 @@ import {useState} from 'react'
 import LatestNews from "./Home/LatestNews";
 import Link from "next/link";
 
-export default function Footer() {
+export default function Footer({news,qna}) {
     const [name,setName] = useState('')
     const [email,setEmail] = useState('')
     const [question,setQuestion] = useState('')
@@ -36,10 +36,14 @@ export default function Footer() {
                                 <h2>最新消息</h2>
                             </header>
                             <ul className="dates">
-                                <LatestNews month="July"
-                                            date="10"
-                                            title="更新"
-                                            context="正在以next.js重新編寫"/>
+                                {typeof(news) !== "undefined" && news.map(data =>{
+                                    return(
+                                        <LatestNews month={data.month}
+                                                    date={data.date}
+                                                    title={data.title}
+                                                    context={data.context}/>
+                                    )
+                                })}
                             </ul>
                         </section>
                     </div>
@@ -114,12 +118,11 @@ export default function Footer() {
                                 <h2>Q&A 問答集</h2>
                             </header>
                             <ul className="divided">
-                                <li><a href="#">Lorem ipsum dolor sit amet sit veroeros</a></li>
-                                <li><a href="#">Sed et blandit consequat sed tlorem blandit</a></li>
-                                <li><a href="#">Adipiscing feugiat phasellus sed tempus</a></li>
-                                <li><a href="#">Hendrerit tortor vitae mattis tempor sapien</a></li>
-                                <li><a href="#">Sem feugiat sapien id suscipit magna felis nec</a></li>
-                                <li><a href="#">Elit class aptent taciti sociosqu ad litora</a></li>
+                                {typeof(qna) !== 'undefined' && qna.map(data=>{
+                                    return(
+                                        <li><a href={`/Q&A/${data.link}`}>{data.title}</a></li>
+                                    )
+                                })}
                             </ul>
                         </section>
                     </div>
@@ -168,4 +171,15 @@ export default function Footer() {
             </div>
         </section>
     )
+}
+
+export async function getStaticProps() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_STATIC}docs/news.json`)
+    const news = await res.json()
+    const res2 = await fetch(`${process.env.NEXT_PUBLIC_STATIC}docs/QnA.json`)
+    const qna = await res2.json()
+    console.log(`News: ${news}`)
+    return {
+        props: {news,qna}
+    }
 }
