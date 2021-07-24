@@ -1,19 +1,17 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import * as ga from '../components/GA'
-import {Nav,Navbar,NavDropdown} from "react-bootstrap";
-import {IconButton,TextField} from "@material-ui/core";
-import SearchIcon from '@material-ui/icons/Search'
+import { Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { TextField } from "@material-ui/core";
 
 
 export default function Navigation() {
     const [accountType, setAccountType] = useState(0)
-    const [searchTerm,setSearchTerm] = useState('')
-    const [isLoggedIn,setIsLoggedIn] = useState(false)
+    const [searchTerm, setSearchTerm] = useState('')
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [color,setColor] = useState('light')
     const router = useRouter()
-
-    console.log(router.query)
 
     function handleRouteChange(url) {
         ga.pageview(url)
@@ -22,9 +20,9 @@ export default function Navigation() {
     useEffect(() => {
         console.log(accountType)
         setAccountType(localStorage.getItem('account_type'))
-        if(localStorage.getItem('session') === null){
+        if (localStorage.getItem('session') === null) {
             setIsLoggedIn(false)
-        }else{
+        } else {
             setIsLoggedIn(true)
         }
         //When the component is mounted, subscribe to router changes
@@ -38,17 +36,17 @@ export default function Navigation() {
     }, [router.events])
 
     function searchProduct() {
-        if (this.props.location.pathname.indexOf('query') > -1) {
-            this.props.history.replace('/query?q=' + searchTerm)
-            this.props.history.go(0)
-        } else {
-            this.props.history.push('/query?q=' + searchTerm)
-        }
+        console.log('search')
+        router.push(`/query?q=${searchTerm}`)
     }
 
 
     return (
-        <Navbar bg="light" expand="lg" collapseOnSelect={true}>
+        <Navbar bg="light"
+            expand="lg"
+            collapseOnSelect={true}
+            variant={color}
+        >
             <Navbar.Brand href="/">美廣訂餐系統</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -61,25 +59,28 @@ export default function Navigation() {
                     </NavDropdown>}
                     <NavDropdown title="外部連結" id="basic-nav-dropdown">
                         <NavDropdown.Item href="https://sites.google.com/view/tnfshsu/"
-                                          rel="noreferrer noopener" target="_blank">學聯會</NavDropdown.Item>
+                            rel="noreferrer noopener" target="_blank">學聯會</NavDropdown.Item>
                         <NavDropdown.Item href="https://tnfsacec.github.io" rel="noreferrer noopener"
-                                          target="_blank">選委會</NavDropdown.Item>
+                            target="_blank">選委會</NavDropdown.Item>
                     </NavDropdown>
-                    <TextField value={searchTerm} onChange={event=>{setSearchTerm(event.target.value)}} id="term"
-                               label="搜尋想吃的" variant="outlined" size="small"
-                               InputProps={{
-                                   endAdornment:
-                                       (<IconButton onClick={searchProduct}>
-                                           <SearchIcon/>
-                                       </IconButton>)
-                               }}/>
+                    <form onSubmit={event => {
+                        event.preventDefault();
+                        searchProduct();
+                    }}>
+                        <TextField value={searchTerm}
+                            onChange={event => { setSearchTerm(event.target.value) }}
+                            label="搜尋想吃的"
+                            variant="outlined"
+                            size="small"
+                        />
+                    </form>
                 </Nav>
                 {isLoggedIn ? <NavDropdown title={`嗨~ ${localStorage.getItem('user_name')}`} id="basic-nav-dropdown">
-                        <NavDropdown.Item href="/history">歷史紀錄</NavDropdown.Item>
-                        <NavDropdown.Item href="/settings">設定</NavDropdown.Item>
-                        <NavDropdown.Item href="/profile">個人檔案</NavDropdown.Item>
-                        <NavDropdown.Item onClick={signOut}>登出</NavDropdown.Item>
-                    </NavDropdown>
+                    <NavDropdown.Item href="/history">歷史紀錄</NavDropdown.Item>
+                    <NavDropdown.Item href="/settings">設定</NavDropdown.Item>
+                    <NavDropdown.Item href="/profile">個人檔案</NavDropdown.Item>
+                    <NavDropdown.Item onClick={signOut}>登出</NavDropdown.Item>
+                </NavDropdown>
                     :
                     <Nav>
                         <Nav.Link href="/signup">註冊</Nav.Link>

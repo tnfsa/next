@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/main.css'
 import '../styles/fontawesome-all.min.css'
-
+import Nav from '../components/nav'
 
 import Head from 'next/head'
 
@@ -33,6 +33,7 @@ function MyApp({Component, pageProps}) {
                     }}
                 />
             </Head>
+            <Nav />
             <Component {...pageProps} />
             <script src={`${process.env.NEXT_PUBLIC_STATIC}js/jquery.min.js`}/>
             {/*<script src={`${process.env.NEXT_PUBLIC_STATIC}js/jquery.dropotron.min.js`}/>*/}
