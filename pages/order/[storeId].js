@@ -77,7 +77,7 @@ export async function getStaticPaths(){
 
     return {
         paths: posts.map((data)=>(`/order/${data.id}`)),
-        fallback: true
+        fallback: false
     }
 }
 
