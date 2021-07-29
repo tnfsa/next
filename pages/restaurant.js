@@ -2,27 +2,27 @@ import Title from '../components/Title'
 import Footer from '../components/Footer'
 import Image from 'next/image'
 
-function Restaurant({data}){
-    return(
+function Restaurant({ data }) {
+    
+    return (
         <div id="page-wrapper">
             <Title title="餐廳"
-                   link="/restaurant"/>
+                link="/restaurant" />
 
             <section id="main">
                 <div className="container">
-                    {typeof(data) === "undefined" ?
+                    {typeof (data) === "undefined" ?
                         <article className="box post">
                             <h2><center>查無資料</center></h2>
                         </article>
                         :
-                        data.map((data)=>{
-                            const storeImg = typeof(data.picUrl) === "undefined" ? "https://database.tnfsa.org/images/pic01.jpg":data.picUrl
-                            return(
-                                <article className="box post">
-                                    <div className="image featured">
-                                        <Image src={storeImg}
-                                             alt={`商家-${data.name}-的照片`}
-                                             layout="responsive"/>
+                        data.map((data) => {
+                            return (
+                                <article className="box post" key={data.name}>
+                                    <div className="image featured mediaSize">
+                                        <Image src={typeof (data.picUrl) === "undefined" ? "https://database.tnfsa.org/images/pic01.jpg" : data.picUrl}
+                                            alt={`商家-${data.name}-的照片`}
+                                            layout="fill" />
                                     </div>
                                     <header>
                                         <h2>{data.name}</h2>
@@ -45,7 +45,7 @@ function Restaurant({data}){
 }
 
 export async function getStaticProps() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores`,{
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json'

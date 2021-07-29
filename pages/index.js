@@ -6,7 +6,7 @@ import Alert from '../components/Alert'
 import { useState } from 'react'
 import LatestNews from '../components/Home/LatestNews'
 
-export default function Home({qna,news}) {
+export default function Home({ qna, news }) {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [question, setQuestion] = useState('')
@@ -45,17 +45,20 @@ export default function Home({qna,news}) {
                 <section id="intro" className="container">
                     <div className="row">
                         <Spotlight position="first"
-                                   icon="icon solid featured fa-cog"
-                                   title="操作方便"
-                                   context="如果不方便可以在頁底回報喔" />
+                            icon="icon solid featured fa-cog"
+                            title="操作方便"
+                            context="如果不方便可以在頁底回報喔"
+                            key="first" />
                         <Spotlight title="快速"
-                                   context="線上預訂，讓你免於在美廣大排長榮，減少群聚"
-                                   position="middle"
-                                   icon="icon solid featured alt fa-bolt"/>
+                            context="線上預訂，讓你免於在美廣大排長榮，減少群聚"
+                            position="middle"
+                            icon="icon solid featured alt fa-bolt"
+                            key="second" />
                         <Spotlight title="評分系統"
-                                   context="可以依照自己的想法，向大家提供餐點建議"
-                                   position="last"
-                                   icon="icon solid featured alt2 fa-star"/>
+                            context="可以依照自己的想法，向大家提供餐點建議"
+                            position="last"
+                            icon="icon solid featured alt2 fa-star"
+                            key="third" />
 
                     </div>
                     <footer>
@@ -67,7 +70,7 @@ export default function Home({qna,news}) {
                 </section>
 
             </section>
-            
+
             <section id="footer">
                 <div className="container">
                     <div className="row">
@@ -82,7 +85,8 @@ export default function Home({qna,news}) {
                                             <LatestNews month={data.month}
                                                 date={data.date}
                                                 title={data.title}
-                                                context={data.context} />
+                                                context={data.context}
+                                                key={data.date} />
                                         )
                                     })}
                                 </ul>
@@ -161,7 +165,11 @@ export default function Home({qna,news}) {
                                 <ul className="divided">
                                     {typeof (qna) !== 'undefined' && qna.map(data => {
                                         return (
-                                            <li><a href={`/Q&A/${data.link}`}>{data.title}</a></li>
+                                            <li key={data.link}>
+                                                <a href={`/Q&A/${data.link}`}>
+                                                    {data.title}
+                                                </a>
+                                            </li>
                                         )
                                     })}
                                 </ul>

@@ -1,33 +1,33 @@
 import Title from "../../components/Title";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import Footer from '../../components/Footer'
-
+import { Grid } from '@material-ui/core'
 import Section from '../../components/Section'
-import Restaurant from "../restaurant";
 
-function Order({data,name}){
+function Order({ data, name }) {
     const router = useRouter()
-    const {storeId} = router.query
+    const { storeId } = router.query
 
-    return(
+    return (
         <div id="page-wrapper">
             <Title title={`餐點瀏覽: ${name}`}
-                   link={`/order/${storeId}`} />
+                link={`/order/${storeId}`} />
 
             <section id="main">
                 <div className="container">
-                    <div style={{display: 'flex',flexWrap:'wrap'}}>
-                        {typeof(data) !== "undefined" && data.map(item=>{
-                            console.log(`${process.env.NEXT_PUBLIC_API_HOST}${item.image}`)
-                            return(
-                                <Section title={item.name}
-                                         context={item.description}
-                                         link={`/purchase/${storeId}/${item.id}`}
-                                         picture={`${process.env.NEXT_PUBLIC_API_HOST}${item.image}`}
-                                         key={item.name} />
+                    <Grid container justifyContent="center" spacing={2}>
+                        {typeof (data) !== "undefined" && data.map(item => {
+                            return (
+                                <>
+                                    <Section title={item.name}
+                                        context={item.description}
+                                        link={`/purchase/${storeId}/${item.id}`}
+                                        picture={`${process.env.NEXT_PUBLIC_API_HOST}${item.image}`}
+                                        key={item.name} />
+                                </>
                             )
                         })}
-                    </div>
+                    </Grid>
                 </div>
             </section>
             <Footer />
@@ -37,7 +37,7 @@ function Order({data,name}){
 
 export async function getStaticProps(context) {
     const page = context.params.storeId
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${page}/products`,{
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${page}/products`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json'
@@ -45,7 +45,7 @@ export async function getStaticProps(context) {
     })
     const data = await res.json()
 
-    const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores`,{
+    const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json'
@@ -55,20 +55,20 @@ export async function getStaticProps(context) {
 
     let name = ""
 
-    for(let index in text){
-        if(text[index].id === page){
+    for (let index in text) {
+        if (text[index].id === page) {
             console.log(text[index])
             name = text[index].name
         }
     }
 
     return {
-        props: { data , name}
+        props: { data, name }
     }
 }
 
-export async function getStaticPaths(){
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores`,{
+export async function getStaticPaths() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json'
@@ -77,7 +77,7 @@ export async function getStaticPaths(){
     const posts = await res.json()
 
     return {
-        paths: posts.map((data)=>(`/order/${data.id}`)),
+        paths: posts.map((data) => (`/order/${data.id}`)),
         fallback: false
     }
 }
