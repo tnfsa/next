@@ -1,5 +1,6 @@
 import Title from '../components/Title'
 import Footer from '../components/Footer'
+import Image from 'next/image'
 
 function Restaurant({data}){
     return(
@@ -18,8 +19,9 @@ function Restaurant({data}){
                             return(
                                 <article className="box post">
                                     <div className="image featured">
-                                        <img src={typeof(data.picUrl) === "undefined" ? "https://database.tnfsa.org/images/pic01.jpg":data.picUrl}
-                                             alt={`商家-${data.name}-的照片`}/>
+                                        <Image src={typeof(data.picUrl) === "undefined" ? "https://database.tnfsa.org/images/pic01.jpg":data.picUrl}
+                                             alt={`商家-${data.name}-的照片`}
+                                             layout="fill"/>
                                     </div>
                                     <header>
                                         <h2>{data.name}</h2>

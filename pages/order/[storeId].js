@@ -18,12 +18,13 @@ function Order({data,name}){
                 <div className="container">
                     <div style={{display: 'flex',flexWrap:'wrap'}}>
                         {typeof(data) !== "undefined" && data.map(item=>{
-                            console.log(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/${item.image}`)
+                            console.log(`${process.env.NEXT_PUBLIC_API_HOST}${item.image}`)
                             return(
                                 <Section title={item.name}
                                          context={item.description}
                                          link={`/purchase/${storeId}/${item.id}`}
-                                         picture={`${process.env.NEXT_PUBLIC_API_HOST}/${item.image}`}/>
+                                         picture={`${process.env.NEXT_PUBLIC_API_HOST}${item.image}`}
+                                         key={item.name} />
                             )
                         })}
                     </div>

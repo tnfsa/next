@@ -10,5 +10,11 @@ module.exports = withPWA({
     },
     future:{
         webpack5: true
+    },
+    images: {
+        domains: [
+            "database.tnfsa.org",
+            "lunchapi.hsuan.app"
+        ]
     }
 })
