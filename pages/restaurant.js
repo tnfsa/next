@@ -16,12 +16,13 @@ function Restaurant({data}){
                         </article>
                         :
                         data.map((data)=>{
+                            const storeImg = typeof(data.picUrl) === "undefined" ? "https://database.tnfsa.org/images/pic01.jpg":data.picUrl
                             return(
                                 <article className="box post">
                                     <div className="image featured">
-                                        <Image src={typeof(data.picUrl) === "undefined" ? "https://database.tnfsa.org/images/pic01.jpg":data.picUrl}
+                                        <Image src={storeImg}
                                              alt={`商家-${data.name}-的照片`}
-                                             layout="fill"/>
+                                             layout="responsive"/>
                                     </div>
                                     <header>
                                         <h2>{data.name}</h2>

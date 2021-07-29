@@ -6,7 +6,7 @@ export default function Section(props) {
         <Card style={{'width':'18rem'}}>
             <Image src={typeof (props.picture) === "undefined" ? "https://raw.sivir.pw/public/images/pic04.jpg" : props.picture}
                 alt={`${props.title}的照片`}
-                layout="fill" />
+                layout="responsive" />
             {/*<Card.Img src={typeof (props.picture) === "undefined" ? "https://raw.sivir.pw/public/images/pic04.jpg" : props.picture}
                       alt={`${props.title}的照片`}/>*/}
             <Card.Body>
