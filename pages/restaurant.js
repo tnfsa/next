@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { Grid } from '@material-ui/core'
 
 function Restaurant({ data }) {
-    const { height, width } = useWindowDimensions()
     const [loggedIn, setLoggedIn] = useState(true)
     const [photoWidth, setPhotoWidth] = useState(250)
     const [photoHeight, setPhotoHeight] = useState(150)
@@ -14,36 +13,14 @@ function Restaurant({ data }) {
         if (localStorage.getItem('account_type') === null) {
             setLoggedIn(false)
         }
-        if (width < 736) {
+        if (window.innerWidth < 736) {
             setPhotoWidth(250)
             setPhotoHeight(150)
         } else {
             setPhotoWidth(400)
             setPhotoHeight(240)
         }
-    }, [width])
-    function getWindowDimensions() {
-        const { innerWidth: width, innerHeight: height } = window;
-        return {
-            width,
-            height
-        };
-    }
-
-    function useWindowDimensions() {
-        const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
-
-        useEffect(() => {
-            function handleResize() {
-                setWindowDimensions(getWindowDimensions());
-            }
-
-            window.addEventListener('resize', handleResize);
-            return () => window.removeEventListener('resize', handleResize);
-        }, []);
-
-        return windowDimensions;
-    }
+    }, [window.innerWidth])
 
     return (
         <div id="page-wrapper">
