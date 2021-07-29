@@ -6,21 +6,12 @@ import Link from 'next/link'
 import { Grid } from '@material-ui/core'
 
 function Restaurant({ data }) {
-    const [loggedIn, setLoggedIn] = useState(true)
-    const [photoWidth, setPhotoWidth] = useState(250)
-    const [photoHeight, setPhotoHeight] = useState(150)
+    const [loggedIn,setLoggedIn] = useState(true)
     useEffect(() => {
         if (localStorage.getItem('account_type') === null) {
             setLoggedIn(false)
         }
-        if (window.innerWidth < 736) {
-            setPhotoWidth(250)
-            setPhotoHeight(150)
-        } else {
-            setPhotoWidth(400)
-            setPhotoHeight(240)
-        }
-    }, [window.innerWidth])
+    }, [])
 
     return (
         <div id="page-wrapper">
@@ -41,23 +32,25 @@ function Restaurant({ data }) {
                         <Grid container justifyContent="center" spacing={2}>
                             {data.map((data) => {
                                 return (
-                                    <Grid item>
-                                        <div className="custombox" key={data.name}>
-                                            <div>
+                                    <Grid item key={data.name}>
+                                        <div className="custombox">
+                                            <div className="cardPhoto">
                                                 <Image src={typeof (data.picUrl) === "undefined" ? "https://database.tnfsa.org/images/pic01.jpg" : data.picUrl}
                                                     alt={`商家-${data.name}-的照片`}
-                                                    height={photoHeight}
-                                                    width={photoWidth} />
+                                                    width="100vw"
+                                                    height="100hw" />
                                             </div>
-                                            <header>
-                                                <h2>{data.name}</h2>
-                                                <p>{data.description}</p>
-                                            </header>
-                                            <footer>
-                                                <ul className="actions">
-                                                    <li><Link href={`/order/${data.id}`}><a className="button">立即查看</a></Link></li>
-                                                </ul>
-                                            </footer>
+                                            <div className="container">
+                                                <header>
+                                                    <h2>{data.name}</h2>
+                                                    <p>{data.description}</p>
+                                                </header>
+                                                <footer>
+                                                    <ul className="actions">
+                                                        <li><Link href={`/order/${data.id}`}><a className="button">立即查看</a></Link></li>
+                                                    </ul>
+                                                </footer>
+                                            </div>
                                         </div>
                                     </Grid>
                                 )
