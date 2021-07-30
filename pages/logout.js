@@ -1,12 +1,17 @@
 import Title from "../components/Title";
 import {useEffect} from "react";
 import {useRouter} from "next/router";
+import Cookies from 'universal-cookie'
+
 
 export default function Logout(){
     const router = useRouter()
+    const cookies = new Cookies()
+
     useEffect(()=>{
-        localStorage.clear()
-        localStorage.setItem('alert', '登出成功')
+        const json = cookies.getAll()
+        console.log(json)
+        cookies.set('alert','登出成功')
         router.push('/')
     },[])
     return(

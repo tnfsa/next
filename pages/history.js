@@ -5,10 +5,12 @@ import {Delete} from "@material-ui/icons";
 import {useEffect,useState} from "react";
 import Footer from '../components/Footer'
 import {Card,Row,Col} from 'react-bootstrap'
+import Cookies from 'universal-cookie'
 
 export default function History() {
     const [transaction, setTransaction] = useState([]);
     const [loading, setLoading] = useState(false);
+    const cookies = new Cookies()
 
     async function Update() {
         try{
@@ -18,7 +20,7 @@ export default function History() {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('session')}`
+                    'Authorization': `Bearer ${cookies.get('session')}`
                 }
             })
             let response = await res.json()
@@ -45,7 +47,7 @@ export default function History() {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('session')}`
+                    'Authorization': `Bearer ${cookies.get('session')}`
                 },body: JSON.stringify({
                     rate: val
                 })

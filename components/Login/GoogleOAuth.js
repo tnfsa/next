@@ -1,8 +1,10 @@
 import GoogleLogin from 'react-google-login';
 import {useRouter} from "next/router";
+import Cookies from 'universal-cookie';
 
 export default function GoogleOAuth(){
     const router = useRouter()
+    const cookies = new Cookies()
     async function responseGoogle(google_response){
         console.log(JSON.stringify(google_response))
         try{
@@ -21,18 +23,18 @@ export default function GoogleOAuth(){
                 }
             })
             const response = await data.json()
-            localStorage.setItem('session', response['access_token'])
+            cookies.set('session',response['access_token'])
             // account type 1 is google
             //              2 is stores
-            localStorage.setItem('account_type',1)
-            localStorage.setItem('alert','登入成功')
-            localStorage.setItem('user_name', google_response['profileObj']['givenName'])
+            cookies.set('account_type',1)
+            cookies.set('alert','登入成功')
+            cookies.set('user_name', google_response['profileObj']['givenName'])
 
             await router.push('/')
         }catch (err){
             console.log(`Failed Login: ${err}`)
-            localStorage.setItem('alert', '登入失敗')
-            window.alert('failed: '+ err)
+            cookies.set(`alert','登入失敗：${err}`)
+
         }
     }
 

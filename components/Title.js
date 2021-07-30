@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Alert from './Alert'
 
 export default function Title(props) {
+
     if (typeof (props.link) === "undefined") {
         return (
             <>

@@ -1,13 +1,13 @@
 import {useState} from "react";
 import {Spinner} from 'react-bootstrap'
 import {useRouter} from "next/router";
-
+import Cookies from 'universal-cookie'
 export default function LoginForm() {
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const router = useRouter()
-    
+    const cookies = new Cookies();
     const Send = async () => {
         setLoading(true)
         const response = await postFile()
@@ -36,8 +36,8 @@ export default function LoginForm() {
             const response = await data.json()
             toReturn = response
             if (response['status'] !== 'error') {
-                localStorage.setItem('session', response['access_token'])
-                localStorage.setItem('alert', '登入成功')
+                cookies.set('session',response['access_token'])
+                cookies.set('alert','登入成功')
             } else {
                 window.alert('帳號或密碼錯誤')
             }
@@ -60,12 +60,11 @@ export default function LoginForm() {
                 }
             })
             const response = await data.json()
-
-            localStorage.setItem('user_name', response['name'])
-            localStorage.setItem('id', response['id'])
-            localStorage.setItem('account_type', '2')
+            cookies.set('user_name', response['name'])
+            cookies.set('id',response['id'])
+            cookies.set('account_type','2')
             if (response['stores'][0] !== undefined) {
-                localStorage.setItem('store_id', response['stores'][0]['id'])
+                cookies.set('store_id',response['stores'][0]['id'])
             }
             await router.push('/')
         } catch (err) {

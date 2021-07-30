@@ -4,11 +4,14 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Grid } from '@material-ui/core'
+import Cookies from 'universal-cookie'
 
 function Restaurant({ data }) {
+    const cookies = new Cookies()
+    
     const [loggedIn,setLoggedIn] = useState(true)
     useEffect(() => {
-        if (localStorage.getItem('account_type') === null) {
+        if (typeof(cookies.get('session')) === "undefined") {
             setLoggedIn(false)
         }
     }, [])

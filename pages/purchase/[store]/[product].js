@@ -5,12 +5,13 @@ import {useState,useEffect} from 'react'
 import {Figure, Card, Button,Row,Col} from 'react-bootstrap'
 import {TextareaAutosize} from '@material-ui/core'
 import Swal from 'sweetalert2'
+import Cookies from 'universal-cookie'
 
 function Purchase({data, storeName}) {
     const [comment,setComment] = useState('')
     const router = useRouter()
     const {store, product} = router.query
-    console.log(data)
+    const cookies = new Cookies()
 
     async function Send(){
         const confirmText=
@@ -34,7 +35,7 @@ function Purchase({data, storeName}) {
                     headers:{
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('session')}`
+                        'Authorization': `Bearer ${cookies.get('session')}`
                     }
                 })
                 const response = await res.json()
@@ -69,7 +70,7 @@ function Purchase({data, storeName}) {
         }
     }
     useEffect(() => {
-        if(localStorage.getItem('session') === null){
+        if(typeof(cookies.get('session')) === "undefined"){
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -78,7 +79,7 @@ function Purchase({data, storeName}) {
                 document.location.href = '/'
             })
         }
-        if(localStorage.getItem('session') === '2'){
+        if(cookies.get('account_type') === '2'){
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',

@@ -1,19 +1,19 @@
 import {useState,useEffect} from "react";
 import {useRouter} from 'next/router'
+import Cookies from 'universal-cookie'
 
 export default function Alert(){
     const [alert,setAlert] = useState('')
     const router = useRouter()
+    const cookies = new Cookies()
+    
     useEffect(()=>{
-        if(localStorage.getItem('alert') !== null){
+        if(cookies.get('alert') !== null){
             setTimeout(()=>{
-
-                localStorage.removeItem('alert')
+                cookies.remove('alert')
                 setAlert('')
-                console.log('ClearAlert')
             },2500)
-            setAlert(localStorage.getItem('alert'))
-            console.log('SetAlert')
+            setAlert(cookies.get('alert'))
         }
     },[router.pathname])
 

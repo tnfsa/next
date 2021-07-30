@@ -214,12 +214,10 @@ export default function Home({ qna, news }) {
 }
 
 export async function getStaticProps() {
-    console.log(`${process.env.NEXT_PUBLIC_STATIC}docs/news.json`)
     const res = await fetch(`${process.env.NEXT_PUBLIC_STATIC}docs/news.json`)
     const news = await res.json()
     const res2 = await fetch(`${process.env.NEXT_PUBLIC_STATIC}docs/QnA.json`)
     const qna = await res2.json()
-    console.log(`News: ${news}`)
     return {
         props: { news, qna }
     }

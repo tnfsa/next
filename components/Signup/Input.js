@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import {Spinner} from 'react-bootstrap'
 import {useRouter} from "next/router";
+import Cookies from 'universal-cookie'
 
 export default function Input() {
     const [loading,setLoading] = useState(false)
@@ -10,6 +11,7 @@ export default function Input() {
     const [passwordConfirm,setPasswordConfirm] = useState('')
     const [username,setUserName] = useState('')
     const router = useRouter()
+    const cookies = new Cookies()
     async function Send(){
         if (password !== passwordConfirm) {
             window.alert('密碼與密碼驗證不符')
@@ -35,12 +37,12 @@ export default function Input() {
                 }
             })
             const json = data.json()
-            localStorage.setItem('alert','註冊成功')
+            cookies.set('alert','註冊成功')
             setLoading(false)
             await router.push('/')
         }catch(err){
             console.log(`Error: ${err}`)
-            localStorage.setItem('alert','註冊失敗')
+            cookies.set('alert','註冊失敗')
             setLoading(false)
             await router.push('/login')
         }

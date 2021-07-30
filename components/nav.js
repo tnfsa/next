@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import * as ga from '../components/GA'
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { TextField } from "@material-ui/core";
-
+import Cookies from 'universal-cookie'
 
 export default function Navigation() {
     const [accountType, setAccountType] = useState(0)
@@ -12,6 +12,7 @@ export default function Navigation() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [color, setColor] = useState('light')
     const router = useRouter()
+    const cookies = new Cookies()
 
     function handleRouteChange(url) {
         ga.pageview(url)
@@ -19,8 +20,9 @@ export default function Navigation() {
 
     useEffect(() => {
         console.log(accountType)
-        setAccountType(localStorage.getItem('account_type'))
-        if (localStorage.getItem('session') === null) {
+        setAccountType(cookies.get('account_type'))
+        console.log(typeof(cookies.get('session')))
+        if (typeof(cookies.get('session')) === "undefined") {
             setIsLoggedIn(false)
         } else {
             setIsLoggedIn(true)
@@ -79,10 +81,10 @@ export default function Navigation() {
                         />
                     </form>
                 </Nav>
-                {isLoggedIn ? <NavDropdown title={`嗨~ ${localStorage.getItem('user_name')}`} id="basic-nav-dropdown" style={{textDecoration: "none"}}>
+                {isLoggedIn ? <NavDropdown title={`嗨~ ${cookies.get('user_name')}`} id="basic-nav-dropdown" style={{textDecoration: "none"}}>
                     <NavDropdown.Item href="/history" style={{textDecoration: "none"}}>歷史紀錄</NavDropdown.Item>
                     <NavDropdown.Item href="/settings" style={{textDecoration: "none"}}>設定</NavDropdown.Item>
-                    <NavDropdown.Item onClick={signOut} style={{textDecoration: "none"}}>登出</NavDropdown.Item>
+                    <NavDropdown.Item href="/logout" style={{textDecoration: "none"}}>登出</NavDropdown.Item>
                 </NavDropdown>
                     :
                     <Nav>
