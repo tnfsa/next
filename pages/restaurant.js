@@ -37,8 +37,9 @@ function Restaurant({ data }) {
                                             <div className="cardPhoto">
                                                 <Image src={typeof (data.picUrl) === "undefined" ? "https://database.tnfsa.org/images/pic01.jpg" : data.picUrl}
                                                     alt={`商家-${data.name}-的照片`}
-                                                    width="100vw"
-                                                    height="100hw" />
+                                                    layout="responsive"
+                                                    width="100"
+                                                    height="60" />
                                             </div>
                                             <div className="container">
                                                 <header>
