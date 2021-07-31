@@ -34,7 +34,11 @@ export default function History() {
             setTransaction(response)
             setLoading(false)
         }catch(err){
-            window.alert(`${err}\n與伺服器連線錯誤，請再試一次\n如果問題無法解決，請聯絡管理員`)
+            await Swal.fire({
+                icon: 'error',
+                title: '伺服器忙線中',
+                text: err
+            })
         }
     }
     async function setNewRate(val, id) {
@@ -56,7 +60,11 @@ export default function History() {
             console.log(response)
             Update()
         }catch(err){
-            window.alert(`更新失敗${err}`)
+            await Swal.fire({
+                icon: 'error',
+                title: '更新失敗',
+                text: err
+            })
         }
     }
 

@@ -1,7 +1,7 @@
 import {useState} from 'react'
-import {Spinner} from 'react-bootstrap'
 import {useRouter} from "next/router";
 import Cookies from 'universal-cookie'
+import Swal from 'sweetalert2';
 
 export default function Input() {
     const [loading,setLoading] = useState(false)
@@ -14,7 +14,10 @@ export default function Input() {
     const cookies = new Cookies()
     async function Send(){
         if (password !== passwordConfirm) {
-            window.alert('密碼與密碼驗證不符')
+            await Swal.fire({
+                icon: 'error',
+                title: '密碼與密碼驗證不符'
+            })
             //empty the input box
             setPassword('')
             setPasswordConfirm('')

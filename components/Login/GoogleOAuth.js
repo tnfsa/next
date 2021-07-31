@@ -1,6 +1,7 @@
 import GoogleLogin from 'react-google-login';
 import {useRouter} from "next/router";
 import Cookies from 'universal-cookie';
+import Swal from 'sweetalert2'
 
 export default function GoogleOAuth(){
     const router = useRouter()
@@ -27,17 +28,20 @@ export default function GoogleOAuth(){
             // account type 1 is google
             //              2 is stores
             cookies.set('account_type',1)
-            cookies.set('alert','登入成功')
             cookies.set('user_name', google_response['profileObj']['givenName'])
-
+            await Swal.fire({
+                icon: 'success',
+                title: '登入成功'
+            })
             await router.push('/')
         }catch (err){
             console.log(`Failed Login: ${err}`)
-            cookies.set(`alert','登入失敗：${err}`)
-
+            await Swal.fire({
+                icon: 'error',
+                title: '與伺服器連線錯誤'
+            })
         }
     }
-
     return(
         <GoogleLogin
             clientId={process.env.NEXT_PUBLIC_GOOGLE_CLOUD_PLATFORM}

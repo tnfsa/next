@@ -2,6 +2,7 @@ import {useState} from "react";
 import {Spinner} from 'react-bootstrap'
 import {useRouter} from "next/router";
 import Cookies from 'universal-cookie'
+import Swal from 'sweetalert2'
 export default function LoginForm() {
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('')
@@ -38,13 +39,23 @@ export default function LoginForm() {
             if (response['status'] !== 'error') {
                 cookies.set('session',response['access_token'])
                 cookies.set('alert','登入成功')
+                await Swal.fire({
+                    icon: 'success',
+                    title: '登入成功'
+                })
             } else {
-                window.alert('帳號或密碼錯誤')
+                await Swal.fire({
+                    icon: 'error',
+                    title: '照號或密碼錯誤'
+                })
             }
 
         } catch (err) {
-            window.alert(
-                `伺服器存取錯誤：${err}`)
+            await Swal.fire({
+                icon: 'error',
+                title: '伺服器聯絡逾時',
+                text: '請稍後再試'
+            })
         }
         return toReturn
     }
@@ -68,8 +79,11 @@ export default function LoginForm() {
             }
             await router.push('/')
         } catch (err) {
-            window.alert(
-                `意外的錯誤：${err}`)
+            await Swal.fire({
+                icon: 'error',
+                title: '意外的錯誤',
+                text: err
+            })
         }
     }
 

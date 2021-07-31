@@ -5,6 +5,7 @@ import Footer from "../components/Footer"
 import Alert from '../components/Alert'
 import { useState } from 'react'
 import LatestNews from '../components/Home/LatestNews'
+import Swal from 'sweetalert2'
 
 export default function Home({ qna, news }) {
     const [name, setName] = useState('')
@@ -22,12 +23,19 @@ export default function Home({ qna, news }) {
                 mode: 'no-cors'
             })
             // good
-            window.alert(`Message sent successful`)
+            await Swal.fire({
+                icon: 'success',
+                title: '傳送成功'
+            })
             setName('')
             setEmail('')
             setQuestion('')
         } catch (err) {
-            window.alert(`Message sent FAILED: ${err}`)
+            await Swal.fire({
+                icon: 'error',
+                title: '傳送失敗',
+                text: err
+            })
         }
     }
     return (
