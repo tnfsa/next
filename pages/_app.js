@@ -2,6 +2,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/main.css'
 import '../styles/fontawesome-all.min.css'
 import '../styles/card.css'
+
+import 'tailwindcss/tailwind.css'
+
 import Nav from '../components/nav'
 
 import Head from 'next/head'

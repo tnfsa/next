@@ -2,7 +2,6 @@ import Nav from '../components/nav'
 import Link from 'next/link'
 import Spotlight from "../components/Home/Spotlight"
 import Footer from "../components/Footer"
-import Alert from '../components/Alert'
 import { useState } from 'react'
 import LatestNews from '../components/Home/LatestNews'
 import Swal from 'sweetalert2'
@@ -41,7 +40,6 @@ export default function Home({ qna, news }) {
     return (
         <div id="page-wrapper">
             <section id="header">
-                <Alert />
                 <h1><Link href="/">臺南一中點餐系統</Link></h1>
                 <section id="banner">
                     <header>

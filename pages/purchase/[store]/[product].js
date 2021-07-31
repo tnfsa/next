@@ -1,28 +1,28 @@
 import Title from "../../../components/Title";
 import Footer from '../../../components/Footer'
-import {useRouter} from "next/router";
-import {useState,useEffect} from 'react'
-import {Figure, Card, Button,Row,Col} from 'react-bootstrap'
-import {TextareaAutosize} from '@material-ui/core'
+import { useRouter } from "next/router";
+import { useState, useEffect } from 'react'
+import { Figure, Card, Button, Row, Col } from 'react-bootstrap'
+import { TextareaAutosize } from '@material-ui/core'
 import Swal from 'sweetalert2'
 import Cookies from 'universal-cookie'
 
-function Purchase({data, storeName}) {
-    const [comment,setComment] = useState('')
+function Purchase({ data, storeName }) {
+    const [comment, setComment] = useState('')
     const router = useRouter()
-    const {store, product} = router.query
+    const { store, product } = router.query
     const cookies = new Cookies()
 
-    async function Send(){
-        const confirmText=
-`請確認您的訂購資訊
+    async function Send() {
+        const confirmText =
+            `請確認您的訂購資訊
 名稱：${data.name}
 售價：${data.price}
 其他建議：${comment}
 按 OK 送出；cancel 取消`
-        if(window.confirm(confirmText)){
-            try{
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/transactions`,{
+        if (window.confirm(confirmText)) {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/transactions`, {
                     method: 'POST',
                     body: JSON.stringify({
                         'name': data.title,
@@ -32,7 +32,7 @@ function Purchase({data, storeName}) {
                         'comment': comment,
                         'options': {}
                     }),
-                    headers:{
+                    headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${cookies.get('session')}`
@@ -40,7 +40,7 @@ function Purchase({data, storeName}) {
                 })
                 const response = await res.json()
                 console.log(`Response: ${response}`)
-                if(res.ok){
+                if (res.ok) {
                     // leak google analytics
 
                     Swal.fire({
@@ -51,13 +51,13 @@ function Purchase({data, storeName}) {
                             `您的交易ID為： <b>${response.id}</b>`),
                         icon: 'success',
                         confirmButtonText: 'Ok'
-                    }).then(()=>{
+                    }).then(() => {
                         router.push('/')
                     })
-                }else{
+                } else {
                     throw await res.text()
                 }
-            }catch (err){
+            } catch (err) {
                 Swal.fire({
                     title: '錯誤!',
                     text: `${err}\n與伺服器連線錯誤，請再試一次\n如果問題無法解決，請聯絡管理員\n訂單未成立`,
@@ -69,6 +69,7 @@ function Purchase({data, storeName}) {
             }
         }
     }
+    /*
     useEffect(() => {
         if(typeof(cookies.get('session')) === "undefined"){
             Swal.fire({
@@ -90,14 +91,18 @@ function Purchase({data, storeName}) {
         }
         // eslint-disable-next-line
     },[])
-
+    */
     return (
         <div id="page-wrapper">
-            <Title title={`${storeName}-${typeof (data) === "undefined" || data.name}`}
-                   link={`/purchase/${store}/${product}`}/>
+            <Title title={`${storeName}-${data.name}`}
+                link={`/purchase/${store}/${product}`} />
 
             <section id="main">
-                <div className="container" style={{display: 'flex', flexWrap: 'wrap', align: 'center'}}>
+                <div className="container">
+                    <NewProduct data={data}
+                        storeName={storeName} />
+                </div>
+                {/*<div className="container" style={{display: 'flex', flexWrap: 'wrap', align: 'center'}}>
                     {typeof (data) === "undefined" || <><Figure>
                         <Figure.Caption className={"text-center"}>
                             <h1></h1>
@@ -105,7 +110,8 @@ function Purchase({data, storeName}) {
                         <Figure.Image
                             width={300}
                             alt="餐點的照片"
-                            src={`${process.env.NEXT_PUBLIC_API_HOST}${data.image}`}
+                            src={data.image}
+                            //src={`${process.env.NEXT_PUBLIC_API_HOST}${data.image}`}
                             resizeMode="contain"
                         />
                     </Figure>
@@ -129,16 +135,47 @@ function Purchase({data, storeName}) {
                                 </Col>
                             </Row>
                         </Card></>}
-                </div>
+    </div>*/}
 
             </section>
-            <Footer/>
+            <Footer />
         </div>
     )
 }
 
+function NewProduct(props) {
+    return (
+        <div className="bg-blue-100 rounded-xl p-10 md:flex">
+            <img className="rounded-full"
+                src={props.data.image}
+                alt={`${props.data.name} from ${props.storeName}`} />
+            <p className="text-4xl font-semibold">
+                {props.data.name}
+            </p>
+            <p className="text-xl h-20">
+                {props.data.description}
+            </p>
+            <p className="text-lg">
+                建議售價：{props.data.price}元
+            </p>
+            <textarea className="resize-none text-gray-700 font-light p-1 h-32 w-44"
+                placeholder="備註：" />
+            <br />
+            <button className="p-2 rounded-2xl text-lg bg-blue-500 hover:bg-blue-700">
+                立即購買
+            </button>
+        </div>
+    )
+}
+
+
+
+
+
+
+
 export async function getStaticProps(context) {
-    const store = context.params.store
+    /*const store = context.params.store
     const product = context.params.product
     const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${store}/products/${product}`
     console.log(url)
@@ -166,10 +203,16 @@ export async function getStaticProps(context) {
             storeName = text[index].name
             break;
         }
+    }*/
+    const data = {
+        "name": 'Banana',
+        'price': '100',
+        'image': 'https://dictionary.cambridge.org/zht/images/thumb/banana_noun_001_01109.jpg?version=5.0.180',
+        'description': 'example'
     }
-
+    const storeName = 'Organic Farm'
     return {
-        props: {data, storeName}
+        props: { data, storeName }
     }
 }
 
@@ -186,6 +229,7 @@ async function getStores(store) {
 }
 
 export async function getStaticPaths() {
+    /*
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/`, {
         method: 'GET',
         headers: {
@@ -201,8 +245,9 @@ export async function getStaticPaths() {
             console.log(thing)
             paths.push(`/purchase/${thing}`)
         })
-    })
-    //paths.push(`/purchase/ce89b986-9592-4fea-9b6d-22bab1e93afc/74eccc53-496c-4e8a-9c36-4d8db5505b0e`)
+    })*/
+    let paths = []
+    paths.push('/purchase/store/name')
 
     return {
         paths: paths,
