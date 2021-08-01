@@ -2,8 +2,6 @@ import Title from "../../../components/Title";
 import Footer from '../../../components/Footer'
 import { useRouter } from "next/router";
 import { useState, useEffect } from 'react'
-import { Figure, Card, Button, Row, Col } from 'react-bootstrap'
-import { TextareaAutosize } from '@material-ui/core'
 import Swal from 'sweetalert2'
 import Cookies from 'universal-cookie'
 
@@ -69,7 +67,7 @@ function Purchase({ data, storeName }) {
             }
         }
     }
-    /*
+    
     useEffect(() => {
         if(typeof(cookies.get('session')) === "undefined"){
             Swal.fire({
@@ -91,7 +89,7 @@ function Purchase({ data, storeName }) {
         }
         // eslint-disable-next-line
     },[])
-    */
+    
     return (
         <div id="page-wrapper">
             <Title title={`${storeName}-${data.name}`}
@@ -99,71 +97,41 @@ function Purchase({ data, storeName }) {
 
             <section id="main">
                 <div className="container">
-                    <NewProduct data={data}
-                        storeName={storeName} />
+                    <div className="flex flex-col bg-blue-100 rounded-xl p-16 items-center md:justify-center md:flex-row md:items-center md:space-x-16">
+                        <img className="rounded-full"
+                            src={`${process.env.NEXT_PUBLIC_API_HOST}${data.image}`}
+                            alt={`${data.name} from ${storeName}`} />
+                        <div className="space-y-3">
+                            <p className="text-4xl font-semibold">
+                                {data.name}
+                            </p>
+                            <p className="text-xl h-20">
+                                {data.description}
+                            </p>
+                            <p className="text-lg">
+                                建議售價：{data.price}元
+                            </p>
+                            <textarea className="resize-none text-gray-700 font-light p-1 h-32 w-44 md:w-60"
+                                placeholder="備註："
+                                value={comment}
+                                onChange={(e)=>{setComment(e.target.value)}} />
+                            <br />
+                            <div>
+                                <button className="float-left p-2 rounded-2xl text-lg bg-pink-500 hover:bg-pink-700"
+                                    href={`/order/${store}`}>
+                                    回上一頁
+                                </button>
+                                <button className="float-right p-2 rounded-2xl text-lg bg-blue-500 hover:bg-blue-700"
+                                    onClick={Send}>
+                                    立即購買
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                {/*<div className="container" style={{display: 'flex', flexWrap: 'wrap', align: 'center'}}>
-                    {typeof (data) === "undefined" || <><Figure>
-                        <Figure.Caption className={"text-center"}>
-                            <h1></h1>
-                        </Figure.Caption>
-                        <Figure.Image
-                            width={300}
-                            alt="餐點的照片"
-                            src={data.image}
-                            //src={`${process.env.NEXT_PUBLIC_API_HOST}${data.image}`}
-                            resizeMode="contain"
-                        />
-                    </Figure>
-                        <Card style={{width: '18rem'}}>
-                            <Card.Body>
-                                <Card.Title>{typeof (data.name) === "undefined" || data.name}</Card.Title>
-                                <Card.Subtitle className="mb-2 text-muted">{data.description}</Card.Subtitle>
-                                <Card.Text>
-                                    {`建議售價： ${data.price}元`}
-                                </Card.Text>
-                            </Card.Body>
-                            <TextareaAutosize className="form-control" placeholder="留言" rows="5"
-                                              onChange={event => setComment(event.target.value)}
-                                              value={comment}/>
-                            <Row>
-                                <Col>
-                                    <Button href={`/order/${store}`} style={{textDecoration: 'none'}}>回上一頁</Button>
-                                </Col>
-                                <Col>
-                                    <Button onClick={Send} style={{textDecoration: 'none', margin: 'auto'}}>立即購買</Button>
-                                </Col>
-                            </Row>
-                        </Card></>}
-    </div>*/}
 
             </section>
             <Footer />
-        </div>
-    )
-}
-
-function NewProduct(props) {
-    return (
-        <div className="bg-blue-100 rounded-xl p-10 md:flex">
-            <img className="rounded-full"
-                src={props.data.image}
-                alt={`${props.data.name} from ${props.storeName}`} />
-            <p className="text-4xl font-semibold">
-                {props.data.name}
-            </p>
-            <p className="text-xl h-20">
-                {props.data.description}
-            </p>
-            <p className="text-lg">
-                建議售價：{props.data.price}元
-            </p>
-            <textarea className="resize-none text-gray-700 font-light p-1 h-32 w-44"
-                placeholder="備註：" />
-            <br />
-            <button className="p-2 rounded-2xl text-lg bg-blue-500 hover:bg-blue-700">
-                立即購買
-            </button>
         </div>
     )
 }
@@ -175,7 +143,7 @@ function NewProduct(props) {
 
 
 export async function getStaticProps(context) {
-    /*const store = context.params.store
+    const store = context.params.store
     const product = context.params.product
     const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${store}/products/${product}`
     console.log(url)
@@ -203,14 +171,8 @@ export async function getStaticProps(context) {
             storeName = text[index].name
             break;
         }
-    }*/
-    const data = {
-        "name": 'Banana',
-        'price': '100',
-        'image': 'https://dictionary.cambridge.org/zht/images/thumb/banana_noun_001_01109.jpg?version=5.0.180',
-        'description': 'example'
     }
-    const storeName = 'Organic Farm'
+    
     return {
         props: { data, storeName }
     }
@@ -229,7 +191,6 @@ async function getStores(store) {
 }
 
 export async function getStaticPaths() {
-    /*
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/`, {
         method: 'GET',
         headers: {
@@ -245,10 +206,8 @@ export async function getStaticPaths() {
             console.log(thing)
             paths.push(`/purchase/${thing}`)
         })
-    })*/
-    let paths = []
-    paths.push('/purchase/store/name')
-
+    })
+    
     return {
         paths: paths,
         fallback: false

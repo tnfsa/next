@@ -9,15 +9,15 @@ import Nav from '../components/nav'
 
 import Head from 'next/head'
 
-function MyApp({Component, pageProps}) {
+function MyApp({ Component, pageProps }) {
     return (
         <>
             <Head>
                 <title key={"title"}>臺南一中點餐系統</title>
                 <meta name="viewport"
-                      content="width=device-width, initial-scale=1, user-scalable=no"/>
+                    content="width=device-width, initial-scale=1, user-scalable=no" />
                 <meta name={"description"}
-                      content={"台南一中點餐系統"} key={"metaContent"}/>
+                    content={"台南一中點餐系統"} key={"metaContent"} />
 
                 {/* Global Site Tag (gtag.js) - Google Analytics */}
                 <script
@@ -38,13 +38,15 @@ function MyApp({Component, pageProps}) {
                 />
             </Head>
             <Nav />
-            <Component {...pageProps} />
-            <script src={`${process.env.NEXT_PUBLIC_STATIC}js/jquery.min.js`}/>
+            <div className="position:relative">
+                <Component {...pageProps} />
+            </div>
+            <script src={`${process.env.NEXT_PUBLIC_STATIC}js/jquery.min.js`} />
             {/*<script src={`${process.env.NEXT_PUBLIC_STATIC}js/jquery.dropotron.min.js`}/>*/}
-            <script src={`${process.env.NEXT_PUBLIC_STATIC}js/browser.min.js`}/>
-            <script src={`${process.env.NEXT_PUBLIC_STATIC}js/breakpoints.min.js`}/>
-            <script src={`${process.env.NEXT_PUBLIC_STATIC}js/util.js`}/>
-            <script src={`${process.env.NEXT_PUBLIC_STATIC}js/main.js`}/>
+            <script src={`${process.env.NEXT_PUBLIC_STATIC}js/browser.min.js`} />
+            <script src={`${process.env.NEXT_PUBLIC_STATIC}js/breakpoints.min.js`} />
+            <script src={`${process.env.NEXT_PUBLIC_STATIC}js/util.js`} />
+            <script src={`${process.env.NEXT_PUBLIC_STATIC}js/main.js`} />
         </>
     )
 }

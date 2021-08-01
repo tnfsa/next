@@ -49,7 +49,7 @@ export default function Home({ qna, news }) {
                 </section>
 
                 <section id="intro" className="container">
-                    <div className="row">
+                    <div className="flex flex-col md:flex-row items-center">
                         <Spotlight position="first"
                             icon="icon solid featured fa-cog"
                             title="操作方便"
@@ -57,18 +57,18 @@ export default function Home({ qna, news }) {
                             key="first" />
                         <Spotlight title="快速"
                             context="線上預訂，讓你免於在美廣大排長榮，減少群聚"
-                            position="middle"
+                            position="first"
                             icon="icon solid featured alt fa-bolt"
                             key="second" />
                         <Spotlight title="評分系統"
                             context="可以依照自己的想法，向大家提供餐點建議"
-                            position="last"
+                            position="first"
                             icon="icon solid featured alt2 fa-star"
                             key="third" />
 
                     </div>
                     <footer>
-                        <ul className="actions">
+                        <ul className="">
                             <li><a href="/login" className="button large">現在開始</a></li>
                             <li><a href="https://docs.tnfsa.org/" className="button alt large">了解更多</a></li>
                         </ul>
@@ -78,9 +78,9 @@ export default function Home({ qna, news }) {
             </section>
 
             <section id="footer">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-8 col-12-medium">
+                <div className="p-3 space-y-5">
+                    <div className="flex flex-col md:flex-row md:items-start items-center">
+                        <div className="w-2/3">
                             <section>
                                 <header>
                                     <h2>最新消息</h2>
@@ -98,7 +98,7 @@ export default function Home({ qna, news }) {
                                 </ul>
                             </section>
                         </div>
-                        <div className="col-4 col-12-medium">
+                        <div className="md:w-1/3 w-2/3">
                             <section>
                                 <header>
                                     <h2>關於這個網站</h2>
@@ -118,7 +118,9 @@ export default function Home({ qna, news }) {
                                 </footer>
                             </section>
                         </div>
-                        <div className="col-4 col-6-medium col-12-small">
+                    </div>
+                    <div className="flex flex-col md:flex-row items-center md:items-start">
+                        <div className="w-2/3 md:w-1/3">
                             <section>
                                 <header>
                                     <h2>回饋表單</h2>
@@ -128,8 +130,8 @@ export default function Home({ qna, news }) {
                                         e.preventDefault()
                                         Send()
                                     }}>
-                                        <article className="l-design-width">
-                                            <div className="card">
+                                        <article>
+                                            <div className="p-1">
                                                 <label className="input"><h3>暱稱：</h3>
                                                     <input className="input__field"
                                                         type="text"
@@ -154,8 +156,9 @@ export default function Home({ qna, news }) {
                                                         required
                                                         style={{ 'resize': 'none', 'height': '10em' }} />
                                                 </label>
-                                                <div className="button-group">
-                                                    <button type="submit">Send</button>
+                                                <div>
+                                                    <button className="rounded-full p-2 bg-blue-500 hover:bg-blue-700 float-right"
+                                                        type="submit">Send</button>
                                                 </div>
                                             </div>
                                         </article>
@@ -163,7 +166,7 @@ export default function Home({ qna, news }) {
                                 </ul>
                             </section>
                         </div>
-                        <div className="col-4 col-6-medium col-12-small">
+                        <div className="w-2/3 md:w-1/3">
                             <section>
                                 <header>
                                     <h2>Q&A 問答集</h2>
@@ -181,7 +184,7 @@ export default function Home({ qna, news }) {
                                 </ul>
                             </section>
                         </div>
-                        <div className="col-4 col-12-medium">
+                        <div className="w-2/3 md:w-1/3">
                             <section>
                                 <header>
                                     <h2>社群連結</h2>
@@ -209,6 +212,7 @@ export default function Home({ qna, news }) {
 
                                 </ul>
                             </section>
+
                         </div>
                     </div>
                 </div>
