@@ -119,13 +119,13 @@ export default function Home({ qna, news }) {
                             </section>
                         </div>
                     </div>
-                    <div className="flex flex-col md:flex-row items-center md:items-start">
+                    <div className="flex flex-col md:flex-row items-center md:items-start p-1">
                         <div className="w-2/3 md:w-1/3">
                             <section>
                                 <header>
                                     <h2>回饋表單</h2>
                                 </header>
-                                <ul className="divided">
+                                <ul className="divided p-1">
                                     <form onSubmit={e => {
                                         e.preventDefault()
                                         Send()
@@ -166,7 +166,7 @@ export default function Home({ qna, news }) {
                                 </ul>
                             </section>
                         </div>
-                        <div className="w-2/3 md:w-1/3">
+                        <div className="w-2/3 md:w-1/3 p-1">
                             <section>
                                 <header>
                                     <h2>Q&A 問答集</h2>
@@ -184,7 +184,7 @@ export default function Home({ qna, news }) {
                                 </ul>
                             </section>
                         </div>
-                        <div className="w-2/3 md:w-1/3">
+                        <div className="w-2/3 md:w-1/3 p-1">
                             <section>
                                 <header>
                                     <h2>社群連結</h2>

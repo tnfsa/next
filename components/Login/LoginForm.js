@@ -1,6 +1,6 @@
-import {useState} from "react";
-import {Spinner} from 'react-bootstrap'
-import {useRouter} from "next/router";
+import { useState } from "react";
+import { Spinner } from 'react-bootstrap'
+import { useRouter } from "next/router";
 import Cookies from 'universal-cookie'
 import Swal from 'sweetalert2'
 export default function LoginForm() {
@@ -9,14 +9,25 @@ export default function LoginForm() {
     const [password, setPassword] = useState('')
     const router = useRouter()
     const cookies = new Cookies();
+
     const Send = async () => {
         setLoading(true)
+        const oldUrl = "https://store.tnfsa.org/#/login"
+        router.prefetch(oldUrl)
+        await Swal.fire({
+            icon: 'info',
+            title: '新版本尚未支援',
+            text: '將立即轉跳至舊版本'
+        })
+        /*
         const response = await postFile()
         console.log(response)
         if (response['status'] !== 'error') {
             await fetchInfo(response)
         }
+        */
         setLoading(false)
+        await router.push(oldUrl)
     }
 
     const postFile = async () => {
@@ -37,8 +48,7 @@ export default function LoginForm() {
             const response = await data.json()
             toReturn = response
             if (response['status'] !== 'error') {
-                cookies.set('session',response['access_token'])
-                cookies.set('alert','登入成功')
+                cookies.set('session', response['access_token'])
                 await Swal.fire({
                     icon: 'success',
                     title: '登入成功'
@@ -72,10 +82,10 @@ export default function LoginForm() {
             })
             const response = await data.json()
             cookies.set('user_name', response['name'])
-            cookies.set('id',response['id'])
-            cookies.set('account_type','2')
+            cookies.set('id', response['id'])
+            cookies.set('account_type', '2')
             if (response['stores'][0] !== undefined) {
-                cookies.set('store_id',response['stores'][0]['id'])
+                cookies.set('store_id', response['stores'][0]['id'])
             }
             await router.push('/')
         } catch (err) {
@@ -99,28 +109,31 @@ export default function LoginForm() {
                 Send()
             }}>
                 <div className="form-group">
-                    <br/>
+                    <br />
                     <label>電子郵件
                         <input type="email"
-                               className="form-control"
-                               placeholder="Enter email"
-                               value={email}
-                               onChange={e => {
-                                   setEmail(e.target.value)
-                               }}
-                               required/>
+                            className="form-control"
+                            placeholder="Enter email"
+                            value={email}
+                            onChange={e => {
+                                setEmail(e.target.value)
+                            }}
+                            required />
                     </label>
                     <label>密碼
                         <input type="password"
-                               className="form-control"
-                               placeholder="Enter password"
-                               value={password}
-                               onChange={e => {
-                                   setPassword(e.target.value)
-                               }}
-                               required/>
+                            className="form-control"
+                            placeholder="Enter password"
+                            value={password}
+                            onChange={e => {
+                                setPassword(e.target.value)
+                            }}
+                            required />
                     </label>
-                    <button type="submit">送出</button>
+                    <button className="bg-pink-500 hover:bg-ping-700 p-2"
+                        type="submit">
+                        送出
+                    </button>
                 </div>
             </form>
         </>

@@ -40,12 +40,19 @@ export default function Input() {
                 }
             })
             const json = data.json()
-            cookies.set('alert','註冊成功')
+            await Swal.fire({
+                icon: 'success',
+                title: '註冊成功'
+            })
             setLoading(false)
             await router.push('/')
         }catch(err){
             console.log(`Error: ${err}`)
-            cookies.set('alert','註冊失敗')
+            await Swal.fire({
+                icon: 'error',
+                title: '註冊失敗',
+                text: err
+            })
             setLoading(false)
             await router.push('/login')
         }

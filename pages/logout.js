@@ -9,9 +9,9 @@ export default function Logout(){
     const cookies = new Cookies()
 
     useEffect(()=>{
-        const json = cookies.getAll()
-        console.log(json)
-        cookies.set('alert','登出成功')
+        cookies.remove('account_type')
+        cookies.remove('session')
+        cookies.remove('user_name')
         router.push('/')
     },[])
     return(

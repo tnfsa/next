@@ -3,37 +3,53 @@ import Link from 'next/link'
 import { useRouter } from "next/router";
 import * as ga from '../components/GA'
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { TextField } from "@material-ui/core";
+import { TextField, LinearProgress } from "@material-ui/core";
 import Cookies from 'universal-cookie'
 
-export default function Navigation() {
-    const [accountType, setAccountType] = useState(0)
-    const [searchTerm, setSearchTerm] = useState('')
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [color, setColor] = useState('light')
-    const router = useRouter()
-    const cookies = new Cookies()
 
-    function handleRouteChange(url) {
-        ga.pageview(url)
+export default function Navigation() {
+    const [accountType, setAccountType] = useState(0);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [loadingProcess, setLoadingProcess] = useState(0);
+    const [color, setColor] = useState('light');
+    const router = useRouter();
+    const cookies = new Cookies();
+
+    function handleRouteChange(url,status) {
+        console.log(url)
+        console.log(status)
+        switch(status){
+            case "start":
+                setLoading(true)
+                setLoadingProcess(20)
+                break;
+            default:
+                //ga.pageview(url)
+                setLoadingProcess(100)
+                setTimeout(()=>{
+                    setLoading(false)
+                },1000)
+        }
+        
     }
 
     useEffect(() => {
-        console.log(accountType)
+        console.log("route_change")
         setAccountType(cookies.get('account_type'))
-        console.log(typeof(cookies.get('session')))
-        if (typeof(cookies.get('session')) === "undefined") {
+        if (typeof (cookies.get('session')) === "undefined") {
             setIsLoggedIn(false)
         } else {
             setIsLoggedIn(true)
         }
-        //When the component is mounted, subscribe to router changes
-        //and log those page views
-        router.events.on('routeChangeComplete', handleRouteChange)
-        // If the component is unmounted, unsubscribe
-        // from the event with the `off` method
+        
+        router.events.on('routeChangeStart', (event)=>{handleRouteChange(event,"start")})
+        router.events.on('routeChangeComplete', (event)=>{handleRouteChange(event,"end")})
+        
         return () => {
-            router.events.off('routeChangeComplete', handleRouteChange)
+            router.events.off('routerChangeStart', (event)=>{handleRouteChange(event,"start")})
+            router.events.off('routeChangeComplete', (event)=>{handleRouteChange(event,"end")})
         }
     }, [router.events])
 
@@ -44,56 +60,52 @@ export default function Navigation() {
 
 
     return (
-        <Navbar bg="light"
-            expand="lg"
-            collapseOnSelect={true}
-            variant={color}
-        >
-            <Navbar.Brand href="/" style={{ textDecoration: "none" }}>美廣訂餐系統</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                    <Nav.Link href="/restaurant" style={{ textDecoration: "none" }}>餐廳</Nav.Link>
-                    {accountType === '2' && <NavDropdown title="商家管理" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="/config/menu" style={{ textDecoration: "none" }}>菜單設定</NavDropdown.Item>
-                        <NavDropdown.Item as={Link} to="/service" style={{ textDecoration: "none" }}>客服服務</NavDropdown.Item>
-                        <NavDropdown.Item as={Link} to="/booked" style={{ textDecoration: "none" }}>出餐</NavDropdown.Item>
-                    </NavDropdown>}
-                    <NavDropdown title="外部連結" id="basic-nav-dropdown" style={{ textDecoration: "none" }}>
-                        <NavDropdown.Item href="https://sites.google.com/view/tnfshsu/"
-                            rel="noreferrer noopener"
-                            target="_blank"
-                            style={{ textDecoration: "none" }}>學聯會</NavDropdown.Item>
-                        <NavDropdown.Item href="https://tnfsacec.github.io"
-                            rel="noreferrer noopener"
-                            target="_blank"
-                            style={{ textDecoration: "none" }}>選委會</NavDropdown.Item>
-                    </NavDropdown>
-                    <form onSubmit={event => {
-                        event.preventDefault();
-                        searchProduct();
-                    }}>
-                        <TextField value={searchTerm}
-                            onChange={event => { setSearchTerm(event.target.value) }}
-                            label="搜尋想吃的"
-                            variant="outlined"
-                            size="small"
-                        />
-                    </form>
-                </Nav>
-                {isLoggedIn ? <NavDropdown title={`嗨~ ${cookies.get('user_name')}`} id="basic-nav-dropdown" style={{textDecoration: "none"}}>
-                    <NavDropdown.Item href="/history" style={{textDecoration: "none"}}>歷史紀錄</NavDropdown.Item>
-                    <NavDropdown.Item href="/settings" style={{textDecoration: "none"}}>設定</NavDropdown.Item>
-                    <NavDropdown.Item href="/logout" style={{textDecoration: "none"}}>登出</NavDropdown.Item>
-                </NavDropdown>
-                    :
-                    <Nav>
-                        <Nav.Link href="/signup" 
-                            style={{textDecoration: "none"}}>註冊</Nav.Link>
-                        <Nav.Link href="/login" 
-                            style={{textDecoration: "none"}}>登入</Nav.Link>
-                    </Nav>}
-            </Navbar.Collapse>
-        </Navbar>
+        <>
+            {loading && <LinearProgress variant="determinate" value={loadingProcess} />}
+            <Navbar bg="light"
+                expand="lg"
+                collapseOnSelect={true}
+                variant={color}
+            >
+                <Navbar.Brand><Link href="/">美廣訂餐系統</Link></Navbar.Brand>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="mr-auto">
+                        <Nav.Link><Link href="/restaurant">餐廳</Link></Nav.Link>
+                        <NavDropdown title="外部連結" id="basic-nav-dropdown">
+                            <NavDropdown.Item href="https://sites.google.com/view/tnfshsu/"
+                                rel="noreferrer noopener"
+                                target="_blank">學聯會</NavDropdown.Item>
+                            <NavDropdown.Item href="https://tnfsacec.github.io"
+                                rel="noreferrer noopener"
+                                target="_blank">選委會</NavDropdown.Item>
+                        </NavDropdown>
+                        <form onSubmit={event => {
+                            event.preventDefault();
+                            searchProduct();
+                        }}>
+                            <TextField value={searchTerm}
+                                onChange={event => { setSearchTerm(event.target.value) }}
+                                label="搜尋想吃的"
+                                variant="outlined"
+                                size="small"
+                            />
+                        </form>
+                    </Nav>
+                    {isLoggedIn ?
+                        <NavDropdown title={`嗨~ ${cookies.get('user_name')}`} id="basic-nav-dropdown" style={{ textDecoration: "none" }}>
+                            <NavDropdown.Item><Link href="/history">歷史紀錄</Link></NavDropdown.Item>
+                            <NavDropdown.Item><Link href="/settings">設定</Link></NavDropdown.Item>
+                            <NavDropdown.Item><Link href="/logout">登出</Link></NavDropdown.Item>
+                        </NavDropdown>
+                        :
+                        <Nav>
+                            <Nav.Link><Link href="/signup">註冊</Link></Nav.Link>
+                            <br />
+                            <Nav.Link><Link href="/login">登入</Link></Nav.Link>
+                        </Nav>}
+                </Navbar.Collapse>
+            </Navbar>
+        </>
     )
 }

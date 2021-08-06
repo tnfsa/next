@@ -3,10 +3,9 @@ import { Grid } from '@material-ui/core'
 import Image from 'next/image'
 
 export default function Section(props) {
-    console.log(props.link)
     return (
         <Grid item>
-            <div className="card">
+            <div className="">
                 <div className="cardPhoto">
                     <Image src={typeof (props.picture) === "undefined" ? "https://raw.sivir.pw/public/images/pic04.jpg" : props.picture}
                         alt={`${props.title}的照片`}

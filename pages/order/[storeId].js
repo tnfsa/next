@@ -1,8 +1,8 @@
 import Title from "../../components/Title";
 import { useRouter } from "next/router";
-import Footer from '../../components/Footer'
-import { Grid } from '@material-ui/core'
-import Section from '../../components/Section'
+import Footer from '../../components/Footer';
+import Image from 'next/image';
+import Link from 'next/link'
 
 function Order({ data, name }) {
     const router = useRouter()
@@ -14,20 +14,33 @@ function Order({ data, name }) {
                 link={`/order/${storeId}`} />
 
             <section id="main">
-                <div className="container">
-                    <Grid container justifyContent="center" spacing={2}>
-                        {typeof (data) !== "undefined" && data.map(item => {
-                            return (
-                                <>
-                                    <Section title={item.name}
-                                        context={item.description}
-                                        link={`/purchase/${storeId}/${item.id}`}
-                                        picture={`${process.env.NEXT_PUBLIC_API_HOST}${item.image}`}
-                                        key={item.name} />
-                                </>
-                            )
-                        })}
-                    </Grid>
+                <div className="p-10 flex flex-wrap items-stretch justify-center gap-x-8 gap-y-10">
+                    {data.map(item => {
+                        return (
+                            <div className="w-80 h-96 shadow-lg rounded-xl" key={item.name}>
+                                <div className="p-4 content-center">
+                                    <div className="h-40 w-64 relative">
+                                        <Image src={typeof (item.image) === "undefined" ? "https://raw.sivir.pw/public/images/pic04.jpg" : `${process.env.NEXT_PUBLIC_API_HOST}${item.image}`}
+                                            alt={`${item.name}的照片`}
+                                            layout="fill" />
+                                    </div>
+                                </div>
+                                <div className="p-10">
+                                    <h1 className="font-semibold text-lg">
+                                        {item.name}
+                                    </h1>
+                                    <h1 className="h-12 font-medium text-gray-500">
+                                        {item.description}
+                                    </h1>
+                                    <Link href={`/purchase/${storeId}/${item.id}`}>
+                                        <a className="customLink float-right">
+                                            Learn More
+                                        </a>
+                                    </Link>
+                                </div>
+                            </div>
+                        )
+                    })}
                 </div>
             </section>
             <Footer />
