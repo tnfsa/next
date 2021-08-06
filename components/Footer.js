@@ -1,4 +1,4 @@
-export default function Footer({news,qna}) {
+export default function Footer() {
     
     return (
         <section id="footer">

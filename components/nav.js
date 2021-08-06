@@ -26,7 +26,7 @@ export default function Navigation() {
                 setLoadingProcess(20)
                 break;
             default:
-                //ga.pageview(url)
+                ga.pageview(url)
                 setLoadingProcess(100)
                 setTimeout(()=>{
                     setLoading(false)
