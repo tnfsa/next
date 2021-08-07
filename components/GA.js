@@ -9,12 +9,3 @@ export const pageview = (url) => {
 export const event = ({ action, params }) => {
     window.gtag('event', action, params)
 }
-
-export const purchase = ({store_name,item_name,price,qty})=>{
-    window.gtag('event','purchase',{
-        store_name,
-        item_name,
-        price,
-        qty
-    })
-}
