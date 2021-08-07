@@ -3,15 +3,14 @@ import Footer from '../components/Footer'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Grid } from '@material-ui/core'
 import Cookies from 'universal-cookie'
 
 function Restaurant({ data }) {
     const cookies = new Cookies()
-    
-    const [loggedIn,setLoggedIn] = useState(true)
+    const [loggedIn, setLoggedIn] = useState(true)
+
     useEffect(() => {
-        if (typeof(cookies.get('session')) === "undefined") {
+        if (typeof (cookies.get('session')) === "undefined") {
             setLoggedIn(false)
         }
     }, [])
@@ -22,7 +21,7 @@ function Restaurant({ data }) {
                 link="/restaurant" />
             {!loggedIn &&
                 <div className="notification">
-                    <h1>點餐請先登入</h1>
+                    <h1 className="font-bold text-5xl inline-block align-middle">點餐請先登入</h1>
                 </div>
             }
             <section id="main">
@@ -32,34 +31,35 @@ function Restaurant({ data }) {
                             <h2><center>查無資料</center></h2>
                         </article>
                         :
-                        <Grid container justifyContent="center" spacing={2}>
+                        <div className="justify-center flex space-x-5">
                             {data.map((data) => {
                                 return (
-                                    <Grid item key={data.name}>
-                                        <div className="custombox">
-                                            <div className="cardPhoto">
-                                                <Image src={typeof (data.picUrl) === "undefined" ? "https://database.tnfsa.org/images/pic01.jpg" : data.picUrl}
-                                                    alt={`商家-${data.name}-的照片`}
-                                                    layout="responsive"
-                                                    width="100"
-                                                    height="60" />
+                                    <div key={data.name}>
+                                        <div className="bg-white p-3 rounded-lg w-80">
+                                            <div className="p-4 content-center">
+                                                <div className="h-40 w-64 relative">
+                                                    <Image src={typeof (data.image) === "undefined" ? "https://database.tnfsa.org/images/pic01.jpg" : `${process.env.NEXT_PUBLIC_API_HOST}${data.picUrl}`}
+                                                        alt={`${data.name}的照片`}
+                                                        layout="fill" />
+                                                </div>
                                             </div>
-                                            <div className="container">
+                                        
+                                            <div className="p-3">
                                                 <header>
-                                                    <h2>{data.name}</h2>
-                                                    <p>{data.description}</p>
+                                                    <h2 className="font-semibold text-xl">{data.name}</h2>
+                                                    <p className="text-md text-gray-200">{data.description}</p>
                                                 </header>
                                                 <footer>
                                                     <ul className="actions">
-                                                        <li><Link href={`/order/${data.id}`}><a className="button">立即查看</a></Link></li>
+                                                        <li><Link href={`/order/${data.id}`} passHref><a className="button">立即查看</a></Link></li>
                                                     </ul>
                                                 </footer>
                                             </div>
                                         </div>
-                                    </Grid>
+                                    </div>
                                 )
                             })}
-                        </Grid>
+                        </div>
                     }
                 </div>
             </section>

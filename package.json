@@ -15,6 +15,7 @@
     "next": "10.2.3",
     "next-pwa": "5.2.24",
     "next-sitemap": "1.6.133",
+    "qrcode.react": "^1.0.1",
     "react": "17.x",
     "react-bootstrap": "1.6.1",
     "react-detect-offline": "2.4.4",

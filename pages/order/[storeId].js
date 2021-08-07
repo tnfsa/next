@@ -3,16 +3,31 @@ import { useRouter } from "next/router";
 import Footer from '../../components/Footer';
 import Image from 'next/image';
 import Link from 'next/link'
+import { useEffect, useState } from "react";
+import Cookies from 'universal-cookie'
 
 function Order({ data, name }) {
     const router = useRouter()
     const { storeId } = router.query
+    const [loggedIn, setLoggedIn] = useState(true)
+    const cookies = new Cookies()
+
+    useEffect(() => {
+        if (typeof (cookies.get('session')) === "undefined") {
+            setLoggedIn(false)
+        }
+    }, [])
 
     return (
         <div id="page-wrapper">
             <Title title={`餐點瀏覽: ${name}`}
                 link={`/order/${storeId}`} />
 
+            {!loggedIn &&
+                <div className="notification">
+                    <h1 className="font-bold text-5xl inline-block align-middle">點餐請先登入</h1>
+                </div>
+            }
             <section id="main">
                 <div className="p-10 flex flex-wrap items-stretch justify-center gap-x-8 gap-y-10">
                     {data.map(item => {

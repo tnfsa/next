@@ -68,7 +68,7 @@ export default function Home({ qna, news }) {
 
                     </div>
                     <footer>
-                        <ul className="">
+                        <ul className="flex justify-center space-x-5">
                             <li><a href="/login" className="button large">現在開始</a></li>
                             <li><a href="https://docs.tnfsa.org/" className="button alt large">了解更多</a></li>
                         </ul>

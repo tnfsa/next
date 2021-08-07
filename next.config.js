@@ -14,7 +14,8 @@ module.exports = withPWA({
     images: {
         domains: [
             "database.tnfsa.org",
-            "lunchapi.hsuan.app"
+            "lunchapi.hsuan.app",
+            "raw.sivir.pw"
         ]
     }
 })
