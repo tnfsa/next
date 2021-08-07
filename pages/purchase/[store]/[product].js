@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import Cookies from 'universal-cookie'
-import * as ga from '../components/GA'
+import * as ga from '../../../components/GA'
 
 function Purchase({ data, storeName }) {
     const [comment, setComment] = useState('')
