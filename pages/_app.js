@@ -25,7 +25,6 @@ function MyApp({ Component, pageProps }) {
                 <Component {...pageProps} />
             </div>
             <script src={`${process.env.NEXT_PUBLIC_STATIC}js/jquery.min.js`} />
-            <script src={`${process.env.NEXT_PUBLIC_STATIC}js/jquery.dropotron.min.js`}/>
             <script src={`${process.env.NEXT_PUBLIC_STATIC}js/browser.min.js`} />
             <script src={`${process.env.NEXT_PUBLIC_STATIC}js/breakpoints.min.js`} />
             <script src={`${process.env.NEXT_PUBLIC_STATIC}js/util.js`} />

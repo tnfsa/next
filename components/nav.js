@@ -19,8 +19,13 @@ export default function Navigation() {
     const cookies = new Cookies();
 
     function handleRouteChange(url, status) {
-        console.log(url)
-        console.log(status)
+        if (typeof (cookies.get('session')) === "undefined") {
+            setIsLoggedIn(false)
+        } else {
+            setIsLoggedIn(true)
+        }
+
+        console.log(`status ${isLoggedIn}`)
         switch (status) {
             case "start":
                 setNavbarExpended(false)
@@ -39,14 +44,7 @@ export default function Navigation() {
 
     useEffect(() => {
         setAccountType(cookies.get('account_type'))
-        if (typeof (cookies.get('session')) === "undefined") {
-            setIsLoggedIn(false)
-        } else {
-            setIsLoggedIn(true)
-        }
-
-        console.log(isLoggedIn)
-
+        
         router.events.on('routeChangeStart', (event) => { handleRouteChange(event, "start") })
         router.events.on('routeChangeComplete', (event) => { handleRouteChange(event, "end") })
 
@@ -61,7 +59,9 @@ export default function Navigation() {
         router.push(`/query?q=${searchTerm}`)
     }
 
-    function navExpand(){
+    function navToggle(){
+        if(navbarExpanded === true)
+            return setNavbarExpended(false)
         setNavbarExpended(true)
     }
 
@@ -72,13 +72,13 @@ export default function Navigation() {
                 expand="lg"
                 expanded={navbarExpanded}
                 variant={color}
-                onToggle={navExpand}
+                onToggle={navToggle}
             >
                 <Navbar.Brand><Link href="/">美廣訂餐系統</Link></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                        <Nav.Link><Link href="/restaurant">餐廳</Link></Nav.Link>
+                    <Link href="/restaurant" passHref><Nav.Link>餐廳</Nav.Link></Link>
                         <NavDropdown title="外部連結" id="basic-nav-dropdown">
                             <NavDropdown.Item href="https://sites.google.com/view/tnfshsu/"
                                 rel="noreferrer noopener"
@@ -101,15 +101,14 @@ export default function Navigation() {
                     </Nav>
                     {isLoggedIn ?
                         <NavDropdown title={`嗨~ ${cookies.get('user_name')}`} id="basic-nav-dropdown" style={{ textDecoration: "none" }}>
-                            <NavDropdown.Item><Link href="/history">歷史紀錄</Link></NavDropdown.Item>
-                            <NavDropdown.Item><Link href="/settings">設定</Link></NavDropdown.Item>
-                            <NavDropdown.Item><Link href="/logout">登出</Link></NavDropdown.Item>
+                            <Link href="/history" passHref><NavDropdown.Item>歷史紀錄</NavDropdown.Item></Link>
+                            <Link href="/settings" passHref><NavDropdown.Item>設定</NavDropdown.Item></Link>
+                            <Link href="/logout" passHref><NavDropdown.Item>登出</NavDropdown.Item></Link>
                         </NavDropdown>
                         :
                         <Nav>
-                            <Nav.Link><Link href="/signup">註冊</Link></Nav.Link>
-                            <br />
-                            <Nav.Link><Link href="/login">登入</Link></Nav.Link>
+                            <Link href="/signup" passHref><Nav.Link>註冊</Nav.Link></Link>
+                            <Link href="/login" passHref><Nav.Link>登入</Nav.Link></Link>
                         </Nav>}
                 </Navbar.Collapse>
             </Navbar>
