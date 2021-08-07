@@ -1,7 +1,7 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 
 const APP_NAME = '美廣點餐系統'
-const APP_DESCRIPTION = '台南一中美廣點餐系統'
+const APP_DESCRIPTION = '臺南一中美廣點餐系統'
 
 export default class MyDocument extends Document {
     static async getInitialProps(ctx) {
@@ -11,6 +11,24 @@ export default class MyDocument extends Document {
         return (
             <Html lang='en' dir='ltr'>
                 <Head>
+                    {/* Google Analytics */}
+                    <script
+                        async
+                        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+                    />
+
+                    <script
+                        dangerouslySetInnerHTML={{
+                            __html: `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
+page_path: window.location.pathname,
+});`,
+                        }}
+                    />
+
                     <meta name='application-name' content='美廣點餐系統' />
                     <meta name='apple-mobile-web-app-capable' content='yes' />
                     <meta name='apple-mobile-web-app-status-bar-style' content='default' />

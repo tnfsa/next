@@ -40,11 +40,13 @@ function Purchase({ data, storeName }) {
                 const response = await res.json()
                 console.log(`Response: ${response}`)
                 if (res.ok) {
-                    ga.purchase({
-                        store_name: storeName,
-                        item_name: data.name,
-                        price: data.price,
-                        qty: 1,
+                    ga.event({
+                        action: 'purchase', params: {
+                            store_name: storeName,
+                            item_name: data.name,
+                            price: data.price,
+                            qty: 1,
+                        }
                     })
 
                     Swal.fire({
@@ -73,29 +75,29 @@ function Purchase({ data, storeName }) {
             }
         }
     }
-    
+
     useEffect(() => {
-        if(typeof(cookies.get('session')) === "undefined"){
+        if (typeof (cookies.get('session')) === "undefined") {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: '請先登入',
-            }).then(() =>{
+            }).then(() => {
                 document.location.href = '/'
             })
         }
-        if(cookies.get('account_type') === '2'){
+        if (cookies.get('account_type') === '2') {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: '此功能商家無法使用',
-            }).then(() =>{
+            }).then(() => {
                 document.location.href = '/'
             })
         }
         // eslint-disable-next-line
-    },[])
-    
+    }, [])
+
     return (
         <div id="page-wrapper">
             <Title title={`${storeName}-${data.name}`}
@@ -120,7 +122,7 @@ function Purchase({ data, storeName }) {
                             <textarea className="resize-none text-gray-700 font-light p-1 h-32 w-44 md:w-60"
                                 placeholder="備註："
                                 value={comment}
-                                onChange={(e)=>{setComment(e.target.value)}} />
+                                onChange={(e) => { setComment(e.target.value) }} />
                             <br />
                             <div>
                                 <button className="float-left p-2 rounded-2xl text-lg bg-pink-500 hover:bg-pink-700"
@@ -178,7 +180,7 @@ export async function getStaticProps(context) {
             break;
         }
     }
-    
+
     return {
         props: { data, storeName }
     }
@@ -213,7 +215,7 @@ export async function getStaticPaths() {
             paths.push(`/purchase/${thing}`)
         })
     })
-    
+
     return {
         paths: paths,
         fallback: false

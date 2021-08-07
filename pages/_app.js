@@ -18,31 +18,14 @@ function MyApp({ Component, pageProps }) {
                     content="width=device-width, initial-scale=1, user-scalable=no" />
                 <meta name={"description"}
                     content={"台南一中點餐系統"} key={"metaContent"} />
-
-                {/* Global Site Tag (gtag.js) - Google Analytics */}
-                <script
-                    async
-                    src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
-                />
-                <script
-                    dangerouslySetInnerHTML={{
-                        __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
-              page_path: window.location.pathname,
-            });
-          `,
-                    }}
-                />
+            
             </Head>
             <Nav />
             <div className="position:relative">
                 <Component {...pageProps} />
             </div>
             <script src={`${process.env.NEXT_PUBLIC_STATIC}js/jquery.min.js`} />
-            {/*<script src={`${process.env.NEXT_PUBLIC_STATIC}js/jquery.dropotron.min.js`}/>*/}
+            <script src={`${process.env.NEXT_PUBLIC_STATIC}js/jquery.dropotron.min.js`}/>
             <script src={`${process.env.NEXT_PUBLIC_STATIC}js/browser.min.js`} />
             <script src={`${process.env.NEXT_PUBLIC_STATIC}js/breakpoints.min.js`} />
             <script src={`${process.env.NEXT_PUBLIC_STATIC}js/util.js`} />
