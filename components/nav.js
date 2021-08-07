@@ -14,42 +14,45 @@ export default function Navigation() {
     const [loading, setLoading] = useState(false);
     const [loadingProcess, setLoadingProcess] = useState(0);
     const [color, setColor] = useState('light');
+    const [navbarExpanded, setNavbarExpended] = useState(false)
     const router = useRouter();
     const cookies = new Cookies();
 
-    function handleRouteChange(url,status) {
+    function handleRouteChange(url, status) {
         console.log(url)
         console.log(status)
-        switch(status){
+        switch (status) {
             case "start":
+                setNavbarExpended(false)
                 setLoading(true)
                 setLoadingProcess(20)
                 break;
             default:
                 ga.pageview(url)
                 setLoadingProcess(100)
-                setTimeout(()=>{
+                setTimeout(() => {
                     setLoading(false)
-                },1000)
+                }, 1000)
         }
-        
+
     }
 
     useEffect(() => {
-        console.log("route_change")
         setAccountType(cookies.get('account_type'))
         if (typeof (cookies.get('session')) === "undefined") {
             setIsLoggedIn(false)
         } else {
             setIsLoggedIn(true)
         }
-        
-        router.events.on('routeChangeStart', (event)=>{handleRouteChange(event,"start")})
-        router.events.on('routeChangeComplete', (event)=>{handleRouteChange(event,"end")})
-        
+
+        console.log(isLoggedIn)
+
+        router.events.on('routeChangeStart', (event) => { handleRouteChange(event, "start") })
+        router.events.on('routeChangeComplete', (event) => { handleRouteChange(event, "end") })
+
         return () => {
-            router.events.off('routerChangeStart', (event)=>{handleRouteChange(event,"start")})
-            router.events.off('routeChangeComplete', (event)=>{handleRouteChange(event,"end")})
+            router.events.off('routerChangeStart', (event) => { handleRouteChange(event, "start") })
+            router.events.off('routeChangeComplete', (event) => { handleRouteChange(event, "end") })
         }
     }, [router.events])
 
@@ -58,14 +61,18 @@ export default function Navigation() {
         router.push(`/query?q=${searchTerm}`)
     }
 
+    function navExpand(){
+        setNavbarExpended(true)
+    }
 
     return (
         <>
             {loading && <LinearProgress variant="determinate" value={loadingProcess} />}
             <Navbar bg="light"
                 expand="lg"
-                collapseOnSelect={true}
+                expanded={navbarExpanded}
                 variant={color}
+                onToggle={navExpand}
             >
                 <Navbar.Brand><Link href="/">美廣訂餐系統</Link></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -109,3 +116,4 @@ export default function Navigation() {
         </>
     )
 }
+
