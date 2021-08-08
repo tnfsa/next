@@ -2,17 +2,23 @@ module.exports = {
     siteUrl: process.env.NEXT_PUBLIC_LOCATION,
     generateRobotsTxt: true,
     robotsTxtOptions: {
-        policies:[
+        policies: [
             {
                 userAgent: '*',
-                disallow: '/'
+                disallow: '/sells*'
+            },
+            {
+                userAgent: '*',
+                disallow: '/service*'
+            },{
+                userAgent: '*',
+                disallow: '/settings*'
             }
         ]
     },
-    exclude:[
+    exclude: [
         "/sells/test",
         "/service",
-        "/settings",
-        "profile"
+        "/settings*",
     ]
 }

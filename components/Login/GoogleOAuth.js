@@ -57,7 +57,8 @@ export default function GoogleOAuth() {
                     hostedDomain={process.env.NEXT_PUBLIC_GOOGLE_ACCOUNT_SUFFIX}
                     cookiePolicy={'single_host_origin'}
                     render={renderProps => (
-                        <button className="bg-pink-500 hover:bg-ping-700 p-2"
+                        <button className="bg-pink-500 hover:bg-ping-700 p-2 disabled:opacity-50"
+                            disabled={loading}
                             onClick={(event) => {
                                 renderProps.onClick(event)
                                 setLoading(true)

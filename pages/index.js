@@ -175,7 +175,7 @@ export default function Home({ qna, news }) {
                                     {typeof (qna) !== 'undefined' && qna.map(data => {
                                         return (
                                             <li key={data.link}>
-                                                <a href={`/Q&A/${data.link}`}>
+                                                <a href={`/QnA/${data.link}`}>
                                                     {data.title}
                                                 </a>
                                             </li>
