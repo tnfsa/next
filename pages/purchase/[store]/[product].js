@@ -78,21 +78,23 @@ function Purchase({ data, storeName }) {
 
     useEffect(() => {
         if (typeof (cookies.get('session')) === "undefined") {
+            router.prefetch('/')
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: '請先登入',
             }).then(() => {
-                document.location.href = '/'
+                router.push('/')
             })
         }
         if (cookies.get('account_type') === '2') {
+            router.prefetch('/')
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: '此功能商家無法使用',
             }).then(() => {
-                document.location.href = '/'
+                router.push('/')
             })
         }
         // eslint-disable-next-line

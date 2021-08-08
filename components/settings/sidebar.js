@@ -1,4 +1,6 @@
 import Link from 'next/link'
+import Authenticate from '../authenticate'
+
 export default function SideBar() {
 
     const menu = [
@@ -8,15 +10,20 @@ export default function SideBar() {
         }
     ]
 
+
+
     return (
-        <ul className="w-1/5 list-none">
-            {menu.map((item) => (
-                <li className="block w-full bg-gray-200 rounded-2xl h-10 text-center p-1">
-                    <Link href={`/settings/${item.link}`} passHref>
-                        <a className="block">{item.text}</a>
-                    </Link>
-                </li>
-            ))}
-        </ul>
+        <>
+            <Authenticate />
+            <ul className="w-1/5 list-none" key="navigation">
+                {menu.map((item) => (
+                    <li className="block w-full bg-gray-200 rounded-2xl h-10 text-center p-1">
+                        <Link href={`/settings/${item.link}`} passHref>
+                            <a className="block">{item.text}</a>
+                        </Link>
+                    </li>
+                ))}
+            </ul>
+        </>
     )
 }
