@@ -3,22 +3,12 @@ import { useRouter } from "next/router";
 import Footer from '../../components/Footer';
 import Image from 'next/image';
 import Link from 'next/link'
-import { useEffect, useState } from "react";
-import Cookies from 'universal-cookie'
 
 import LoggedInAlert from '../../components/loggedinalert'
 
 function Order({ data, name }) {
     const router = useRouter()
     const { storeId } = router.query
-    const [loggedIn, setLoggedIn] = useState(true)
-    const cookies = new Cookies()
-
-    useEffect(() => {
-        if (typeof (cookies.get('session')) === "undefined") {
-            setLoggedIn(false)
-        }
-    }, [])
 
     return (
         <div id="page-wrapper">
