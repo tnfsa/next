@@ -78,7 +78,7 @@ function Purchase({ data, storeName }) {
     }
 
     useEffect(() => {
-        /*if (typeof (cookies.get('session')) === "undefined") {
+        if (typeof (cookies.get('session')) === "undefined") {
             router.prefetch('/')
             Swal.fire({
                 icon: 'error',
@@ -97,7 +97,7 @@ function Purchase({ data, storeName }) {
             }).then(() => {
                 router.push('/')
             })
-        }*/
+        }
         // eslint-disable-next-line
     }, [])
 

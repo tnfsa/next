@@ -4,11 +4,14 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
 import { LinearProgress } from '@material-ui/core'
+import Link from 'next/link'
+import Image from 'next/image'
+import LoggedInAlert from '../components/loggedinalert'
 
 export default function Query() {
     const [queryString, setQueryString] = useState('')
     const [data, setData] = useState([])
-    const [loading,setLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
     const router = useRouter()
     const { query } = useRouter()
     useEffect(() => {
@@ -22,7 +25,6 @@ export default function Query() {
         setLoading(true)
         try {
             const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products/query`
-            console.log(url)
             const res = await fetch(url, {
                 method: "POST",
                 body: JSON.stringify({
@@ -31,12 +33,13 @@ export default function Query() {
             })
             const fetched = await res.json()
             setData(fetched)
+            console.log(fetched)
             setLoading(false)
-        }catch(err){
+        } catch (err) {
             await Swal.fire({
                 icon: "error",
-                title: "Oops...",
-                text: "伺服器讀取錯誤"
+                title: "伺服器讀取錯誤",
+                text: err
             })
             setLoading(false)
             return await router.push('/')
@@ -45,38 +48,42 @@ export default function Query() {
 
     return (
         <div id="page-wrapper">
-            <Title title={`查詢: ${queryString}`}
+            <Title title={`查詢: ${queryString}(最相關)`}
                 link={`/query?q=${queryString}`}
             />
 
             <section id="main">
                 <div className="container">
-                <LinearProgress hidden={!loading}/>
-                    {typeof (data) === "undefined" ?
-                        <article className="box post">
-                            <h2><center>查無資料</center></h2>
-                        </article>
-                        :
-                        data.map((data) => {
+                    <LinearProgress hidden={!loading} />
+                    <LoggedInAlert />
+                    <div className="p-10 flex flex-wrap items-stretch justify-center gap-x-8 gap-y-10">
+                        {data.map(item => {
                             return (
-                                <article className="box post">
-                                    <div className="image featured">
-                                        <img src={typeof (data.picUrl) === "undefined" ? "https://database.tnfsa.org/images/pic01.jpg" : data.picUrl}
-                                            alt={`商家-${data.name}-的照片`} />
+                                <div className="w-80 h-96 shadow-lg rounded-xl" key={item.name}>
+                                    <div className="p-4 content-center">
+                                        <div className="h-40 w-64 relative">
+                                            <Image src={typeof (item.image) === "undefined" ? "https://raw.sivir.pw/public/images/pic04.jpg" : `${process.env.NEXT_PUBLIC_API_HOST}${item.image}`}
+                                                alt={`${item.name}的照片`}
+                                                layout="fill" />
+                                        </div>
                                     </div>
-                                    <header>
-                                        <h2>{data.name}</h2>
-                                        <p>{data.description}</p>
-                                    </header>
-                                    <footer>
-                                        <ul className="actions">
-                                            <li><a href={`/order/${data.id}`} className="button">立即前往</a></li>
-                                        </ul>
-                                    </footer>
-                                </article>
+                                    <div className="p-10">
+                                        <h1 className="font-semibold text-lg">
+                                            {item.name}
+                                        </h1>
+                                        <h1 className="h-12 font-medium text-gray-500">
+                                            {item.description}
+                                        </h1>
+                                        <Link href={`/purchase/${item.store_id}/${item.id}`}>
+                                            <a className="customLink float-right">
+                                                Learn More
+                                            </a>
+                                        </Link>
+                                    </div>
+                                </div>
                             )
-                        })
-                    }
+                        })}
+                    </div>
                 </div>
             </section>
             <Footer />
