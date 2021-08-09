@@ -8,7 +8,7 @@ import * as ga from '../../../components/GA'
 
 function Purchase({ data, storeName }) {
     const [comment, setComment] = useState('')
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     const router = useRouter()
     const { store, product } = router.query
     const cookies = new Cookies()
