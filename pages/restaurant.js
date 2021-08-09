@@ -1,29 +1,16 @@
 import Title from '../components/Title'
 import Footer from '../components/Footer'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Cookies from 'universal-cookie'
+import LoggedInAlert from '../components/loggedinalert'
 
 function Restaurant({ data }) {
-    const cookies = new Cookies()
-    const [loggedIn, setLoggedIn] = useState(true)
-
-    useEffect(() => {
-        if (typeof (cookies.get('session')) === "undefined") {
-            setLoggedIn(false)
-        }
-    }, [])
-
     return (
         <div id="page-wrapper">
             <Title title="餐廳"
                 link="/restaurant" />
-            {!loggedIn &&
-                <div className="notification">
-                    <h1 className="font-bold text-5xl inline-block align-middle">點餐請先登入</h1>
-                </div>
-            }
+
+            <LoggedInAlert />
             <section id="main">
                 <div className="container">
                     {typeof (data) === "undefined" ?
@@ -38,12 +25,12 @@ function Restaurant({ data }) {
                                         <div className="bg-white p-3 rounded-lg w-80">
                                             <div className="p-4 content-center">
                                                 <div className="h-40 w-64 relative">
-                                                    <Image src={typeof (data.image) === "undefined" ? "https://database.tnfsa.org/images/pic01.jpg" : `${process.env.NEXT_PUBLIC_API_HOST}${data.picUrl}`}
+                                                    <Image src={typeof (data.image) === "undefined" ? "https://database.tnfsa.org/images/pic01.jpg" : `${process.env.NEXT_PUBLIC_API_HOST}${data.image}`}
                                                         alt={`${data.name}的照片`}
                                                         layout="fill" />
                                                 </div>
                                             </div>
-                                        
+
                                             <div className="p-3">
                                                 <header>
                                                     <h2 className="font-semibold text-xl">{data.name}</h2>
