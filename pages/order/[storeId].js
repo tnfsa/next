@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { useEffect, useState } from "react";
 import Cookies from 'universal-cookie'
 
+import LoggedInAlert from '../../components/loggedinalert'
+
 function Order({ data, name }) {
     const router = useRouter()
     const { storeId } = router.query
@@ -23,11 +25,7 @@ function Order({ data, name }) {
             <Title title={`餐點瀏覽: ${name}`}
                 link={`/order/${storeId}`} />
 
-            {!loggedIn &&
-                <div className="notification">
-                    <h1 className="font-bold text-5xl inline-block align-middle">點餐請先登入</h1>
-                </div>
-            }
+            <LoggedInAlert />
             <section id="main">
                 <div className="p-10 flex flex-wrap items-stretch justify-center gap-x-8 gap-y-10">
                     {data.map(item => {

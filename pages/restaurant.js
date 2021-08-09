@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Cookies from 'universal-cookie'
 
+import LoggedInAlert from '../components/loggedinalert'
+
 function Restaurant({ data }) {
     const cookies = new Cookies()
     const [loggedIn, setLoggedIn] = useState(true)
@@ -19,11 +21,8 @@ function Restaurant({ data }) {
         <div id="page-wrapper">
             <Title title="餐廳"
                 link="/restaurant" />
-            {!loggedIn &&
-                <div className="notification">
-                    <h1 className="font-bold text-5xl inline-block align-middle">點餐請先登入</h1>
-                </div>
-            }
+
+            <LoggedInAlert />
             <section id="main">
                 <div className="container">
                     {typeof (data) === "undefined" ?
@@ -43,7 +42,7 @@ function Restaurant({ data }) {
                                                         layout="fill" />
                                                 </div>
                                             </div>
-                                        
+
                                             <div className="p-3">
                                                 <header>
                                                     <h2 className="font-semibold text-xl">{data.name}</h2>

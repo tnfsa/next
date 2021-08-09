@@ -3,7 +3,7 @@ import '../styles/main.css'
 import '../styles/fontawesome-all.min.css'
 import '../styles/card.css'
 
-import 'tailwindcss/tailwind.css'
+import '../styles/tailwind.css'
 
 import Nav from '../components/nav'
 
@@ -18,12 +18,12 @@ function MyApp({ Component, pageProps }) {
                     content="width=device-width, initial-scale=1, user-scalable=no" />
                 <meta name={"description"}
                     content={"台南一中點餐系統"} key={"metaContent"} />
-            
+
             </Head>
             <Nav />
-            <div className="position:relative">
-                <Component {...pageProps} />
-            </div>
+
+            <Component {...pageProps} />
+
             <script src={`${process.env.NEXT_PUBLIC_STATIC}js/jquery.min.js`} />
             <script src={`${process.env.NEXT_PUBLIC_STATIC}js/browser.min.js`} />
             <script src={`${process.env.NEXT_PUBLIC_STATIC}js/breakpoints.min.js`} />
