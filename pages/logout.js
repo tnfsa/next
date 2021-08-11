@@ -1,18 +1,17 @@
 import Title from "../components/Title";
 import {useEffect} from "react";
-import {useRouter} from "next/router";
 import Cookies from 'universal-cookie'
 
 
 export default function Logout(){
-    const router = useRouter()
     const cookies = new Cookies()
 
     useEffect(()=>{
         cookies.remove('account_type')
         cookies.remove('session')
         cookies.remove('user_name')
-        router.push('/')
+        cookies.remove('store_id')
+        document.location.replace('/')
     },[])
     return(
         <div id="page-wrapper">

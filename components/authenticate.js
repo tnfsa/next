@@ -3,22 +3,40 @@ import Cookies from 'universal-cookie'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 
-export default function Authenticate() {
+export default function Authenticate(props) {
     const cookies = new Cookies()
     const router = useRouter()
 
     useEffect(() => {
-        const loggedIn = typeof (cookies.get('session'))
-        if (loggedIn === "undefined") {
-            router.prefetch('/')
-            Swal.fire({
-                icon: 'error',
-                title: '請先登入'
-            }).then(() => {
-                router.push('/')
-            })
+        if (typeof (props.seller) === "undefined") {
+            normalAuth()
+        } else {
+            sellerAuth()
         }
     }, [])
+
+    async function normalAuth() {
+        const loggedIn = typeof (cookies.get('session'))
+        if (loggedIn === "undefined") {
+            await Swal.fire({
+                icon: 'error',
+                title: '請先登入'
+            })
+            await router.push('/')
+        }
+    }
+
+    async function sellerAuth() {
+        const account_type = cookies.get('account_type')
+        const session = cookies.get('session')
+        if (account_type !== "2" || typeof (session) === "undefined") {
+            await Swal.fire({
+                icon: 'error',
+                title: '未經授權'
+            })
+            await router.push('/')
+        }
+    }
 
     return (
         <div id="authenticate" />

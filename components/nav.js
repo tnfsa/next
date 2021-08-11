@@ -24,6 +24,7 @@ export default function Navigation() {
         } else {
             setIsLoggedIn(true)
         }
+        setAccountType(cookies.get('account_type'))
 
         console.log(`status ${isLoggedIn}`)
         switch (status) {
@@ -43,8 +44,12 @@ export default function Navigation() {
     }
 
     useEffect(() => {
+        if (typeof (cookies.get('session')) === "undefined") {
+            setIsLoggedIn(false)
+        } else {
+            setIsLoggedIn(true)
+        }
         setAccountType(cookies.get('account_type'))
-        
         router.events.on('routeChangeStart', (event) => { handleRouteChange(event, "start") })
         router.events.on('routeChangeComplete', (event) => { handleRouteChange(event, "end") })
 
@@ -59,8 +64,8 @@ export default function Navigation() {
         router.push(`/query?q=${searchTerm}`)
     }
 
-    function navToggle(){
-        if(navbarExpanded === true)
+    function navToggle() {
+        if (navbarExpanded === true)
             return setNavbarExpended(false)
         setNavbarExpended(true)
     }
@@ -78,7 +83,13 @@ export default function Navigation() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                    <Link href="/restaurant" passHref><Nav.Link>餐廳</Nav.Link></Link>
+                        <Link href="/restaurant" passHref><Nav.Link>餐廳</Nav.Link></Link>
+                        {accountType === "2" && 
+                        <NavDropdown title="商家管理" id="basic-nav-dropdown">
+                            <Link href="/seller/menu" passHref><NavDropdown.Item>菜單設定</NavDropdown.Item></Link>
+                            <Link href="/seller/service" passHref><NavDropdown.Item>客服服務</NavDropdown.Item></Link>
+                            <Link href="/seller/booked" passHref><NavDropdown.Item>出餐</NavDropdown.Item></Link>
+                        </NavDropdown>}
                         <NavDropdown title="外部連結" id="basic-nav-dropdown">
                             <NavDropdown.Item href="https://sites.google.com/view/tnfshsu/"
                                 rel="noreferrer noopener"

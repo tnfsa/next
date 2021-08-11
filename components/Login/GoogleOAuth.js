@@ -28,8 +28,6 @@ export default function GoogleOAuth() {
             })
             const response = await data.json()
             cookies.set('session', response['access_token'])
-            // account type 1 is google
-            //              2 is stores
             cookies.set('account_type', 1)
             cookies.set('user_name', google_response['profileObj']['givenName'])
             setLoading(false)
