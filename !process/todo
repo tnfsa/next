@@ -1,11 +1,15 @@
-sellers functions
+/seller/booked:
+    websocket
+    reminder
 
-add product 
-delete product
-modify product
+/seller/booked/uid:
+    sort by date
 
-upload store picture
+/seller/munu:
+    navigation bar
 
-settings
+/seller/menu/uid:
+    picture preview
+    change picture
 
 
