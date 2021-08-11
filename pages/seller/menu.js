@@ -121,7 +121,7 @@ export default function Service() {
                                         </div>
                                         &nbsp;
                                         <div>
-                                            <Link href={`/seller/config_menu/${item.id}`} passHref><Button variant="primary">修改</Button></Link>
+                                            <Link href={`/seller/menu/${item.id}`} passHref><Button variant="primary">修改</Button></Link>
                                         </div>
                                     </Card.Body>
                                 </Card>

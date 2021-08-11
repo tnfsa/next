@@ -130,7 +130,7 @@ error: ${err}
     return (
         <div id="page-wrapper">
             <Title title="修改菜單"
-                link={`/seller/config_menu/${uid}`} />
+                link={`/seller/menu/${uid}`} />
 
             <Authenticate seller="true" />
             <section id="main">

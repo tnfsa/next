@@ -1,15 +1,14 @@
 import Authenticate from '../../components/authenticate';
 import Title from '../../components/Title'
-
-//deprecated
-import { Button, Card, Spinner } from "react-bootstrap";
+import Link from 'next/link'
 import { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie'
 import Swal from 'sweetalert2';
 import { SnackbarProvider, useSnackbar } from 'notistack';
-
 import Echo from 'laravel-echo'
 
+//deprecated
+import { Button, Card, Spinner } from "react-bootstrap";
 
 function Service() {
     const [loading, setLoading] = useState(true)
@@ -86,10 +85,9 @@ function Service() {
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions`, {
                 method: 'GET',
-                header: {
+                headers: {
                     'Accept': 'application/json',
-                    'Authorization': `Bearer ${session}`,
-                    'X-Fingerprint': "msfelkn,gsjngjk"
+                    'Authorization': `Bearer ${session}`
                 }
             })
             const response = await res.json()
@@ -148,8 +146,7 @@ function Service() {
                                         <Card.Text>{data[item].total}份</Card.Text>
                                     </div>
                                     <div style={{ marginLeft: "auto" }}>
-                                        <Button variant="primary" as={Link}
-                                            to={{ pathname: `/booked/detailed/${item}` }}>立即查看</Button>
+                                        <Link href={`/seller/booked/${item}`} passHref><Button variant="primary">立即查看</Button></Link>
                                     </div>
                                 </Card.Body>
                             </Card>
