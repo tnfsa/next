@@ -8,8 +8,14 @@
 /seller/munu:
     navigation bar
 
+/seller/menu/new:
+    form input
+
 /seller/menu/uid:
     picture preview
     change picture
+    form input
+
+/settings/
 
 
