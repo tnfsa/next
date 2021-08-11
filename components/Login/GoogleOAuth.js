@@ -10,6 +10,7 @@ export default function GoogleOAuth() {
     const router = useRouter()
     const cookies = new Cookies()
     async function responseGoogle(google_response) {
+        setLoading(true)
         console.log(JSON.stringify(google_response))
         try {
             if (google_response['profileObj']['givenName'] === undefined) {
@@ -57,10 +58,7 @@ export default function GoogleOAuth() {
                     render={renderProps => (
                         <button className="bg-pink-500 hover:bg-ping-700 p-2 disabled:opacity-50"
                             disabled={loading}
-                            onClick={(event) => {
-                                renderProps.onClick(event)
-                                setLoading(true)
-                            }}>
+                            onClick={renderProps.onClick()}>
                             利用google登入
                         </button>
                     )}

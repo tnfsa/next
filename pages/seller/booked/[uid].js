@@ -2,13 +2,12 @@ import { useEffect, useState } from 'react'
 import Title from '../../../components/Title'
 import Authenticate from '../../../components/authenticate'
 import Cookies from 'universal-cookie'
-import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
 import { Button } from '@material-ui/core'
 import { faCheck, faTimes, faUserCheck, faUserSlash } from '@fortawesome/free-solid-svg-icons'
-
+import { useRouter } from 'next/router'
 //deprecated
-import { Card, Col, Container, Row, Spinner } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function DetailBooked() {
@@ -17,12 +16,13 @@ export default function DetailBooked() {
     const [productName, setProductName] = useState('')
     const cookies = new Cookies()
     const allcookies = cookies.getAll()
+    const storeId = cookies.get('store_id')
     const [changes, setChanges] = useState(0)
     const router = useRouter()
-    const { uid } = router.query
+    const uid = router.query["uid"]
     const transactions = async () => {
-        const url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/stores/' + allcookies['storeId'] + '/transactions'
-        let result = await fetch(url, {
+        console.log(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions`)
+        let result = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -42,8 +42,8 @@ export default function DetailBooked() {
     }
 
     const getName = async () => {
-        const url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/stores/' + allcookies['storeId'] + '/products'
-        let result = await fetch(url, {
+        console.log(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/products`)
+        let result = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/products`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -74,8 +74,12 @@ export default function DetailBooked() {
             console.log(result[0])
         } catch (err) {
             window.alert(err)
-            cookies.set('alert', '讀取錯誤，正在返回首頁', { path: '/' })
-            document.location.href = '/'
+            await Swal.fire({
+                icon: 'error',
+                title: '讀取錯誤',
+                text: err
+            })
+            await router.push('/')
         }
     }
 
@@ -136,11 +140,11 @@ export default function DetailBooked() {
     }
 
     useEffect(() => {
-        if(uid !== "undefined"){
-            getInfo()
-        }
+        console.log(uid)
+        getInfo()
+
         // eslint-disable-next-line
-    }, [changes,uid])
+    }, [changes])
 
     return (
         <div id="page-wrapper">
@@ -148,66 +152,89 @@ export default function DetailBooked() {
                 link={`/seller/booked/${uid}`} />
             <Authenticate seller="true" />
             <section id="main">
-                <div>
+                {loading &&
+                    <center><Spinner animation={"border"} /></center>
+                }
+                <div className="px-10 py-5 space-y-5">
                     {
-                        data ? data.map((item) =>
-                            <Card key={item.id}>
-                                <Card.Body>
-                                    <Row>
-                                        <Col xs={10} md={10} lg={10}>
-                                            <Card.Title>交易編號：{item.id}</Card.Title>
-                                            <Card.Text>備註：{item.comment}</Card.Text>
-                                        </Col>
-                                        <Col>
-                                            <Row>
-                                                <Button
-                                                    variant="contained"
-                                                    color={item.status === 'PREPARE' ? 'secondary' : ''}
-                                                    onClick={() => {
-                                                        preparing(item.id)
-                                                    }}
-                                                >
-                                                    <FontAwesomeIcon icon={faTimes} />
-                                                </Button>
-                                            </Row>
-                                            <Row>
-                                                <Button
-                                                    variant="contained"
-                                                    color={item.status === 'OK' ? 'primary' : ''}
-                                                    onClick={() => {
-                                                        finished(item.id)
-                                                    }}>
-                                                    <FontAwesomeIcon icon={faCheck} />
-                                                </Button>
-                                            </Row>
-                                            <Row>
-                                                <Button
-                                                    variant="contained"
-                                                    color={item.status === 'DONE' ? 'primary' : ''}
-                                                    onClick={() => {
-                                                        taken(item.id)
-                                                    }}>
-                                                    <FontAwesomeIcon icon={faUserCheck} />
-                                                </Button>
-                                            </Row>
-                                            <Row>
-                                                <Button
-                                                    variant="contained"
-                                                    color={item.status === 'NOTAKEN' ? 'secondary' : ''}
-                                                    onClick={() => {
-                                                        notaken(item.id)
-                                                    }}>
-                                                    <FontAwesomeIcon icon={faUserSlash} />
-                                                </Button>
-                                            </Row>
-                                        </Col>
-                                    </Row>
-                                </Card.Body>
-                            </Card>
-                        ) : <React.Fragment><br /><h2 style={{ textAlign: 'center' }}>查無資料</h2></React.Fragment>
+                        data ? data.map((item) => (
+                            <div className="flex flex-row bg-white h-40 justify-between px-10 py-2">
+                                <div className="">
+                                    <h1>交易編號：{item.id}</h1>
+                                    <p>備註：{item.comment}</p>
+                                </div>
+                                <div className="flex flex-col self-center space-y-1">
+                                    <Button
+                                        variant="contained"
+                                        color={item.status === 'PREPARE' ? 'secondary' : ''}
+                                        onClick={() => {
+                                            preparing(item.id)
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={faTimes} />
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color={item.status === 'OK' ? 'primary' : ''}
+                                        onClick={() => {
+                                            finished(item.id)
+                                        }}>
+                                        <FontAwesomeIcon icon={faCheck} />
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color={item.status === 'DONE' ? 'primary' : ''}
+                                        onClick={() => {
+                                            taken(item.id)
+                                        }}>
+                                        <FontAwesomeIcon icon={faUserCheck} />
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color={item.status === 'NOTAKEN' ? 'secondary' : ''}
+                                        onClick={() => {
+                                            notaken(item.id)
+                                        }}>
+                                        <FontAwesomeIcon icon={faUserSlash} />
+                                    </Button>
+                                </div>
+                            </div>
+                        )) : <React.Fragment><br /><h2 style={{ textAlign: 'center' }}>查無資料</h2></React.Fragment>
                     }
                 </div>
             </section>
         </div>
     )
+}
+
+export async function getStaticProps(context) {
+    const uid = context.params.uid
+    return {
+        props: { uid }
+    }
+}
+
+async function getFoods(storeId) {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/products`)
+    const result = await res.json()
+    return result.map(food => (`/${food.id}`))
+}
+
+export async function getStaticPaths() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores`)
+    const response = await res.json()
+    const fetchingFoods = response.map(store => (getFoods(store.id)))
+
+    const mixed = await Promise.all(fetchingFoods)
+    let paths = []
+    for (const item of mixed) {
+        for (const route of item) {
+            paths.push(`/seller/booked${route}`)
+        }
+    }
+
+    return {
+        paths,
+        fallback: false
+    }
 }
