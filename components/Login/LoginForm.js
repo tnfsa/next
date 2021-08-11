@@ -12,22 +12,12 @@ export default function LoginForm() {
 
     const Send = async () => {
         setLoading(true)
-        const oldUrl = "https://store.tnfsa.org/#/login"
-        router.prefetch(oldUrl)
-        await Swal.fire({
-            icon: 'info',
-            title: '新版本尚未支援',
-            text: '將立即轉跳至舊版本'
-        })
-        /*
         const response = await postFile()
         console.log(response)
         if (response['status'] !== 'error') {
             await fetchInfo(response)
         }
-        */
-        setLoading(false)
-        await router.push(oldUrl)
+        await router.push('/')
     }
 
     const postFile = async () => {
@@ -56,7 +46,7 @@ export default function LoginForm() {
             } else {
                 await Swal.fire({
                     icon: 'error',
-                    title: '照號或密碼錯誤'
+                    title: '帳號或密碼錯誤'
                 })
             }
 
