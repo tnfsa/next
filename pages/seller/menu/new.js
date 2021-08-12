@@ -62,7 +62,7 @@ export default function NewMenu() {
         await router.push('/seller/menu')
     }
 
-    function handleChangeImage(evt) {
+    async function handleChangeImage(evt) {
         console.log("Uploading");
         var reader = new FileReader();
         var file = evt.target.files[0];
