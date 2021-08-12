@@ -61,7 +61,7 @@ export default function configMenu() {
         var reader = new FileReader();
         var file = evt.target.files[0];
 
-        reader.onload = function (upload) {
+        reader.onload = async function (upload) {
             console.log(file)
             setImage(upload.target.result);
             const formData = new FormData()
@@ -96,6 +96,7 @@ export default function configMenu() {
     async function firstFetch() {
         //instant fetch settings from history
         const url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/stores/' + storeId + '/products/' + uid
+        console.log(url)
         try {
             const data = await fetch(url, {
                 method: 'GET',
@@ -107,7 +108,7 @@ export default function configMenu() {
             const parsed = await data.json()
             setPrice(parsed['price'])
             setName(parsed['name'])
-            setSubtitle(parsed['description'])
+            setDescription(parsed['description'])
 
             setImageUrl(parsed['image'])
             console.log(parsed)
@@ -214,4 +215,36 @@ export default function configMenu() {
             </section>
         </div>
     )
+}
+
+export async function getStaticProps(context) {
+    const uid = context.params.uid
+    return {
+        props: { uid }
+    }
+}
+
+async function getFoods(storeId) {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/products`)
+    const result = await res.json()
+    return result.map(food => (`/${food.id}`))
+}
+
+export async function getStaticPaths() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores`)
+    const response = await res.json()
+    const fetchingFoods = response.map(store => (getFoods(store.id)))
+
+    const mixed = await Promise.all(fetchingFoods)
+    let paths = []
+    for (const item of mixed) {
+        for (const route of item) {
+            paths.push(`/seller/menu${route}`)
+        }
+    }
+
+    return {
+        paths,
+        fallback: false
+    }
 }

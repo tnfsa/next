@@ -67,7 +67,7 @@ export default function NewMenu() {
         var reader = new FileReader();
         var file = evt.target.files[0];
 
-        reader.onload = function (upload) {
+        reader.onload = async function (upload) {
             console.log(file)
             setImage(upload.target.result);
             const formData = new FormData()
