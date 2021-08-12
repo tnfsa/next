@@ -9,12 +9,12 @@
     navigation bar
 
 /seller/menu/new:
-    form input
+    form input (ok)
 
 /seller/menu/uid:
     picture preview
     change picture
-    form input
+    form input (ok)
 
 /settings/
 
