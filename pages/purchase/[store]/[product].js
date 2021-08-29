@@ -23,6 +23,7 @@ function Purchase({ data, storeName }) {
         if (window.confirm(confirmText)) {
             setLoading(true)
             try {
+                date = new Date();
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/transactions`, {
                     method: 'POST',
                     body: JSON.stringify({
@@ -31,7 +32,7 @@ function Purchase({ data, storeName }) {
                         'store_id': store,
                         'product_id': product,
                         'comment': comment,
-                        'order_time': Date.now(),
+                        'order_time': date.toISOString(),
                         'options': {}
                     }),
                     headers: {
