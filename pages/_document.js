@@ -56,12 +56,12 @@ page_path: window.location.pathname,
                     <meta name='twitter:card' content='summary' />
                     <meta name='twitter:url' content='https://lunch.tnfsa.org' />
                     <meta name='twitter:title' content={APP_NAME} />
-                    <meta name='twitter:description' content="臺南一中美廣點餐系統" />
-                    <meta name='twitter:image' content='https://sivir.pw/static/icons/android-chrome-192x192.png' />
+                    <meta name='twitter:description' content={APP_DESCRIPTION} />
+                    <meta name='twitter:image' content='https://lunch.tnfsa.org/static/icons/android-chrome-192x192.png' />
                     <meta name='twitter:creator' content='@DavidWShadow' />
                     <meta property='og:type' content='website' />
                     <meta property='og:title' content={APP_NAME} />
-                    <meta property='og:description' content="臺南一中美廣點餐系統" />
+                    <meta property='og:description' content={APP_DESCRIPTION} />
                     <meta property='og:site_name' content={APP_NAME} />
                     <meta property='og:url' content='https://lunch.tnfsa.org' />
                     <meta property='og:image' content='https://lunch.tnfsa.org/static/icons/apple-touch-icon.png' />

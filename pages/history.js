@@ -31,9 +31,18 @@ export default function History() {
 
             response.sort((a, b) => {
                 return (
-                    new Date(b.updated_at) - new Date(a.updated_at)
+                    new Date(b.order_time) - new Date(a.order_time)
                 )
             })
+            
+            // pick up now
+            /*for(let prod of response){
+                const item = Date(prod.order_time)
+                const today = Date()
+                if(item.getDay() === today.getDay()){
+                    
+                }
+            }*/
 
             setTransaction(response)
             setLoading(false)

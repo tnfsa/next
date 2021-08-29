@@ -139,7 +139,7 @@ export default function Service() {
                                                     <td>{item.disk_quota ?? 0} Mb</td>
                                                     <td>{item.promotion_quota ?? 0} 點</td>
                                                     <td>
-                                                        <a href={`${process.env.NEXT_PUBLIC_API_HOST}/${storeId}/${item.id}/sendOrder`} rel="noreferrer noopenner nofollow" className="btn btn-primary" target={"_blank"}>購買</a>
+                                                        <a href={`${process.env.NEXT_PUBLIC_API_HOST}${storeId}/${item.id}/sendOrder`} rel="noreferrer noopenner nofollow" className="btn btn-primary" target={"_blank"}>購買</a>
                                                     </td>
                                                 </tr>
                                             ))}
