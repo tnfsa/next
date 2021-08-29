@@ -29,11 +29,11 @@ page_path: window.location.pathname,
                         }}
                     />
 
-                    <meta name='application-name' content='美廣點餐系統' />
+                    <meta name='application-name' content={APP_NAME} />
                     <meta name='apple-mobile-web-app-capable' content='yes' />
                     <meta name='apple-mobile-web-app-status-bar-style' content='default' />
-                    <meta name='apple-mobile-web-app-title' content='美廣點餐系統' />
-                    <meta name='description' content="臺南一中美廣點餐系統" />
+                    <meta name='apple-mobile-web-app-title' content={APP_NAME} />
+                    <meta name='description' content={APP_DESCRIPTION} />
                     <meta name='format-detection' content='telephone=no' />
                     <meta name='mobile-web-app-capable' content='yes' />
                     <meta name='msapplication-config' content='/static/icons/browserconfig.xml' />
@@ -55,14 +55,14 @@ page_path: window.location.pathname,
 
                     <meta name='twitter:card' content='summary' />
                     <meta name='twitter:url' content='https://lunch.tnfsa.org' />
-                    <meta name='twitter:title' content="美廣點餐系統" />
+                    <meta name='twitter:title' content={APP_NAME} />
                     <meta name='twitter:description' content="臺南一中美廣點餐系統" />
                     <meta name='twitter:image' content='https://sivir.pw/static/icons/android-chrome-192x192.png' />
                     <meta name='twitter:creator' content='@DavidWShadow' />
                     <meta property='og:type' content='website' />
-                    <meta property='og:title' content='美廣點餐系統' />
+                    <meta property='og:title' content={APP_NAME} />
                     <meta property='og:description' content="臺南一中美廣點餐系統" />
-                    <meta property='og:site_name' content='美廣點餐系統' />
+                    <meta property='og:site_name' content={APP_NAME} />
                     <meta property='og:url' content='https://lunch.tnfsa.org' />
                     <meta property='og:image' content='https://lunch.tnfsa.org/static/icons/apple-touch-icon.png' />
                 </Head>
