@@ -5,13 +5,14 @@ import { useState } from 'react'
 import { LinearProgress } from '@material-ui/core'
 import Cookies from 'universal-cookie'
 import Authenticate from '../../components/authenticate'
+import Swal from 'sweetalert2'
 
 export default function Personal() {
     const cookies = new Cookies()
     const storeId = cookies.get('store_id')
     return (
         <div id="page-wrapper">
-            <Authenticate seller="true"/>
+            <Authenticate seller="true" />
             <Title title="設定"
                 link={`/settings`} />
 
@@ -20,9 +21,12 @@ export default function Personal() {
                     <SettingsMenu />
 
                     <div className="px-10 w-full">
-                        <div className="bg-white w-full px-5">
+                        <div className="bg-white w-full px-5 divide-y-4 divide-solid">
                             {storeId ?
-                                <UpdateStoreName />
+                                <>
+                                    <UpdateStoreName />
+                                    <Deactivate />
+                                </>
                                 :
                                 <ActivateStore />
                             }
@@ -54,8 +58,8 @@ function ActivateStore() {
                 event.preventDefault();
                 activate();
             }}>
-                <div class="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
                         商店名稱
                     </label>
                     <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -79,10 +83,8 @@ function UpdateStoreName() {
 
     async function update() {
         setLoading(true)
-        setTimeout(() => {
-            setLoading(false)
-
-        }, 1000)
+        
+        setLoading(false)
     }
 
     return (
@@ -95,8 +97,8 @@ function UpdateStoreName() {
                 event.preventDefault();
                 update();
             }}>
-                <div class="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
                         商店名稱
                     </label>
                     <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -108,6 +110,46 @@ function UpdateStoreName() {
                 </div>
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                     更新
+                </button>
+            </form>
+        </div>
+    )
+}
+
+function Deactivate() {
+    const [loading, setLoading] = useState(false)
+
+    async function update() {
+        const result = await Swal.fire({
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: '確認',
+            cancelButtonText: '取消',
+            title: '刪除商店',
+        })
+        if (result.isConfirmed) {
+            setLoading(true)
+
+            
+
+            setLoading(false)
+        }
+    }
+
+    return (
+        <div id="updatepassword" className="text-xl py-3 space-y-2">
+            <h1 className="text-center text-2xl font-semibold">刪除</h1>
+            {loading &&
+                <LinearProgress />
+            }
+            <form onSubmit={event => {
+                event.preventDefault()
+                update()
+            }}>
+                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                    刪除
                 </button>
             </form>
         </div>

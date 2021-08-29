@@ -27,10 +27,11 @@ function Purchase({ data, storeName }) {
                     method: 'POST',
                     body: JSON.stringify({
                         'name': data.title,
-                        'qty': 2,
+                        'qty': 1,
                         'store_id': store,
                         'product_id': product,
                         'comment': comment,
+                        'order_time': Date.now(),
                         'options': {}
                     }),
                     headers: {

@@ -8,14 +8,12 @@
 /seller/munu:
     navigation bar
 
-/seller/menu/new:
-    form input (ok)
-
 /seller/menu/uid:
     picture preview
     change picture
-    form input (ok)
 
 /settings/
+    change names
+    activate stores
 
 

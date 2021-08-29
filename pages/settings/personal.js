@@ -15,7 +15,7 @@ export default function Personal() {
                     <SettingsMenu />
 
                     <div className="px-10 w-full">
-                        <div className="bg-white w-full px-5">
+                        <div className="bg-white w-full px-5 divide-y-4 divide-solid">
                             <Password />
                         </div>
                     </div>
