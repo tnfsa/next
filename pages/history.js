@@ -93,7 +93,8 @@ export default function History() {
                                         <div className="bg-white md:w-1/2 justify-center p-3 shadow-md space-y-2">
                                             <div className="space-y-2 text">
                                                 <h1>商品名稱：{item.product.name}</h1>
-                                                <h1>金額：{item.total}</h1>
+                                                <h1>訂購數量：{item.qty}</h1>
+                                                <h1>金額：{item.total*item.qty}</h1>
                                                 <h1>留言：{typeof (item.comment) === "undefined" || item.comment === null ? '' : (item.comment.length > 50 ? item.comment.slice(0, 50) + ' ...' : item.comment)}</h1>
                                                 <h1>購買日期：{new Date(item.updated_at).toLocaleString('zh-TW')}</h1>
                                                 <h1>訂單編號：<b>{item.id.substring(0, 8)}</b>{item.id.substr(8)}</h1>

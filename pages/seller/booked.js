@@ -102,6 +102,9 @@ function Service() {
             const response = await res.json()
             window.data = response
             console.log(response)
+            if(data === response){
+                setNewOrder = true;
+            }
             setData(response)
             setLoading(false)
         } catch {
