@@ -52,10 +52,10 @@ export default function Home({ qna, news }) {
                     <div className="flex flex-col md:flex-row items-center">
                         <Spotlight position="first"
                             icon="icon solid featured fa-cog"
-                            title="PWA 新技術"
-                            context="確保網站迅速不延遲"
+                            title="PWA技術加持"
+                            context="可於離線時瀏覽此網頁，確保網站迅速不延遲"
                             key="first" />
-                        <Spotlight title="快速"
+                        <Spotlight title="方便"
                             context="線上預訂，讓你免於在美廣大排長榮，減少群聚"
                             position="first"
                             icon="icon solid featured alt fa-bolt"

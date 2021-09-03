@@ -14,16 +14,25 @@ function Service() {
     const [loading, setLoading] = useState(true)
     const { enqueueSnackbar } = useSnackbar();
     const [data, setData] = useState({})
+    const [newOrder,setNewOrder] = useState(false);
 
     const cookies = new Cookies()
     const session = cookies.get('session')
     const storeId = cookies.get('store_id')
     useEffect(() => {
-        init();
+        /*init(); //websocket not working
         getMe();
+        window.newMessage = false*/
+
         getData()
-        window.newMessage = false
+        keepUpdate();
     }, [])
+
+    function keepUpdate(){
+        setInterval(()=>{
+            getData();
+        },5000)
+    }
 
     function init() {
         window.Pusher = require('pusher-js')
@@ -93,6 +102,9 @@ function Service() {
             const response = await res.json()
             window.data = response
             console.log(response)
+            if(data === response){
+                setNewOrder = true;
+            }
             setData(response)
             setLoading(false)
         } catch {
@@ -100,8 +112,8 @@ function Service() {
             // redirect to main page
             await Swal.fire({
                 icon: 'error',
-                title: '操作錯誤',
-                text: '請擇良辰吉時再試一次'
+                title: '網路錯誤',
+                text: '請檢察連線狀況或重新整理此頁'
             })
             //await router.push('/')
         }
@@ -131,12 +143,17 @@ function Service() {
             <Title title="出餐"
                 link="/seller/booked" />
             <Authenticate seller="true" />
+            {newOrder &&
+                <div>
+                    有新訂單
+                </div>
+            }
             <section id="main">
                 {loading &&
                     <center><Spinner animation="border" /></center>
                 }
                 <div className="p-5">
-                    <Button onClick={requestNotification}>提醒我</Button>
+                    {/*<Button onClick={requestNotification}>提醒我</Button>*/}
                     {
                         data ? Object.keys(data).map((item) =>
                             <Card key={item}>
