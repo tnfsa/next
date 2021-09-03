@@ -37,7 +37,7 @@ export default function Service() {
             console.log(response)
             setData(response)
 
-            const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/promotion_quota`,{
+            const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/promotion_quota`, {
                 headers: {
                     Accept: 'application/json',
                     Authorization: `Bearer ${session}`
@@ -92,6 +92,14 @@ export default function Service() {
         }
     }
 
+    async function reRender(){
+        fetch("https://api.vercel.com/v1/integrations/deploy/prj_KyaS954VKb83sq0OdVUkuIRIlSwL/fgdOuE9WfG");
+        await Swal.fire({
+            icon: "info",
+            title: "請求已送出"
+        })
+    }
+
     return (
         <div id="page-wrapper">
             <Title title="變更菜單"
@@ -100,9 +108,19 @@ export default function Service() {
             <Authenticate seller="true" />
             <section id="main">
                 <div className="p-5">
-                    <div id="menuOption" className="bg-white">
-                        <ul>
-                            <li><Link href="/seller/menu/new">新增</Link></li>
+                    <div className="bg-white p-2">
+                        <ul className="flex flex-row items-start">
+                            <div className="float-left">
+                                <li><Link href="/seller/menu/new" passHref>
+                                    <button className="bg-green-300 p-1 hover:bg-green-600 px-2">新增
+                                    </button></Link>
+                                </li>
+                            </div>
+                            <div className="float-right">
+                                <li classname="float-right">
+                                    <button className="bg-yellow-300 p-1 hover:bg-yellow-600 px-2" onClick={()=>{reRender()}}>更新</button>
+                                </li>
+                            </div>
                         </ul>
                     </div>
                     <div id="addedFood">

@@ -34,16 +34,24 @@ export default function History() {
                     new Date(b.order_time) - new Date(a.order_time)
                 )
             })
-            
-            // pick up now
-            /*for(let prod of response){
-                const item = Date(prod.order_time)
-                const today = Date()
-                if(item.getDay() === today.getDay()){
-                    
-                }
-            }*/
 
+            let todayDate = new Date().getTime()
+            todayDate = Math.ceil(todayDate / 86400000)
+
+            for (let i = response.length - 1; i >= 0; --i) {
+                let date = new Date(response[i].order_time).getTime()
+                date = Math.ceil(date /= 86400000)
+
+                if (date < todayDate) {
+                    break;
+                }
+
+                if (date === todayDate) {
+                    setToday(response[i]);
+                    setHightLight(true);
+                    delete response[i];
+                }
+            }
             setTransaction(response)
             setLoading(false)
         } catch (err) {
@@ -54,7 +62,6 @@ export default function History() {
             })
         }
     }
-    
 
     useEffect(() => {
         const status = typeof (cookies.get('session'))
@@ -76,7 +83,7 @@ export default function History() {
                             loading || highlight ?
                                 <div className="border border-indigo-600 br-blue-100">
                                     {/*Booked today*/}
-                                    {highlight && <List item={today} />}
+                                    {highlight && <List item={today} update={Update}/>}
                                 </div>
                                 :
                                 <div className="border border-indigo-600 bg-red-100">
@@ -87,7 +94,7 @@ export default function History() {
                         {
                             transaction && transaction.length > 0 && transaction.map((item, index) => {
                                 return (
-                                    <List item={item} update={Update}/>
+                                    <List item={item} update={Update} />
                                 )
                             })
                         }
@@ -99,11 +106,11 @@ export default function History() {
     )
 }
 
-function List(props,update) {
-    const [loading,setLoading] = useState(false);
+function List(props, update) {
+    const [loading, setLoading] = useState(false);
     const cookies = new Cookies();
     const item = props.item;
-    
+
     async function setNewRate(val, id, index = null) {
         console.log(`val: ${val}; id: ${id};index: ${index}`)
         setLoading(true)
@@ -129,8 +136,25 @@ function List(props,update) {
                 text: err
             })
         }
+        setLoading(false);
     }
-    
+
+    function orderStatus(){
+        console.log(item.status)
+        switch(item.status){
+            case "OK":
+                return "已收到訂單";
+            case "prepare":
+                return "準備中";
+            case "NOTAKEN":
+                return "拒收";
+            case "DONE":
+                return "已完成";
+            default:
+                return "未定義";
+        }
+    }
+
     return (
         <div className="md:flex rounded-lg" key={item.id}>
             <LinearProgress hidden={!loading} />
@@ -138,10 +162,11 @@ function List(props,update) {
                 <div className="space-y-2 text">
                     <h1>商品名稱：{item.product.name}</h1>
                     <h1>訂購數量：{item.qty}</h1>
-                    <h1>金額：{item.total * item.qty}</h1>
+                    <h1>金額：{item.total}</h1>
                     <h1>留言：{typeof (item.comment) === "undefined" || item.comment === null ? '' : (item.comment.length > 50 ? item.comment.slice(0, 50) + ' ...' : item.comment)}</h1>
                     <h1>購買日期：{new Date(item.updated_at).toLocaleString('zh-TW')}</h1>
                     <h1>訂單編號：<b>{item.id.substring(0, 8)}</b>{item.id.substr(8)}</h1>
+                    <h1>出餐狀態：{orderStatus}</h1>
                 </div>
 
                 <div className="flex content-center justify-center">

@@ -42,9 +42,43 @@ export default function Personal() {
 function ActivateStore() {
     const [storeName, setStoreName] = useState('')
     const [loading, setLoading] = useState(false)
-
+    
     async function activate() {
+        if(storeName.length() === 0){
+            await Swal.fire({
+                icon: 'error',
+                title: '請輸入名稱'
+            })
+            return;
+        }
         setLoading(true)
+        try{
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores`,{
+                method: 'POST',
+                body: JSON.stringify({
+                    name: storeName
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${cookies.get('session')}`
+                }
+            })
+            if(res.ok){
+                await Swal.fire({
+                    icon: 'success',
+                    title: '啟動成功'
+                })
+            }else{
+                throw await res.text()
+            }
+        }catch(err){
+            await Swal.fire({
+                icon: 'error',
+                title: '啟動失敗',
+                text: err
+            })
+        }
         setLoading(false)
     }
 
