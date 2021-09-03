@@ -164,39 +164,52 @@ export default function DetailBooked() {
                                     <p>備註：{item.comment}</p>
                                 </div>
                                 <div className="flex flex-col self-center space-y-1">
-                                    <Button
-                                        variant="contained"
-                                        color={item.status === 'PREPARE' ? 'secondary' : ''}
-                                        onClick={() => {
-                                            preparing(item.id)
-                                        }}
-                                    >
-                                        <FontAwesomeIcon icon={faTimes} />
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        color={item.status === 'OK' ? 'primary' : ''}
-                                        onClick={() => {
-                                            finished(item.id)
-                                        }}>
-                                        <FontAwesomeIcon icon={faCheck} />
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        color={item.status === 'DONE' ? 'primary' : ''}
-                                        onClick={() => {
-                                            taken(item.id)
-                                        }}>
-                                        <FontAwesomeIcon icon={faUserCheck} />
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        color={item.status === 'NOTAKEN' ? 'secondary' : ''}
-                                        onClick={() => {
-                                            notaken(item.id)
-                                        }}>
-                                        <FontAwesomeIcon icon={faUserSlash} />
-                                    </Button>
+                                    <div className="flex space-x-2">
+                                        <h1 className="">準備中</h1>
+                                        <Button
+                                            variant="contained"
+                                            color={item.status === 'PREPARE' ? 'secondary' : ''}
+                                            className="space-x-5"
+                                            onClick={() => {
+                                                preparing(item.id)
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faTimes} />
+                                        </Button>
+                                    </div>
+                                    <div className="flex space-x-2">
+                                        <h1 className="">可取餐</h1>
+                                        <Button
+                                            variant="contained"
+                                            color={item.status === 'OK' ? 'primary' : ''}
+                                            onClick={() => {
+                                                finished(item.id)
+                                            }}>
+                                            <FontAwesomeIcon icon={faCheck} />
+                                        </Button>
+                                    </div>
+                                    <div className="flex space-x-2">
+                                        <h1 className="">已取餐</h1>
+                                        <Button
+                                            variant="contained"
+                                            color={item.status === 'DONE' ? 'primary' : ''}
+                                            onClick={() => {
+                                                taken(item.id)
+                                            }}>
+                                            <FontAwesomeIcon icon={faUserCheck} />
+                                        </Button>
+                                    </div>
+                                    <div className="flex space-x-2">
+                                        <h1 className="">拒收</h1>
+                                        <Button
+                                            variant="contained"
+                                            color={item.status === 'NOTAKEN' ? 'secondary' : ''}
+                                            onClick={() => {
+                                                notaken(item.id)
+                                            }}>
+                                            <FontAwesomeIcon icon={faUserSlash} />
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
                         )) : <React.Fragment><br /><h2 style={{ textAlign: 'center' }}>查無資料</h2></React.Fragment>
