@@ -23,7 +23,7 @@ function Purchase({ data, storeName }) {
         if (window.confirm(confirmText)) {
             setLoading(true)
             try {
-                date = new Date();
+                const date = new Date();
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/transactions`, {
                     method: 'POST',
                     body: JSON.stringify({

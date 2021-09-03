@@ -6,6 +6,7 @@ import { LinearProgress } from '@material-ui/core'
 import Cookies from 'universal-cookie'
 import Authenticate from '../../components/authenticate'
 import Swal from 'sweetalert2'
+import {useRouter} from 'next/router'
 
 export default function Personal() {
     const cookies = new Cookies()
@@ -42,9 +43,12 @@ export default function Personal() {
 function ActivateStore() {
     const [storeName, setStoreName] = useState('')
     const [loading, setLoading] = useState(false)
-    
+    const cookies = new Cookies()
+    const router = useRouter()
+
     async function activate() {
-        if(storeName.length() === 0){
+        console.log("running")
+        if(storeName.length === 0){
             await Swal.fire({
                 icon: 'error',
                 title: '請輸入名稱'
@@ -69,6 +73,11 @@ function ActivateStore() {
                     icon: 'success',
                     title: '啟動成功'
                 })
+                await Swal.fire({
+                    icon: 'info',
+                    title: "請重新登入"
+                })
+                window.location.href = '/logout';
             }else{
                 throw await res.text()
             }

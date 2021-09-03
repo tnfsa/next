@@ -13,7 +13,7 @@ export default function History() {
     const [transaction, setTransaction] = useState([]);
     const [loading, setLoading] = useState(false);
     const [highlight, setHightLight] = useState(false);
-    const [today, setToday] = useState({});
+    const [today, setToday] = useState([]);
     const cookies = new Cookies()
 
     async function Update() {
@@ -37,6 +37,8 @@ export default function History() {
 
             let todayDate = new Date().getTime()
             todayDate = Math.ceil(todayDate / 86400000)
+            
+            let countingOnly = []
 
             for (let i = response.length - 1; i >= 0; --i) {
                 let date = new Date(response[i].order_time).getTime()
@@ -47,11 +49,12 @@ export default function History() {
                 }
 
                 if (date === todayDate) {
-                    setToday(response[i]);
+                    countingOnly.push(response[i]);
                     setHightLight(true);
                     delete response[i];
                 }
             }
+            setToday(countingOnly);
             setTransaction(response)
             setLoading(false)
         } catch (err) {
@@ -69,6 +72,9 @@ export default function History() {
             Update()
         }
     }, [])
+
+    
+
     return (
         <div id="page-wrapper">
             <Authenticate />
@@ -83,7 +89,11 @@ export default function History() {
                             loading || highlight ?
                                 <div className="border border-indigo-600 br-blue-100">
                                     {/*Booked today*/}
-                                    {highlight && <List item={today} update={Update}/>}
+                                    {highlight && today.map((item)=>{
+                                        return(
+                                            <List item={item} update={Update} />
+                                        )
+                                    })}
                                 </div>
                                 :
                                 <div className="border border-indigo-600 bg-red-100">
@@ -139,22 +149,6 @@ function List(props, update) {
         setLoading(false);
     }
 
-    function orderStatus(){
-        console.log(item.status)
-        switch(item.status){
-            case "OK":
-                return "已收到訂單";
-            case "prepare":
-                return "準備中";
-            case "NOTAKEN":
-                return "拒收";
-            case "DONE":
-                return "已完成";
-            default:
-                return "未定義";
-        }
-    }
-
     return (
         <div className="md:flex rounded-lg" key={item.id}>
             <LinearProgress hidden={!loading} />
@@ -166,7 +160,7 @@ function List(props, update) {
                     <h1>留言：{typeof (item.comment) === "undefined" || item.comment === null ? '' : (item.comment.length > 50 ? item.comment.slice(0, 50) + ' ...' : item.comment)}</h1>
                     <h1>購買日期：{new Date(item.updated_at).toLocaleString('zh-TW')}</h1>
                     <h1>訂單編號：<b>{item.id.substring(0, 8)}</b>{item.id.substr(8)}</h1>
-                    <h1>出餐狀態：{orderStatus}</h1>
+                    <h1>出餐狀態：{item.status === "PREPARE" && "準備中"} {item.status === "OK" && "可取餐"}  {item.status === "DONE" && "已取餐"} {item.status === "NOTAKEN" && "拒收"}</h1>
                 </div>
 
                 <div className="flex content-center justify-center">
