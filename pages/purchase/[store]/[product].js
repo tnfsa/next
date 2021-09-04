@@ -8,6 +8,7 @@ import * as ga from '../../../components/GA'
 import Link from 'next/link'
 import Authenticate from "../../../components/authenticate";
 import Image from 'next/image'
+import date from 'date-and-time'
 
 function Purchase({ data, storeName }) {
     const [comment, setComment] = useState('')
@@ -28,6 +29,7 @@ function Purchase({ data, storeName }) {
             try {
                 let now = new Date();
                 const order_time = date.addDays(now, 1);
+                console.log(order_time)
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/transactions`, {
                     method: 'POST',
                     body: JSON.stringify({
@@ -46,7 +48,8 @@ function Purchase({ data, storeName }) {
                     }
                 })
                 const response = await res.json()
-                console.log(`Response: ${response}`)
+                console.log(`Response:`)
+                console.log(response)
                 if (res.ok) {
                     ga.event({
                         action: 'purchase', params: {
@@ -68,13 +71,21 @@ function Purchase({ data, storeName }) {
                     })
                     await router.push('/')
                 } else {
-                    throw await res.text()
+                    if(response.error === "OrderTime is not allowed."){
+                        setLoading(false)
+                        return await Swal.fire({
+                            icon: 'error',
+                            title: '非訂餐時間'
+                        })
+                    }else{
+                        throw `訂購失敗，請再試一次`
+                    }
                 }
             } catch (err) {
                 setLoading(false)
                 await Swal.fire({
                     title: '錯誤!',
-                    text: `${err}\n與伺服器連線錯誤，請再試一次\n如果問題無法解決，請聯絡管理員\n訂單未成立`,
+                    text: err,
                     icon: 'error',
                     confirmButtonText: 'Ok'
                 })
@@ -102,7 +113,7 @@ function Purchase({ data, storeName }) {
                             </div>
                         </div>
 
-                        <div className="space-y-3 w-2/3">
+                        <div className="space-y-3 w-full md:w-2/3">
                             <p className="text-4xl font-semibold">
                                 {data.name}
                             </p>
@@ -119,7 +130,7 @@ function Purchase({ data, storeName }) {
                             <br />
                             <div>
                                 {loading ?
-                                    <div id="loading">
+                                    <div id="loading" className="justify-center">
                                         <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium text-white bg-red-600 cursor-not-allowed" disabled>
                                             <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
@@ -129,16 +140,20 @@ function Purchase({ data, storeName }) {
                                         </button>
                                     </div>
                                     :
-                                    <div id="buttons">
-                                        <Link href={`/order/${store}`}>
-                                            <button className="float-left p-2 rounded-2xl text-lg bg-pink-500 hover:bg-pink-700">
-                                                回上一頁
+                                    <div id="buttons" className="flex justify-between">
+                                        <div>
+                                            <Link href={`/order/${store}`}>
+                                                <button className=" p-2 rounded-2xl text-lg bg-pink-500 hover:bg-pink-700">
+                                                    回上一頁
+                                                </button>
+                                            </Link>
+                                        </div>
+                                        <div>
+                                            <button className="p-2 rounded-2xl text-lg bg-blue-500 hover:bg-blue-700"
+                                                onClick={Send}>
+                                                立即購買
                                             </button>
-                                        </Link>
-                                        <button className="float-right p-2 rounded-2xl text-lg bg-blue-500 hover:bg-blue-700"
-                                            onClick={Send}>
-                                            立即購買
-                                        </button>
+                                        </div>
                                     </div>
                                 }
                             </div>
