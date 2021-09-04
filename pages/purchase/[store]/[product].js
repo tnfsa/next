@@ -8,6 +8,7 @@ import * as ga from '../../../components/GA'
 import Link from 'next/link'
 import Authenticate from "../../../components/authenticate";
 import Image from 'next/image'
+import date from 'date-and-time'
 
 function Purchase({ data, storeName }) {
     const [comment, setComment] = useState('')
