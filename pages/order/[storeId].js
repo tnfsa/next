@@ -20,33 +20,43 @@ function Order({ data, name }) {
                 <div className="p-10 flex flex-wrap items-stretch justify-center gap-x-8 gap-y-10">
                     {data.map(item => {
                         return (
-                            <div className="w-80 h-96 shadow-lg rounded-xl" key={item.name}>
-                                <div className="p-4 content-center">
-                                    <div className="h-40 w-64 relative">
-                                        <Image src={typeof (item.image) === "undefined" ? "https://raw.sivir.pw/public/images/pic04.jpg" : `${process.env.NEXT_PUBLIC_API_HOST}${item.image}`}
-                                            alt={`${item.name}的照片`}
-                                            layout="fill" />
-                                    </div>
-                                </div>
-                                <div className="p-10">
-                                    <h1 className="font-semibold text-lg">
-                                        {item.name}
-                                    </h1>
-                                    <h1 className="h-12 font-medium text-gray-500">
-                                        {item.description}
-                                    </h1>
-                                    <Link href={`/purchase/${storeId}/${item.id}`}>
-                                        <a className="customLink float-right">
-                                            Learn More
-                                        </a>
-                                    </Link>
-                                </div>
-                            </div>
+                            <Cell data={item} storeId={storeId}/>
                         )
                     })}
+                    {Object.keys(data).length === 0 && <h1>無菜單</h1>}
                 </div>
             </section>
             <Footer />
+        </div>
+    )
+}
+
+function Cell(props) {
+    const item = props.data;
+    const storeId = props.storeId;
+    return (
+        <div className="w-80 h-96 shadow-lg rounded-xl" key={item.name}>
+            <div className="p-4 content-center">
+                <div className="h-40 w-64 relative">
+                    <Image src={typeof (item.image) === "undefined" ? "https://raw.sivir.pw/public/images/pic04.jpg" : `${process.env.NEXT_PUBLIC_API_HOST}${item.image}`}
+                        alt={`${item.name}的照片`}
+                        layout="fill"
+                        className="rounded-3xl" />
+                </div>
+            </div>
+            <div className="p-10">
+                <h1 className="font-semibold text-lg">
+                    {item.name}
+                </h1>
+                <h1 className="h-12 font-medium text-gray-500">
+                    {item.description}
+                </h1>
+                <Link href={`/purchase/${storeId}/${item.id}`} passHref>
+                    <a className="float-right bg-blue-400 rounded-xl px-2 py-1 text-xl font-bold text-black hover:text-white hover:bg-blue-600">
+                        Learn More 
+                    </a>
+                </Link>
+            </div>
         </div>
     )
 }

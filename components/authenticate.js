@@ -10,6 +10,8 @@ export default function Authenticate(props) {
     useEffect(() => {
         if (typeof (props.seller) === "undefined") {
             normalAuth()
+        } else if (props.seller === "noSeller") { 
+            noSellerAuth()
         } else {
             sellerAuth()
         }
@@ -23,6 +25,27 @@ export default function Authenticate(props) {
                 title: '請先登入'
             })
             await router.push('/')
+        }
+    }
+
+    async function noSellerAuth() {
+        const loggedIn = typeof (cookies.get('session'))
+        if (loggedIn === "undefined") {
+            await Swal.fire({
+                icon: 'error',
+                title: '請先登入'
+            })
+            await router.push('/')
+        }
+        if (cookies.get('account_type') === '2') {
+            router.prefetch('/')
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '此功能商家無法使用',
+            }).then(() => {
+                router.push('/')
+            })
         }
     }
 

@@ -1,10 +1,13 @@
 import Title from "../../../components/Title";
 import Footer from '../../../components/Footer'
 import { useRouter } from "next/router";
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Swal from 'sweetalert2'
 import Cookies from 'universal-cookie'
 import * as ga from '../../../components/GA'
+import Link from 'next/link'
+import Authenticate from "../../../components/authenticate";
+import Image from 'next/image'
 
 function Purchase({ data, storeName }) {
     const [comment, setComment] = useState('')
@@ -23,17 +26,18 @@ function Purchase({ data, storeName }) {
         if (window.confirm(confirmText)) {
             setLoading(true)
             try {
-                const date = new Date();
+                let now = new Date();
+                const order_time = date.addDays(now, 1);
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/transactions`, {
                     method: 'POST',
                     body: JSON.stringify({
-                        'name': data.title,
-                        'qty': 1,
-                        'store_id': store,
-                        'product_id': product,
-                        'comment': comment,
-                        'order_time': date.toISOString(),
-                        'options': {}
+                        name: data.title,
+                        qty: 1,
+                        store_id: store,
+                        product_id: product,
+                        comment: comment,
+                        order_time: order_time.toISOString(),
+                        options: {}
                     }),
                     headers: {
                         'Accept': 'application/json',
@@ -79,42 +83,26 @@ function Purchase({ data, storeName }) {
         }
     }
 
-    useEffect(() => {
-        if (typeof (cookies.get('session')) === "undefined") {
-            router.prefetch('/')
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: '請先登入',
-            }).then(() => {
-                router.push('/')
-            })
-        }
-        if (cookies.get('account_type') === '2') {
-            router.prefetch('/')
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: '此功能商家無法使用',
-            }).then(() => {
-                router.push('/')
-            })
-        }
-        // eslint-disable-next-line
-    }, [])
-
     return (
         <div id="page-wrapper">
             <Title title={`${storeName}-${data.name}`}
                 link={`/purchase/${store}/${product}`} />
-
+            <Authenticate seller="noSeller" />
             <section id="main">
                 <div className="container">
                     <div className="flex flex-col bg-blue-100 rounded-xl p-16 items-center md:justify-center md:flex-row md:items-center md:space-x-16">
-                        <img className="rounded-full"
-                            src={`${process.env.NEXT_PUBLIC_API_HOST}${data.image}`}
-                            alt={`${data.name} from ${storeName}`} />
-                        <div className="space-y-3">
+                        <div className="rounded-full">
+                            <div className="h-72 w-64 relative">
+                                <Image src={`${process.env.NEXT_PUBLIC_API_HOST}${data.image}`}
+                                    alt={`${data.name} from ${storeName}`}
+                                    layout="responsive"
+                                    height="100"
+                                    width="100"
+                                    className="rounded-3xl" />
+                            </div>
+                        </div>
+
+                        <div className="space-y-3 w-2/3">
                             <p className="text-4xl font-semibold">
                                 {data.name}
                             </p>
@@ -124,32 +112,35 @@ function Purchase({ data, storeName }) {
                             <p className="text-lg">
                                 建議售價：{data.price}元
                             </p>
-                            <textarea className="resize-none text-gray-700 font-light p-1 h-32 w-44 md:w-60"
+                            <textarea className="resize-none text-gray-700 font-light p-1 h-32 w-full md:w-60"
                                 placeholder="備註："
                                 value={comment}
                                 onChange={(e) => { setComment(e.target.value) }} />
                             <br />
                             <div>
-                                {loading ||
-                                    <button className="float-left p-2 rounded-2xl text-lg bg-pink-500 hover:bg-pink-700"
-                                        href={`/order/${store}`}>
-                                        回上一頁
-                                    </button>
+                                {loading ?
+                                    <div id="loading">
+                                        <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium text-white bg-red-600 cursor-not-allowed" disabled>
+                                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                            </svg>
+                                            請稍候
+                                        </button>
+                                    </div>
+                                    :
+                                    <div id="buttons">
+                                        <Link href={`/order/${store}`}>
+                                            <button className="float-left p-2 rounded-2xl text-lg bg-pink-500 hover:bg-pink-700">
+                                                回上一頁
+                                            </button>
+                                        </Link>
+                                        <button className="float-right p-2 rounded-2xl text-lg bg-blue-500 hover:bg-blue-700"
+                                            onClick={Send}>
+                                            立即購買
+                                        </button>
+                                    </div>
                                 }
-                                {loading ||
-                                    <button className="float-right p-2 rounded-2xl text-lg bg-blue-500 hover:bg-blue-700"
-                                        onClick={Send}>
-                                        立即購買
-                                    </button>
-                                }
-                                {loading &&
-                                    <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium text-white bg-red-600 cursor-not-allowed" disabled>
-                                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                                        </svg>
-                                        請稍候
-                                    </button>}
                             </div>
                         </div>
                     </div>

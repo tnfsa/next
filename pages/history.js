@@ -40,6 +40,8 @@ export default function History() {
             
             let countingOnly = []
 
+            console.log(response);
+
             for (let i = response.length - 1; i >= 0; --i) {
                 let date = new Date(response[i].order_time).getTime()
                 date = Math.ceil(date /= 86400000)
@@ -54,6 +56,9 @@ export default function History() {
                     delete response[i];
                 }
             }
+            console.log(countingOnly);
+            console.log(response);
+
             setToday(countingOnly);
             setTransaction(response)
             setLoading(false)
