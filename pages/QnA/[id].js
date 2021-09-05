@@ -38,7 +38,7 @@ export async function getStaticProps({params}){
 }
 
 export async function getStaticPaths() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_STATIC}docs/QnA.json`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_STATIC}/docs/QnA.json`)
     const response = await res.json()
     const paths = response.map(data=>(`/QnA/${data.link}`))
     return {
