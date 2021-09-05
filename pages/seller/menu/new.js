@@ -173,7 +173,7 @@ export default function NewMenu() {
 
                         <button className="bg-pink-500 hover:bg-ping-700 py-2 float-right px-5 md:float-none md:w-full"
                             type="submit">
-                            更新
+                            新增 
                         </button>
                     </form>
                 </div>

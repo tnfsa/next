@@ -2,7 +2,7 @@ import Title from '../../../components/Title'
 import Authenticate from '../../../components/authenticate'
 import { useRouter } from 'next/router'
 import Cookies from "universal-cookie";
-import { Button, Figure, Spinner } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 
@@ -20,12 +20,12 @@ export default function configMenu() {
 
     const storeId = cookies.get('store_id')
     const session = cookies.get('session')
-    async function Send() {
-        const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/products`
 
+    async function Send() {
+        const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/products/${uid}`
         try {
             const res = await fetch(url, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     "Accept": "application/json",
@@ -43,12 +43,12 @@ export default function configMenu() {
             console.log(response)
             await Swal.fire({
                 icon: 'success',
-                title: '上傳成功'
+                title: '更新成功'
             })
         } catch (err) {
             await Swal.fire({
                 icon: 'error',
-                title: '上傳錯誤',
+                title: '更新錯誤',
                 text: err
             })
 

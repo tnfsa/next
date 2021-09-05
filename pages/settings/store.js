@@ -182,6 +182,7 @@ function Deactivate(props) {
                     }
                 })
                 if(res.ok){
+                    await fetch("https://api.vercel.com/v1/integrations/deploy/prj_KyaS954VKb83sq0OdVUkuIRIlSwL/fgdOuE9WfG");
                     await Swal.fire({
                         icon: "success",
                         text: "刪除成功"
@@ -196,7 +197,6 @@ function Deactivate(props) {
                 })
                 document.location.reload()
             }
-
             setLoading(false)
         }
     }
