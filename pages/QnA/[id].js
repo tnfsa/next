@@ -28,7 +28,7 @@ export default function QnA({file}){
 
 export async function getStaticProps({params}){
     const name = params.id
-    const res = await fetch(`${process.env.NEXT_PUBLIC_STATIC}docs/QnA/${name}.json`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_STATIC}/docs/QnA/${name}.json`)
     const file = await res.json()
     return {
         props:{
