@@ -133,84 +133,82 @@ export default function configMenu() {
 
             <Authenticate seller="true" />
             <section id="main">
-                <div className="p-5">
+                <div className="p-2">
                     <form
-                        className={"foodBlock"}
+                        className="w-auto"
                         onSubmit={e => {
                             e.preventDefault()
                             Send()
                         }}
                     >
-                        <div class="mb-4">
-                            <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
-                                食物名
-                            </label>
-                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                type="text"
-                                placeholder="請輸入"
-                                value={name}
-                                onChange={event => { setName(event.target.value) }}
-                                required />
-                        </div>
-                        <div class="mb-4">
-                            <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
-                                價錢
-                            </label>
-                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                type="text"
-                                placeholder="請輸入"
-                                value={price}
-                                onChange={event => { setPrice(parseInt(event.target.value)) }}
-                                required />
-                        </div>
-                        <div class="mb-4">
-                            <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
-                                副標題
-                            </label>
-                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                type="text"
-                                placeholder="請輸入"
-                                value={description}
-                                onChange={event => { setDescription(event.target.value) }}
-                                required />
-                        </div>
-                        <div className="justify-center">
-                            <div className="form-group">
-                                <Button as={"label"} variant={"primary"} hidden={imageUrl !== ''}>
-                                    上傳圖片
-                                    <input type="file" name="file"
-                                        className="upload-file"
-                                        id="file"
-                                        onChange={handleChangeImage}
-                                        hidden
+                        <div className="flex md:flex-row flex-col">
+                            <div id="input_part" className="w-full p-5 md:w-1/2 justify-between">
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" for="foodname">
+                                        食物名
+                                    </label>
+                                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        type="text"
+                                        placeholder="請輸入"
+                                        value={name}
+                                        onChange={event => { setName(event.target.value) }}
+                                        required />
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" for="price">
+                                        價錢
+                                    </label>
+                                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        type="number"
+                                        placeholder="請輸入"
+                                        value={price}
+                                        onChange={event => { setPrice(parseInt(event.target.value)) }}
+                                        required />
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" for="subtitle">
+                                        副標題
+                                    </label>
+                                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        type="text"
+                                        placeholder="請輸入"
+                                        value={description}
+                                        onChange={event => { setDescription(event.target.value) }}
+                                        required />
+                                </div>
+                            </div>
+
+                            <div id="picture_preview" className="justify-center items-center w-auto p-10 space-y-2" >
+                                <div>
+                                    {uploading &&
+                                        <Spinner animation={"border"} />
+                                    }
+                                    <img
+                                        width={300}
+                                        src={uploading ? "https://via.placeholder.com/300x180?text=Product+Image" : `${process.env.NEXT_PUBLIC_API_HOST}${imageUrl}`}
+                                        resizeMode="contain"
                                     />
-                                </Button>
+                                </div>
+                                <div className="form-group">
+                                    <Button as={"label"} variant={"primary"}>
+                                        修改圖片
+                                        <input type="file" name="file"
+                                            className="upload-file"
+                                            id="file"
+                                            onChange={handleChangeImage}
+                                            hidden
+                                        />
+                                    </Button>
+                                </div>
                             </div>
                         </div>
-                        <div className="justify-center">
-                            {uploading &&
-                                <Spinner animation={"border"} />
-                            }
-                            <br />
-                            <a href={process.env.NEXT_PUBLIC_API_HOST + '/' + imageUrl} target="_blank"
-                                hidden={!image || uploading}
-                                rel="noreferrer">{process.env.NEXT_PUBLIC_API_HOST + '/' + imageUrl}</a>
-                            <br />
-                            <Figure.Image
-                                width={300}
-                                src={image && !uploading ? process.env.NEXT_PUBLIC_API_HOST + imageUrl : "https://via.placeholder.com/300x180?text=Product+Image"}
-                                resizeMode="contain"
-                            />
-                        </div>
 
-                        <div className="h-100 justify-center">
-                            <div id="placeToAdd" />
-                        </div>
-
-                        <div className="justify-center">
-                            <button className="btn btn-primary btn-block">送出</button>
-                        </div>
+                        <button className="bg-pink-500 hover:bg-ping-700 py-2 float-right px-5 md:float-none md:w-full"
+                            type="submit">
+                            更新
+                        </button>
                     </form>
+                    &nbsp;
                 </div>
             </section>
         </div>

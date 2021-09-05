@@ -11,6 +11,7 @@ import {useRouter} from 'next/router'
 export default function Personal() {
     const cookies = new Cookies()
     const storeId = cookies.get('store_id')
+    const session = cookies.get("session")
     return (
         <div id="page-wrapper">
             <Authenticate seller="true" />
@@ -25,11 +26,11 @@ export default function Personal() {
                         <div className="bg-white w-full px-5 divide-y-4 divide-solid">
                             {storeId ?
                                 <>
-                                    <UpdateStoreName />
-                                    <Deactivate />
+                                    {/*<UpdateStoreName />*/}
+                                    <Deactivate storeId={storeId} session={session} />
                                 </>
                                 :
-                                <ActivateStore />
+                                <ActivateStore session={session}/>
                             }
                         </div>
                     </div>
@@ -40,14 +41,11 @@ export default function Personal() {
     )
 }
 
-function ActivateStore() {
+function ActivateStore(props) {
     const [storeName, setStoreName] = useState('')
     const [loading, setLoading] = useState(false)
-    const cookies = new Cookies()
-    const router = useRouter()
 
     async function activate() {
-        console.log("running")
         if(storeName.length === 0){
             await Swal.fire({
                 icon: 'error',
@@ -65,7 +63,7 @@ function ActivateStore() {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${cookies.get('session')}`
+                    'Authorization': `Bearer ${props.session}`
                 }
             })
             if(res.ok){
@@ -159,13 +157,14 @@ function UpdateStoreName() {
     )
 }
 
-function Deactivate() {
+function Deactivate(props) {
     const [loading, setLoading] = useState(false)
 
     async function update() {
         const result = await Swal.fire({
             icon: 'warning',
             showCancelButton: true,
+            text: "此操作將無法復原",
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
             confirmButtonText: '確認',
@@ -174,8 +173,29 @@ function Deactivate() {
         })
         if (result.isConfirmed) {
             setLoading(true)
-
-            
+            try{
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${props.storeId}`,{
+                    method: 'DELETE',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${props.session}`
+                    }
+                })
+                if(res.ok){
+                    await Swal.fire({
+                        icon: "success",
+                        text: "刪除成功"
+                    })
+                    document.location.href = "/logout";
+                }
+            }catch(err){
+                await Swal.fire({
+                    icon: error,
+                    title: "錯誤",
+                    text: err
+                })
+                document.location.reload()
+            }
 
             setLoading(false)
         }
