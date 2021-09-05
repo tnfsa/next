@@ -33,7 +33,7 @@ export default function Privacy({data}){
 }
 
 export async function getStaticProps(context) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_STATIC}docs/privacy.json`,{
+    const res = await fetch(`${process.env.NEXT_PUBLIC_STATIC}/docs/privacy.json`,{
         method: 'GET',
         headers:{
             'Accept': 'application/json'

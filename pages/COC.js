@@ -33,7 +33,7 @@ function COC({data}){
     )
 }
 export async function getStaticProps(context) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_STATIC}docs/coc.json`,{
+    const res = await fetch(`${process.env.NEXT_PUBLIC_STATIC}/docs/coc.json`,{
         method: 'GET',
         headers:{
             'Accept': 'application/json'
