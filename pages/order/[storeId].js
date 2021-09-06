@@ -38,22 +38,25 @@ function Cell(props) {
         <div className="w-80 h-96 shadow-lg rounded-xl" key={item.name}>
             <div className="p-4 content-center">
                 <div className="h-40 w-64 relative">
-                    <Image src={typeof (item.image) === "undefined" ? "https://raw.sivir.pw/public/images/pic04.jpg" : `${process.env.NEXT_PUBLIC_API_HOST}${item.image}`}
+                <Image src={typeof (item.image) === "undefined" ? "https://raw.sivir.pw/public/images/pic04.jpg" : item.image.split(":")[0] !== "https" ? `${process.env.NEXT_PUBLIC_API_HOST}${item.image}`:item.image }
                         alt={`${item.name}的照片`}
                         layout="fill"
                         className="rounded-3xl" />
                 </div>
             </div>
-            <div className="p-10">
+            <div className="py-3 px-5">
                 <h1 className="font-semibold text-lg">
                     {item.name}
                 </h1>
                 <h1 className="h-12 font-medium text-gray-500">
                     {item.description}
                 </h1>
+                <h1 className="h-6 font-medium text-gray-500">
+                    售價：{item.price}
+                </h1>
                 <Link href={`/purchase/${storeId}/${item.id}`} passHref>
                     <a className="float-right bg-blue-400 rounded-xl px-2 py-1 text-xl font-bold text-black hover:text-white hover:bg-blue-600">
-                        Learn More 
+                        立即購買
                     </a>
                 </Link>
             </div>

@@ -23,6 +23,7 @@
     "notistack": "^1.0.10",
     "pusher-js": "^7.0.3",
     "qrcode.react": "^1.0.1",
+    "query-string": "^7.0.1",
     "react": "17.x",
     "react-bootstrap": "1.6.1",
     "react-detect-offline": "2.4.4",
