@@ -104,7 +104,7 @@ function Purchase({ data, storeName }) {
                     <div className="flex flex-col bg-blue-100 rounded-xl p-16 items-center md:justify-center md:flex-row md:items-center md:space-x-16">
                         <div className="rounded-full">
                             <div className="h-72 w-64 relative">
-                                <Image src={`${process.env.NEXT_PUBLIC_API_HOST}${data.image}`}
+                                <Image src={data.image.split(":")[0] !== "https" ? `${process.env.NEXT_PUBLIC_API_HOST}${data.image}` : data.image}
                                     alt={`${data.name} from ${storeName}`}
                                     layout="responsive"
                                     height="100"
@@ -113,7 +113,7 @@ function Purchase({ data, storeName }) {
                             </div>
                         </div>
 
-                        <div className="space-y-3 w-full md:w-2/3">
+                        <div className="space-y-3 w-auto md:w-2/3">
                             <p className="text-4xl font-semibold">
                                 {data.name}
                             </p>
