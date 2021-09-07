@@ -103,7 +103,7 @@ export default function Home({ qna, news }) {
                                 <header>
                                     <h2>關於這個網站</h2>
                                 </header>
-                                <a href="#" className="image featured"><img src={`${process.env.NEXT_PUBLIC_STATIC}images/pic10.jpg`} alt="" /></a>
+                                <a href="#" className="image featured"><img src={`${process.env.NEXT_PUBLIC_STATIC}/images/pic10.jpg`} alt="" /></a>
                                 <p>
                                     基於 HTML5 UP 的免費模板、 Vercel、Github 前端資源、TFCIS後端資源，所集結的訂餐網頁。<br />
                                     網頁前端<Link href="https://sivir.pw/">Milliax</Link>、網頁後端<Link

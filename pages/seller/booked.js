@@ -14,7 +14,7 @@ function Service() {
     const [loading, setLoading] = useState(true)
     const { enqueueSnackbar } = useSnackbar();
     const [data, setData] = useState({})
-    const [newOrder,setNewOrder] = useState(false);
+    const [newOrder, setNewOrder] = useState(false);
 
     const cookies = new Cookies()
     const session = cookies.get('session')
@@ -23,16 +23,12 @@ function Service() {
         /*init(); //websocket not working
         getMe();
         window.newMessage = false*/
-
         getData()
-        keepUpdate();
-    }, [])
-
-    function keepUpdate(){
-        setInterval(()=>{
+        const id = setInterval(() => {
             getData();
-        },5000)
-    }
+        }, 5000)
+        return () => clearInterval(id);
+    }, [])
 
     function init() {
         window.Pusher = require('pusher-js')
@@ -100,9 +96,9 @@ function Service() {
                 }
             })
             const response = await res.json()
-            window.data = response
+            //window.data = response
             console.log(response)
-            if(data === response){
+            if (data === response) {
                 setNewOrder = true;
             }
             setData(response)

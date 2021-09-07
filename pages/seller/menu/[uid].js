@@ -78,7 +78,7 @@ export default function configMenu() {
                 })
                 const response = await res.json()
                 console.log(response)
-                setImageUrl(response.result.data)
+                setImageUrl(`${process.env.NEXT_PUBLIC_API_HOST}${response.result.data}`)
 
             } catch (err) {
                 await Swal.fire({
@@ -142,9 +142,9 @@ export default function configMenu() {
                         }}
                     >
                         <div className="flex md:flex-row flex-col">
-                            <div id="input_part" className="w-full p-5 md:w-1/2 justify-between">
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" for="foodname">
+                            <div id="input_part" className="w-full p-5 md:w-1/2 justify-between" key="inputblocks">
+                                <div className="mb-4" key="input1">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2">
                                         食物名
                                     </label>
                                     <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -154,8 +154,8 @@ export default function configMenu() {
                                         onChange={event => { setName(event.target.value) }}
                                         required />
                                 </div>
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" for="price">
+                                <div className="mb-4" key="price">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2">
                                         價錢
                                     </label>
                                     <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -165,8 +165,8 @@ export default function configMenu() {
                                         onChange={event => { setPrice(parseInt(event.target.value)) }}
                                         required />
                                 </div>
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" for="subtitle">
+                                <div className="mb-4" key="subtitle">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2">
                                         副標題
                                     </label>
                                     <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -179,14 +179,14 @@ export default function configMenu() {
                             </div>
 
                             <div id="picture_preview" className="justify-center items-center w-auto p-10 space-y-2" >
-                                <div>
+                                <div key="images">
                                     {uploading &&
                                         <Spinner animation={"border"} />
                                     }
                                     <img
                                         width={300}
-                                        src={uploading ? "https://via.placeholder.com/300x180?text=Product+Image" : `${process.env.NEXT_PUBLIC_API_HOST}${imageUrl}`}
-                                        resizeMode="contain"
+                                        src={uploading ? "https://via.placeholder.com/300x180?text=Product+Image" : imageUrl}
+                                        
                                     />
                                 </div>
                                 <div className="form-group">

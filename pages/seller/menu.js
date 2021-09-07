@@ -5,10 +5,11 @@ import Cookies from 'universal-cookie'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router';
 import Link from 'next/link'
+//import { getDerivedStateFromError } from 'qrcode.react';
+
 //deprecated
 import { Card, Button } from 'react-bootstrap'
 import { LinearProgress } from '@material-ui/core'
-import { getDerivedStateFromError } from 'qrcode.react';
 
 export default function Service() {
     const [data, setData] = useState([])
@@ -110,7 +111,7 @@ export default function Service() {
             <Authenticate seller="true" />
             <section id="main">
                 <div className="p-5 space-y-5">
-                    <div className="bg-white p-2">
+                    <div className="bg-white p-2" key="links">
                         <ul className="flex flex-row items-start">
                             <div className="float-left">
                                 <li>
@@ -120,17 +121,17 @@ export default function Service() {
                                 </li>
                             </div>
                             <div className="float-right">
-                                <li classname="float-right">
+                                <li className="float-right">
                                     <button className=" bg-yellow-300 p-1 hover:bg-yellow-600 px-3 " onClick={() => { reRender() }}><label className="text-black">更新</label></button>
                                 </li>
                             </div>
                         </ul>
                     </div>
-                    <div id="addedFood">
+                    <div id="addedFood" key="foods">
                         {/*<div style={{ textAlign: "right" }}>剩下的宣傳點數： {quota}點</div>*/}
                         {
                             data && data.length > 0 && data.map((item) =>
-                                <Cell item={item} promote={promote} storeId={storeId} session={session} reload={() => { getData() }} />
+                                <Cell item={item} promote={promote} storeId={storeId} session={session} reload={() => { getData() }} key={item.id}/>
                             )
                         }
                     </div>
@@ -186,7 +187,7 @@ function Cell(props) {
     }
 
     return (
-        <Card key={item.id}>
+        <Card>
             {loading &&
                 <LinearProgress />
             }

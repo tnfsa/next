@@ -81,7 +81,7 @@ function Password() {
                 event.preventDefault();
                 update();
             }}>
-                <div class="mb-4">
+                <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
                         舊密碼
                     </label>
@@ -92,7 +92,7 @@ function Password() {
                         onChange={event => { setOld(event.target.value) }}
                         required />
                 </div>
-                <div class="mb-4">
+                <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
                         新密碼
                     </label>
@@ -103,7 +103,7 @@ function Password() {
                         onChange={event => { setNewPassword(event.target.value) }}
                         required />
                 </div>
-                <div class="mb-4">
+                <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
                         密碼確認
                     </label>

@@ -78,12 +78,12 @@ export default function Service() {
                 {loading &&
                     <center><Spinner animation={"border"} /></center>
                 }
-                <div className="container">
+                <div className="container" key="static">
                     <Row>
                         <Col>
                             <Card className={["m-3", "p-3"]}>
                                 <h5>您的店家ID為： <b>{storeId}</b></h5>
-                                <Card className={["m-3", "p-3"]}>
+                                <Card className={["m-3", "p-3"]} key="storage">
                                     <div hidden={!quota.exceed_quota}>
                                         儲存空間已滿
                                     </div>
@@ -92,7 +92,7 @@ export default function Service() {
                                         (已用{(((quota.total - (quota.remain / 1024000)) / quota.total) * 100).toFixed(2)}%)
                                     </div>
                                 </Card>
-                                <Card className={["m-3", "p-3"]}>
+                                <Card className={["m-3", "p-3"]} key="possessed">
                                     您擁有的方案列表
                                     <Table>
                                         <thead>
@@ -106,7 +106,7 @@ export default function Service() {
                                         </thead>
                                         <tbody>
                                             {subscriptions && subscriptions.map(item => (
-                                                <tr>
+                                                <tr key={`${item.plan.name}方案`}>
                                                     <td>{item.plan.name}</td>
                                                     <td>{item.plan.description}</td>
                                                     <td>{item.plan.disk_quota ?? 0} Mb</td>
@@ -133,7 +133,7 @@ export default function Service() {
                                         </thead>
                                         <tbody>
                                             {plans && plans.map(item => (
-                                                <tr>
+                                                <tr key={`${item.name}-buyable`}>
                                                     <td>{item.name}</td>
                                                     <td>{item.description}</td>
                                                     <td>{item.disk_quota ?? 0} Mb</td>
@@ -149,7 +149,9 @@ export default function Service() {
                             </Card>
                         </Col>
                     </Row>
-                    <span style={{ fontSize: '10px' }}>Contact: ryanchang1117@gmail.com</span>
+                    <div className="justify-center w-full items-center text-center">
+                        <span className="text-2xl">Contact: ryanchang1117@gmail.com</span>
+                    </div>
                 </div>
             </section>
         </div>

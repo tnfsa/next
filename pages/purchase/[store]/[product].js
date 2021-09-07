@@ -27,8 +27,9 @@ function Purchase({ data, storeName }) {
         if (window.confirm(confirmText)) {
             setLoading(true)
             try {
-                let now = new Date();
-                const order_time = date.addDays(now, 1);
+                const now = new Date();
+                let order_time = date.addDays(now, 1);
+                order_time = new Date()
                 console.log(order_time)
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/transactions`, {
                     method: 'POST',
@@ -71,13 +72,13 @@ function Purchase({ data, storeName }) {
                     })
                     await router.push('/')
                 } else {
-                    if(response.error === "OrderTime is not allowed."){
+                    if (response.error === "OrderTime is not allowed.") {
                         setLoading(false)
                         return await Swal.fire({
                             icon: 'error',
                             title: '非訂餐時間'
                         })
-                    }else{
+                    } else {
                         throw `訂購失敗，請再試一次`
                     }
                 }
@@ -131,10 +132,10 @@ function Purchase({ data, storeName }) {
                             <div>
                                 {loading ?
                                     <div id="loading" className="justify-center">
-                                        <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium text-white bg-red-600 cursor-not-allowed" disabled>
-                                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                        <button type="button" className="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium text-white bg-red-600 cursor-not-allowed" disabled>
+                                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                                             </svg>
                                             請稍候
                                         </button>

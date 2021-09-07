@@ -1,5 +1,5 @@
 import Title from "../components/Title";
-import { IconButton, LinearProgress, Box } from "@material-ui/core";
+import { IconButton, LinearProgress } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import { Delete } from "@material-ui/icons";
 import { useEffect, useState } from "react";

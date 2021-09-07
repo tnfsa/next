@@ -111,39 +111,9 @@ export default function NewMenu() {
                     >
                         <div className="flex md:flex-row flex-col">
                             <div id="input_part" className="w-full p-5 md:w-1/2 justify-between">
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" for="foodname">
-                                        食物名
-                                    </label>
-                                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        type="text"
-                                        placeholder="請輸入"
-                                        value={name}
-                                        onChange={event => { setName(event.target.value) }}
-                                        required />
-                                </div>
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" for="price">
-                                        價錢
-                                    </label>
-                                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        type="number"
-                                        placeholder="請輸入"
-                                        value={price}
-                                        onChange={event => { setPrice(parseInt(event.target.value)) }}
-                                        required />
-                                </div>
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" for="subtitle">
-                                        副標題
-                                    </label>
-                                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        type="text"
-                                        placeholder="請輸入"
-                                        value={description}
-                                        onChange={event => { setDescription(event.target.value) }}
-                                        required />
-                                </div>
+                                <Inputbox value={name} setValue={setName} type="text" name="商品名稱" key="inputName" />
+                                <Inputbox value={price} setValue={setPrice} name="價格" type="number" key="inputPrice" />
+                                <Inputbox value={description} setValue={setDescription} type="text" name="副標題" key="inputSubtitle" />
                             </div>
 
                             <div id="picture_preview" className="justify-center items-center w-auto p-10 space-y-2" >
@@ -154,7 +124,6 @@ export default function NewMenu() {
                                     <img
                                         width={300}
                                         src={uploading ? "https://via.placeholder.com/300x180?text=Product+Image" : imageUrl}
-                                        resizeMode="contain"
                                     />
                                 </div>
                                 <div className="form-group">
@@ -173,11 +142,27 @@ export default function NewMenu() {
 
                         <button className="bg-pink-500 hover:bg-ping-700 py-2 float-right px-5 md:float-none md:w-full"
                             type="submit">
-                            新增 
+                            新增
                         </button>
                     </form>
                 </div>
             </section>
+        </div>
+    )
+}
+
+function Inputbox(props) {
+    return (
+        <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+                {props.name}
+            </label>
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type={props.type}
+                placeholder="請輸入"
+                value={props.value}
+                onChange={event => { props.setValue(event.target.value) }}
+                required />
         </div>
     )
 }
