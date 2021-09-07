@@ -8,6 +8,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import LoggedInAlert from '../components/loggedinalert'
 import queryString from 'query-string'
+//import { InsertInvitation } from '@material-ui/icons'
 
 export default function Query() {
     const [query, setQuery] = useState('')
@@ -16,20 +17,21 @@ export default function Query() {
     const router = useRouter()
     
     useEffect(() => {
-        const queryParsed = queryString.parse(window.location.search)
-        setQuery(queryParsed.q);
-        getInitial()
+        getInitial();
     }, [])
 
     async function getInitial() {
         setLoading(true)
+        const queryParsed = queryString.parse(window.location.search)
+        const term = queryParsed.q
+        setQuery(term)
         try {
-            console.log(query)
+            console.log(`查詢: ${term}`)
             const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products/query`
             const res = await fetch(url, {
                 method: "POST",
                 body: JSON.stringify({
-                    term: query
+                    term
                 })
             })
             const fetched = await res.json()
@@ -60,7 +62,7 @@ export default function Query() {
                     <div className="p-10 flex flex-wrap items-stretch justify-center gap-x-8 gap-y-10">
                         {data.map(item => {
                             return (
-                                <Cell item={item} />
+                                <Cell item={item} key={item.name}/>
                             )
                         })}
                     </div>
@@ -73,10 +75,10 @@ export default function Query() {
 
 function Cell(props) {
     const item = props.item;
-    console.log(item);
+    console.log(item.name);
 
     return (
-        <div className="w-80 h-96 shadow-lg rounded-xl" key={item.name}>
+        <div className="w-80 h-96 shadow-lg rounded-xl">
             <div className="px-4 pt-4 content-center">
                 <div className="h-40 w-64 relative">
                     <Image src={typeof (item.image) === "undefined" ? "https://raw.sivir.pw/public/images/pic04.jpg" : item.image.split(":")[0] !== "https" ? `${process.env.NEXT_PUBLIC_API_HOST}${item.image}` : item.image}
