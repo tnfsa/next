@@ -18,6 +18,7 @@ export default function Query() {
     
     useEffect(() => {
         getInitial();
+        // eslint-disable-next-line
     }, [])
 
     async function getInitial() {

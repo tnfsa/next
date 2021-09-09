@@ -31,6 +31,7 @@ export default function Service() {
 
     useEffect(() => {
         getData()
+        // eslint-disable-next-line
     }, [])
 
     const getData = async () => {

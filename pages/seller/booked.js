@@ -28,6 +28,7 @@ function Service() {
             getData();
         }, 5000)
         return () => clearInterval(id);
+        // eslint-disable-next-line
     }, [])
 
     function init() {

@@ -4,9 +4,8 @@ import Cookies from 'universal-cookie'
 
 
 export default function Logout(){
-    const cookies = new Cookies()
-
     useEffect(()=>{
+        const cookies = new Cookies()
         cookies.remove('account_type')
         cookies.remove('session')
         cookies.remove('user_name')

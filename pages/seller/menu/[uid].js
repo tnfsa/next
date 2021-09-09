@@ -5,6 +5,7 @@ import Cookies from "universal-cookie";
 import { Button, Spinner } from "react-bootstrap";
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
+import Image from 'next/image'
 
 export default function ConfigMenu() {
     const cookies = new Cookies()
@@ -183,11 +184,14 @@ export default function ConfigMenu() {
                                     {uploading &&
                                         <Spinner animation={"border"} />
                                     }
-                                    <img
-                                        width={300}
-                                        src={uploading ? "https://via.placeholder.com/300x180?text=Product+Image" : imageUrl}
-                                        alt="photo"
-                                    />
+                                    <div className="p-4 content-center">
+                                        <div className="h-40 w-64 relative">
+                                            <Image src={uploading ? "https://via.placeholder.com/300x180?text=Product+Image" : imageUrl}
+                                                alt="photo"
+                                                layout="fill"
+                                                className="rounded-3xl" />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="form-group">
                                     <Button as={"label"} variant={"primary"}>

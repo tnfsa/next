@@ -15,6 +15,7 @@ export default function Authenticate(props) {
         } else {
             sellerAuth()
         }
+        // eslint-disable-next-line
     }, [])
 
     async function normalAuth() {

@@ -76,6 +76,7 @@ export default function History() {
         if (status !== "undefined") {
             Update()
         }
+        // eslint-disable-next-line
     }, [])
 
     

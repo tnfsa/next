@@ -3,6 +3,7 @@ import Authenticate from '../../../components/authenticate'
 import Cookies from 'universal-cookie'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 //deprecated
 import { Button, Spinner } from "react-bootstrap";
@@ -121,11 +122,15 @@ export default function NewMenu() {
                                     {uploading &&
                                         <Spinner animation={"border"} />
                                     }
-                                    <img
-                                        width={300}
-                                        src={uploading ? "https://via.placeholder.com/300x180?text=Product+Image" : imageUrl}
-                                        alt="photo"
-                                    />
+                                    <div className="p-4 content-center">
+                                        <div className="h-40 w-64 relative">
+                                            <Image src={uploading ? "https://via.placeholder.com/300x180?text=Product+Image" : imageUrl}
+                                                alt="photo"
+                                                layout="fill"
+                                                className="rounded-3xl" />
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div className="form-group">
                                     <Button as={"label"} variant={"primary"}>

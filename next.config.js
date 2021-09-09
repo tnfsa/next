@@ -13,7 +13,8 @@ module.exports = withPWA({
         domains: [
             "database.tnfsa.org",
             "lunchapi.hsuan.app",
-            "raw.sivir.pw"
+            "raw.sivir.pw",
+            "via.placeholder.com"
         ]
     }
 })
