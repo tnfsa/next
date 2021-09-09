@@ -21,7 +21,7 @@ function Restaurant({ data }) {
                         <div className="flex md:space-x-5 flex-col md:flex-row space-y-5 md:space-y-0 items-center justify-center">
                             {data.map((data) => {
                                 return (
-                                    <Cell data={data} />
+                                    <Cell data={data} key={data.name}/>
                                 )
                             })}
                         </div>
@@ -36,7 +36,7 @@ function Restaurant({ data }) {
 function Cell(props) {
     const data = props.data;
     return (
-        <div className="bg-white p-3 rounded-lg w-80" key={data.name}>
+        <div className="bg-white p-3 rounded-lg w-80">
             <div className="p-4 content-center">
                 <div className="h-40 w-64 relative">
                     <Image src={typeof (data.image) === "undefined" ? `${process.env.NEXT_PUBLIC_STATIC}/images/pic01.jpg` : `${process.env.NEXT_PUBLIC_API_HOST}${data.image}`}

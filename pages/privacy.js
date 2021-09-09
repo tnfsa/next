@@ -14,7 +14,7 @@ export default function Privacy({data}){
                 <div className="container">
                     {renderFile.map(file=>{
                         return(
-                            <p>
+                            <p key={file.title}>
                                 <h2 style={{fontSize: '3em',textAlign: 'center'}}>
                                     {file.title}
                                 </h2>

@@ -11,6 +11,7 @@ export default function LoggedInAlert() {
         }else{
             setLoggedIn(true)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

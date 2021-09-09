@@ -96,7 +96,7 @@ export default function History() {
                                     {/*Booked today*/}
                                     {highlight && today.map((item)=>{
                                         return(
-                                            <List item={item} update={Update} />
+                                            <List item={item} update={Update} key={item.id}/>
                                         )
                                     })}
                                 </div>
@@ -107,9 +107,9 @@ export default function History() {
                                 </div>
                         }
                         {
-                            transaction && transaction.length > 0 && transaction.map((item, index) => {
+                            transaction && transaction.length > 0 && transaction.map((item) => {
                                 return (
-                                    <List item={item} update={Update} />
+                                    <List item={item} update={Update} key={item.id}/>
                                 )
                             })
                         }
@@ -155,7 +155,7 @@ function List(props, update) {
     }
 
     return (
-        <div className="md:flex rounded-lg" key={item.id}>
+        <div className="md:flex rounded-lg">
             <LinearProgress hidden={!loading} />
             <div className="bg-white md:w-1/2 justify-center p-3 shadow-md space-y-2">
                 <div className="space-y-2 text">

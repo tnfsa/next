@@ -163,7 +163,7 @@ function Service() {
                                     </div>
                                 </Card.Body>
                             </Card>
-                        ) : <React.Fragment><br /><h2 style={{ textAlign: 'center' }}>查無資料</h2></React.Fragment>
+                        ) : <><br /><h2 className="text-center">查無資料</h2></>
                     }
                     <hr />
                 </div>

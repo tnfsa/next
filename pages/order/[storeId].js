@@ -20,7 +20,7 @@ function Order({ data, name }) {
                 <div className="p-10 flex flex-wrap items-stretch justify-center gap-x-8 gap-y-10">
                     {data.map(item => {
                         return (
-                            <Cell data={item} storeId={storeId}/>
+                            <Cell data={item} storeId={storeId} key={item.name}/>
                         )
                     })}
                     {Object.keys(data).length === 0 && <h1>無菜單</h1>}
@@ -35,7 +35,7 @@ function Cell(props) {
     const item = props.data;
     const storeId = props.storeId;
     return (
-        <div className="w-80 h-96 shadow-lg rounded-xl" key={item.name}>
+        <div className="w-80 h-96 shadow-lg rounded-xl">
             <div className="p-4 content-center">
                 <div className="h-40 w-64 relative">
                 <Image src={typeof (item.image) === "undefined" ? "https://raw.sivir.pw/public/images/pic04.jpg" : item.image.split(":")[0] !== "https" ? `${process.env.NEXT_PUBLIC_API_HOST}${item.image}`:item.image }

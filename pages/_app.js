@@ -2,9 +2,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/main.css'
 import '../styles/fontawesome-all.min.css'
 import '../styles/card.css'
-
 import '../styles/tailwind.css'
 
+import Script from 'next/script'
 import Nav from '../components/nav'
 
 import Head from 'next/head'
@@ -24,11 +24,11 @@ function MyApp({ Component, pageProps }) {
 
             <Component {...pageProps} />
 
-            <script src={`${process.env.NEXT_PUBLIC_STATIC}/js/jquery.min.js`} />
-            <script src={`${process.env.NEXT_PUBLIC_STATIC}/js/browser.min.js`} />
-            <script src={`${process.env.NEXT_PUBLIC_STATIC}/js/breakpoints.min.js`} />
-            <script src={`${process.env.NEXT_PUBLIC_STATIC}/js/util.js`} />
-            <script src={`${process.env.NEXT_PUBLIC_STATIC}/js/main.js`} />
+            <Script src={`${process.env.NEXT_PUBLIC_STATIC}/js/jquery.min.js`} />
+            <Script src={`${process.env.NEXT_PUBLIC_STATIC}/js/browser.min.js`} />
+            <Script src={`${process.env.NEXT_PUBLIC_STATIC}/js/breakpoints.min.js`} />
+            <Script src={`${process.env.NEXT_PUBLIC_STATIC}/js/util.js`} />
+            <Script src={`${process.env.NEXT_PUBLIC_STATIC}/js/main.js`} />
         </>
     )
 }

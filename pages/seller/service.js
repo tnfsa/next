@@ -60,13 +60,14 @@ export default function Service() {
 
     useEffect(() => {
         init()
+        async function init() {
+            setLoading(true)
+            await Promise.all([getDiskQuota(), getPlans(), getSubscriptions()])
+            setLoading(false)
+        }
+        // eslint-disable-next-line
     }, [])
 
-    async function init() {
-        setLoading(true)
-        await Promise.all([getDiskQuota(), getPlans(), getSubscriptions()])
-        setLoading(false)
-    }
 
     return (
         <div id="page-wrapper">

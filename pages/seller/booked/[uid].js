@@ -158,8 +158,8 @@ export default function DetailBooked() {
                 <div className="px-10 py-5 space-y-5">
                     {
                         data ? data.map((item) => (
-                            <div className="flex flex-row bg-white h-40 justify-between px-10 py-2">
-                                <div className="">
+                            <div className="flex flex-row bg-white h-40 justify-between px-10 py-2" key={item.id}>
+                                <div>
                                     <h1>交易編號：{item.id}</h1>
                                     <p>備註：{item.comment}</p>
                                 </div>
@@ -212,7 +212,7 @@ export default function DetailBooked() {
                                     </div>
                                 </div>
                             </div>
-                        )) : <React.Fragment><br /><h2 style={{ textAlign: 'center' }}>查無資料</h2></React.Fragment>
+                        )) : <><br /><h2 className="text-center">查無資料</h2></>
                     }
                 </div>
             </section>

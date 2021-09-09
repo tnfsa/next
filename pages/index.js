@@ -1,10 +1,10 @@
-import Nav from '../components/nav'
 import Link from 'next/link'
 import Spotlight from "../components/Home/Spotlight"
 import Footer from "../components/Footer"
 import { useState } from 'react'
 import LatestNews from '../components/Home/LatestNews'
 import Swal from 'sweetalert2'
+import Image from 'next/image'
 
 export default function Home({ qna, news }) {
     const [name, setName] = useState('')
@@ -69,7 +69,7 @@ export default function Home({ qna, news }) {
                     </div>
                     <footer>
                         <ul className="flex justify-center space-x-5">
-                            <li><a href="/login" className="button large">現在開始</a></li>
+                            <li><Link href="/login" passHref><a className="button large">現在開始</a></Link></li>
                             <li><a href="https://docs.tnfsa.org/" className="button alt large">了解更多</a></li>
                         </ul>
                     </footer>
@@ -103,7 +103,14 @@ export default function Home({ qna, news }) {
                                 <header>
                                     <h2>關於這個網站</h2>
                                 </header>
-                                <a href="#" className="image featured"><img src={`${process.env.NEXT_PUBLIC_STATIC}/images/pic10.jpg`} alt="" /></a>
+                                <div className="p-4 content-center">
+                                    <div className="h-40 w-64 relative">
+                                        <Image src={`${process.env.NEXT_PUBLIC_STATIC}/images/pic10.jpg`}
+                                            alt={`${item.name}的照片`}
+                                            layout="fill"
+                                            className="rounded-3xl" />
+                                    </div>
+                                </div>
                                 <p>
                                     基於 HTML5 UP 的免費模板、 Vercel、Github 前端資源、TFCIS後端資源，所集結的訂餐網頁。<br />
                                     網頁前端<Link href="https://sivir.pw/">Milliax</Link>、網頁後端<Link
@@ -113,7 +120,7 @@ export default function Home({ qna, news }) {
                                 </p>
                                 <footer>
                                     <ul className="actions">
-                                        <li><a href="/about" className="button">Find out more</a></li>
+                                        <li><Link href="/about" passHref><a className="button">Find out mor</a></Link></li>
                                     </ul>
                                 </footer>
                             </section>

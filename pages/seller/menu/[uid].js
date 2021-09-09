@@ -6,11 +6,11 @@ import { Button, Spinner } from "react-bootstrap";
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 
-export default function configMenu() {
+export default function ConfigMenu() {
     const cookies = new Cookies()
     const router = useRouter()
     const { uid } = router.query
-
+    
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [price, setPrice] = useState('')
@@ -186,7 +186,7 @@ export default function configMenu() {
                                     <img
                                         width={300}
                                         src={uploading ? "https://via.placeholder.com/300x180?text=Product+Image" : imageUrl}
-                                        
+                                        alt="photo"
                                     />
                                 </div>
                                 <div className="form-group">

@@ -57,6 +57,7 @@ export default function Navigation() {
             router.events.off('routerChangeStart', (event) => { handleRouteChange(event, "start") })
             router.events.off('routeChangeComplete', (event) => { handleRouteChange(event, "end") })
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router.events])
 
     function searchProduct() {

@@ -3,6 +3,7 @@ import Footer from '../../components/Footer'
 import SettingsMenu from '../../components/settings/sidebar'
 import { useState } from 'react'
 import Swal from 'sweetalert2'
+import {LinearProgress} from '@material-ui/core'
 
 export default function Personal() {
     return (
@@ -82,7 +83,7 @@ function Password() {
                 update();
             }}>
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
                         舊密碼
                     </label>
                     <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -93,7 +94,7 @@ function Password() {
                         required />
                 </div>
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
                         新密碼
                     </label>
                     <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -104,7 +105,7 @@ function Password() {
                         required />
                 </div>
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
                         密碼確認
                     </label>
                     <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"

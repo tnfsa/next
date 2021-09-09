@@ -124,6 +124,7 @@ export default function NewMenu() {
                                     <img
                                         width={300}
                                         src={uploading ? "https://via.placeholder.com/300x180?text=Product+Image" : imageUrl}
+                                        alt="photo"
                                     />
                                 </div>
                                 <div className="form-group">
