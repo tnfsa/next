@@ -157,7 +157,7 @@ export default function Home({ qna, news }) {
                                                         style={{ 'resize': 'none', 'height': '10em' }} />
                                                 </label>
                                                 <div>
-                                                    <button className="rounded-full p-2 bg-blue-500 hover:bg-blue-700 float-right"
+                                                    <button className="rounded-full p-2 bg-blue-500 hover:bg-blue-700 float-right px-4"
                                                         type="submit">Send</button>
                                                 </div>
                                             </div>
