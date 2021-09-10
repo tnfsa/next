@@ -84,12 +84,12 @@ export default function Navigation() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                        <Link href="/restaurant" passHref><Nav.Link>餐廳</Nav.Link></Link>
+                        <Link href="/restaurant" passHref><Nav.Link className="no-underline">餐廳</Nav.Link></Link>
                         {accountType === "2" && 
                         <NavDropdown title="商家管理" id="basic-nav-dropdown">
-                            <Link href="/seller/menu" passHref><NavDropdown.Item>菜單設定</NavDropdown.Item></Link>
-                            <Link href="/seller/service" passHref><NavDropdown.Item>客服服務</NavDropdown.Item></Link>
-                            <Link href="/seller/booked" passHref><NavDropdown.Item>出餐</NavDropdown.Item></Link>
+                            <Link href="/seller/menu" passHref><NavDropdown.Item className="no-underline">菜單設定</NavDropdown.Item></Link>
+                            <Link href="/seller/service" passHref><NavDropdown.Item className="no-underline">客服服務</NavDropdown.Item></Link>
+                            <Link href="/seller/booked" passHref><NavDropdown.Item className="no-underline">出餐</NavDropdown.Item></Link>
                         </NavDropdown>}
                         <NavDropdown title="外部連結" id="basic-nav-dropdown">
                             <NavDropdown.Item href="https://sites.google.com/view/tnfshsu/"
@@ -112,7 +112,7 @@ export default function Navigation() {
                         </form>
                     </Nav>
                     {isLoggedIn ?
-                        <NavDropdown title={`嗨~ ${cookies.get('user_name')}`} id="basic-nav-dropdown" style={{ textDecoration: "none" }}>
+                        <NavDropdown title={`嗨~ ${cookies.get('user_name')}`} id="basic-nav-dropdown">
                             <Link href="/history" passHref><NavDropdown.Item>歷史紀錄</NavDropdown.Item></Link>
                             <Link href="/settings" passHref><NavDropdown.Item>設定</NavDropdown.Item></Link>
                             <Link href="/logout" passHref><NavDropdown.Item>登出</NavDropdown.Item></Link>

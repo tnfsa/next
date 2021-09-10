@@ -8,7 +8,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import LoggedInAlert from '../components/loggedinalert'
 import queryString from 'query-string'
-//import { InsertInvitation } from '@material-ui/icons'
 
 export default function Query() {
     const [query, setQuery] = useState('')

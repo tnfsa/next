@@ -106,7 +106,7 @@ export default function Home({ qna, news }) {
                                 <div className="p-4 content-center">
                                     <div className="h-40 w-64 relative">
                                         <Image src={`${process.env.NEXT_PUBLIC_STATIC}/images/pic10.jpg`}
-                                            alt={`${item.name}的照片`}
+                                            alt="帥氣的照片"
                                             layout="fill"
                                             className="rounded-3xl" />
                                     </div>

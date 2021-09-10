@@ -6,10 +6,10 @@ import Swal from 'sweetalert2'
 import { useRouter } from 'next/router';
 import Link from 'next/link'
 //import { getDerivedStateFromError } from 'qrcode.react';
+import { LinearProgress } from '@material-ui/core'
 
 //deprecated
 import { Card, Button } from 'react-bootstrap'
-import { LinearProgress } from '@material-ui/core'
 
 export default function Service() {
     const [data, setData] = useState([])

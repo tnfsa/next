@@ -1,18 +1,26 @@
 import Title from "../../../components/Title";
 import Footer from '../../../components/Footer'
 import { useRouter } from "next/router";
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 import Cookies from 'universal-cookie'
 import * as ga from '../../../components/GA'
 import Link from 'next/link'
 import Authenticate from "../../../components/authenticate";
 import Image from 'next/image'
-import date from 'date-and-time'
+import CustomTimePicker from "../../../components/time/CustomTimePicker";
+import CustomDatePicker from "../../../components/time/CustomDatePicker";
+import moment from "moment"
 
 function Purchase({ data, storeName }) {
     const [comment, setComment] = useState('')
     const [loading, setLoading] = useState(false)
+    let a = Date.now()
+    a = Math.ceil(a / 86400000) + 1;
+    a *= 86400000;
+    a += 16200000;
+    const today = a;
+    const [order_time, setOrderTime] = useState(new Date(a));
     const router = useRouter()
     const { store, product } = router.query
     const cookies = new Cookies()
@@ -27,9 +35,6 @@ function Purchase({ data, storeName }) {
         if (window.confirm(confirmText)) {
             setLoading(true)
             try {
-                const now = new Date();
-                let order_time = date.addDays(now, 1);
-                order_time = new Date()
                 console.log(order_time)
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/transactions`, {
                     method: 'POST',
@@ -95,13 +100,17 @@ function Purchase({ data, storeName }) {
         }
     }
 
+    useEffect(() => {
+        console.log(order_time)
+    }, [])
+
     return (
         <div id="page-wrapper">
             <Title title={`${storeName}-${data.name}`}
                 link={`/purchase/${store}/${product}`} />
             <Authenticate seller="noSeller" />
             <section id="main">
-                <div className="container">
+                <div className="px-12 py-2">
                     <div className="flex flex-col bg-blue-100 rounded-xl p-16 items-center md:justify-center md:flex-row md:items-center md:space-x-16">
                         <div className="rounded-full">
                             <div className="h-72 w-64 relative">
@@ -113,7 +122,6 @@ function Purchase({ data, storeName }) {
                                     className="rounded-3xl" />
                             </div>
                         </div>
-
                         <div className="space-y-3 w-auto md:w-2/3">
                             <p className="text-4xl font-semibold">
                                 {data.name}
@@ -124,12 +132,57 @@ function Purchase({ data, storeName }) {
                             <p className="text-lg">
                                 建議售價：{data.price}元
                             </p>
+                            {/*Date and time pickers*/}
+                            <CustomDatePicker
+                                value={order_time}
+                                label="取餐日期"
+                                setSelectedTime={time => {
+                                    const maxTime = today + 86400000 * 6;
+                                    const date = new Date(time)
+                                    const nowTime = date.getTime();
+                                    if (today <= nowTime && maxTime >= nowTime) {
+                                        setOrderTime(time);
+                                    } else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "請選擇日期時間",
+                                            text: "可選擇日期為隔天至七天內"
+                                        })
+                                    }
+                                }}
+                            />
+                            <br />
+                            <CustomTimePicker
+                                label="取餐時間"
+                                value={order_time}
+                                setSelectedTime={time => {
+                                    const date = new Date(time);
+                                    const nowTime = (date.getTime() + 28800000) % 86400000;
+                                    const maxTime = 45000000;
+                                    const minTime = 36000000;
+                                    console.log(nowTime)
+                                    console.log(maxTime)
+                                    console.log(minTime)
+                                    if (minTime <= nowTime && maxTime >= nowTime) {
+                                        setOrderTime(time);
+                                    } else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "請選擇正確時間",
+                                            text: "可選擇時間為10點至12點30分"
+                                        })
+                                    }
+                                }}
+                            />
+
+                            <br />
+
                             <textarea className="resize-none text-gray-700 font-light p-1 h-32 w-full md:w-60"
                                 placeholder="備註："
                                 value={comment}
                                 onChange={(e) => { setComment(e.target.value) }} />
                             <br />
-                            <div>
+                            <div id="buttons">
                                 {loading ?
                                     <div id="loading" className="justify-center">
                                         <button type="button" className="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium text-white bg-red-600 cursor-not-allowed" disabled>
@@ -144,13 +197,13 @@ function Purchase({ data, storeName }) {
                                     <div id="buttons" className="flex justify-between">
                                         <div>
                                             <Link href={`/order/${store}`} passHref>
-                                                <button className=" p-2 rounded-2xl text-lg bg-pink-500 hover:bg-pink-700">
+                                                <button className="p-2 rounded-2xl text-lg bg-pink-500 hover:bg-pink-700 font-bold text-white">
                                                     回上一頁
                                                 </button>
                                             </Link>
                                         </div>
                                         <div>
-                                            <button className="p-2 rounded-2xl text-lg bg-blue-500 hover:bg-blue-700"
+                                            <button className="p-2 rounded-2xl text-lg bg-blue-500 hover:bg-blue-700 font-bold text-white"
                                                 onClick={Send}>
                                                 立即購買
                                             </button>

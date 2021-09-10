@@ -6,7 +6,6 @@ import { LinearProgress } from '@material-ui/core'
 import Cookies from 'universal-cookie'
 import Authenticate from '../../components/authenticate'
 import Swal from 'sweetalert2'
-import {useRouter} from 'next/router'
 
 export default function Personal() {
     const cookies = new Cookies()
