@@ -36,7 +36,8 @@ export default function Authenticate(props) {
                 icon: 'error',
                 title: '請先登入'
             })
-            await router.push('/')
+            cookies.set("redirect",props.redirect || "/")
+            await router.push('/login')
         }
         if (cookies.get('account_type') === '2') {
             router.prefetch('/')

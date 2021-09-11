@@ -36,7 +36,9 @@ export default function GoogleOAuth() {
                 icon: 'success',
                 title: '登入成功'
             })
-            await router.push('/')
+            const location = cookies.get("redirect")
+            
+            await router.push(location || "/")
         } catch (err) {
             setLoading(false)
             console.log(`Failed Login: ${err}`)

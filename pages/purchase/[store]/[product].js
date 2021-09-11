@@ -108,7 +108,7 @@ function Purchase({ data, storeName }) {
         <div id="page-wrapper">
             <Title title={`${storeName}-${data.name}`}
                 link={`/purchase/${store}/${product}`} />
-            <Authenticate seller="noSeller" />
+            <Authenticate seller="noSeller" redirect={`/purchase/${store}/${product}`}/>
             <section id="main">
                 <div className="px-12 py-2">
                     <div className="flex flex-col bg-blue-100 rounded-xl p-16 items-center md:justify-center md:flex-row md:items-center md:space-x-16">
@@ -122,7 +122,7 @@ function Purchase({ data, storeName }) {
                                     className="rounded-3xl" />
                             </div>
                         </div>
-                        <div className="space-y-3 w-auto md:w-2/3">
+                        <div className="space-y-3 w-full md:w-1/3">
                             <p className="text-4xl font-semibold">
                                 {data.name}
                             </p>
@@ -197,13 +197,13 @@ function Purchase({ data, storeName }) {
                                     <div id="buttons" className="flex justify-between">
                                         <div>
                                             <Link href={`/order/${store}`} passHref>
-                                                <button className="p-2 rounded-2xl text-lg bg-pink-500 hover:bg-pink-700 font-bold text-white">
+                                                <button className="p-2 rounded-2xl text-lg bg-pink-500 hover:bg-pink-700 font-bold text-white inline-block">
                                                     回上一頁
                                                 </button>
                                             </Link>
                                         </div>
                                         <div>
-                                            <button className="p-2 rounded-2xl text-lg bg-blue-500 hover:bg-blue-700 font-bold text-white"
+                                            <button className="p-2 rounded-2xl text-lg bg-blue-500 hover:bg-blue-700 font-bold text-white inline-block"
                                                 onClick={Send}>
                                                 立即購買
                                             </button>

@@ -52,7 +52,7 @@ function Cell(props) {
                 </header>
                 <footer>
                     <ul className="actions">
-                        <li><Link href={`/order/${data.id}`} passHref><a className="button">立即查看</a></Link></li>
+                        <li><Link href={`/order/${data.id}`} passHref><a className="bg-red-700 hover:bg-red-800 text-3xl px-4 py-2 text-center align-middle inline-block no-underline rounded-md outline-none text-white font-bold">立即查看</a></Link></li>
                     </ul>
                 </footer>
             </div>

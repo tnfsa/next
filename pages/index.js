@@ -7,36 +7,6 @@ import Swal from 'sweetalert2'
 import Image from 'next/image'
 
 export default function Home({ qna, news }) {
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [question, setQuestion] = useState('')
-
-    async function Send() {
-        //sending Request to google form
-        try {
-            const query = `&entry.123965645=${name}&entry.1905774359=${email}&entry.639825153=${question}&entry.1815346233=${document.location.href}&submit=SUBMIT`
-            const formURL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdtQnI-HG1ytIWvtbDhK_VNYO2-3ZFcZNo-AKGbYHYqHhTidw/formResponse"
-            const url = encodeURI(`${formURL}?${query}`)
-            await fetch(url, {
-                method: 'POST',
-                mode: 'no-cors'
-            })
-            // good
-            await Swal.fire({
-                icon: 'success',
-                title: '傳送成功'
-            })
-            setName('')
-            setEmail('')
-            setQuestion('')
-        } catch (err) {
-            await Swal.fire({
-                icon: 'error',
-                title: '傳送失敗',
-                text: err
-            })
-        }
-    }
     return (
         <div id="page-wrapper">
             <section id="header">
@@ -69,8 +39,8 @@ export default function Home({ qna, news }) {
                     </div>
                     <footer>
                         <ul className="flex justify-center space-x-5">
-                            <li><Link href="/login" passHref><a className="button large">現在開始</a></Link></li>
-                            <li><a href="https://docs.tnfsa.org/" className="button alt large">了解更多</a></li>
+                            <li><Link href="/login" passHref><a className="bg-red-700 hover:bg-red-800 text-3xl px-4 py-2 text-center align-middle inline-block no-underline rounded-md outline-none text-white font-bold">現在開始</a></Link></li>
+                            <li><a href="https://docs.tnfsa.org/" className="bg-green-700 hover:bg-green-800 text-3xl px-4 py-2 text-center inline-block no-underline rounded-md outline-none text-white font-bold">了解更多</a></li>
                         </ul>
                     </footer>
                 </section>
@@ -120,59 +90,14 @@ export default function Home({ qna, news }) {
                                 </p>
                                 <footer>
                                     <ul className="actions">
-                                        <li><Link href="/about" passHref><a className="button">Find out mor</a></Link></li>
+                                        <li><Link href="/about" passHref><a className="bg-red-700 hover:bg-red-800 text-3xl px-4 py-2 text-center align-middle inline-block no-underline rounded-md outline-none text-white font-bold">Find out more</a></Link></li>
                                     </ul>
                                 </footer>
                             </section>
                         </div>
                     </div>
                     <div className="flex flex-col md:flex-row items-center md:items-start p-1">
-                        <div className="w-2/3 md:w-1/3">
-                            <section>
-                                <header>
-                                    <h2>回饋表單</h2>
-                                </header>
-                                <ul className="divided p-1">
-                                    <form onSubmit={e => {
-                                        e.preventDefault()
-                                        Send()
-                                    }}>
-                                        <article>
-                                            <div className="p-1">
-                                                <label className="input"><h3>暱稱：</h3>
-                                                    <input className="input__field"
-                                                        type="text"
-                                                        placeholder="輸入你的暱稱"
-                                                        value={name}
-                                                        onChange={e => { setName(e.target.value) }}
-                                                        required />
-                                                </label>
-                                                <label className="input"><h3>電子郵件：</h3>
-                                                    <input className="input__field"
-                                                        type="email"
-                                                        placeholder="輸入你的電子郵件(回覆用)"
-                                                        value={email}
-                                                        onChange={e => { setEmail(e.target.value) }}
-                                                        required />
-                                                </label>
-                                                <label className="input"><h3>問題：</h3>
-                                                    <textarea className="input__field"
-                                                        placeholder="你遇到的問題"
-                                                        value={question}
-                                                        onChange={(e) => { setQuestion(e.target.value) }}
-                                                        required
-                                                        style={{ 'resize': 'none', 'height': '10em' }} />
-                                                </label>
-                                                <div>
-                                                    <button className="rounded-full p-2 bg-blue-500 hover:bg-blue-700 float-right px-4"
-                                                        type="submit">Send</button>
-                                                </div>
-                                            </div>
-                                        </article>
-                                    </form>
-                                </ul>
-                            </section>
-                        </div>
+                        <FeedbackForm />
                         <div className="w-2/3 md:w-1/3 p-1">
                             <section>
                                 <header>
@@ -229,6 +154,89 @@ export default function Home({ qna, news }) {
         </div>
     )
 }
+
+function FeedbackForm() {
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [question, setQuestion] = useState('')
+
+    async function Send() {
+        //sending Request to google form
+        try {
+            const query = `&entry.123965645=${name}&entry.1905774359=${email}&entry.639825153=${question}&entry.1815346233=${document.location.href}&submit=SUBMIT`
+            const formURL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdtQnI-HG1ytIWvtbDhK_VNYO2-3ZFcZNo-AKGbYHYqHhTidw/formResponse"
+            const url = encodeURI(`${formURL}?${query}`)
+            await fetch(url, {
+                method: 'POST',
+                mode: 'no-cors'
+            })
+            // good
+            await Swal.fire({
+                icon: 'success',
+                title: '傳送成功'
+            })
+            setName('')
+            setEmail('')
+            setQuestion('')
+        } catch (err) {
+            await Swal.fire({
+                icon: 'error',
+                title: '傳送失敗',
+                text: err
+            })
+        }
+    }
+
+    return (
+        <div className="w-2/3 md:w-1/3">
+            <section>
+                <header>
+                    <h2>回饋表單</h2>
+                </header>
+                <ul className="divided p-1">
+                    <form onSubmit={e => {
+                        e.preventDefault()
+                        Send()
+                    }}>
+                        <article>
+                            <div className="p-1">
+                                <label className="input"><h3>暱稱：</h3>
+                                    <input className="input__field"
+                                        type="text"
+                                        placeholder="輸入你的暱稱"
+                                        value={name}
+                                        onChange={e => { setName(e.target.value) }}
+                                        required />
+                                </label>
+                                <label className="input"><h3>電子郵件：</h3>
+                                    <input className="input__field"
+                                        type="email"
+                                        placeholder="輸入你的電子郵件(回覆用)"
+                                        value={email}
+                                        onChange={e => { setEmail(e.target.value) }}
+                                        required />
+                                </label>
+                                <label className="input"><h3>問題：</h3>
+                                    <textarea className="input__field"
+                                        placeholder="你遇到的問題"
+                                        value={question}
+                                        onChange={(e) => { setQuestion(e.target.value) }}
+                                        required
+                                        style={{ 'resize': 'none', 'height': '10em' }} />
+                                </label>
+                                <div>
+                                    <button className="rounded-xl p-2 bg-blue-500 hover:bg-blue-700 float-right px-4 text-white font-bold text-xl inline-block"
+                                        type="submit">Send</button>
+                                </div>
+                            </div>
+                        </article>
+                    </form>
+                </ul>
+            </section>
+        </div>
+    )
+}
+
 
 export async function getStaticProps() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_STATIC}/docs/news.json`)
