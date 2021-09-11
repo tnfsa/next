@@ -58,7 +58,7 @@ export default function GoogleOAuth() {
                     hostedDomain={process.env.NEXT_PUBLIC_GOOGLE_ACCOUNT_SUFFIX}
                     cookiePolicy={'single_host_origin'}
                     render={renderProps => (
-                        <button className="bg-pink-500 hover:bg-ping-700 p-2 disabled:opacity-50"
+                        <button className="bg-pink-500 hover:bg-ping-700 p-2 disabled:opacity-50 inline-block rounded-md text-black font-bold"
                             disabled={loading}
                             onClick={renderProps.onClick}>
                             利用google登入

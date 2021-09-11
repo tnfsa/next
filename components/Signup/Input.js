@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useRouter } from "next/router";
-import Cookies from 'universal-cookie'
 import Swal from 'sweetalert2';
 
 export default function Input() {
@@ -11,7 +10,7 @@ export default function Input() {
     const [passwordConfirm, setPasswordConfirm] = useState('')
     const [username, setUserName] = useState('')
     const router = useRouter()
-    const cookies = new Cookies()
+
     async function Send() {
         if (password !== passwordConfirm) {
             await Swal.fire({
@@ -119,7 +118,7 @@ export default function Input() {
                         </svg>
                         請稍候
                     </button>}
-                {loading || <button className="bg-pink-500 hover:bg-ping-700 p-2 float-right"
+                {loading || <button className="bg-pink-500 hover:bg-ping-700 p-2 float-right inline-block rounded-md text-black font-bold"
                     type="submit">
                     送出
                 </button>}

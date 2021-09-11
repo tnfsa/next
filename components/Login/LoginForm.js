@@ -120,7 +120,7 @@ export default function LoginForm() {
                             }}
                             required />
                     </label>
-                    <button className="bg-pink-500 hover:bg-ping-700 p-2 float-right"
+                    <button className="bg-pink-500 hover:bg-ping-700 py-2 px-4 float-right inline-block rounded-md text-black font-bold"
                         type="submit">
                         送出
                     </button>
