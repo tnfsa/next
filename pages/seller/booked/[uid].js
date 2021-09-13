@@ -200,7 +200,7 @@ export default function DetailBooked() {
                                         </Button>
                                     </div>
                                     <div className="flex space-x-2">
-                                        <h1 className="">拒收</h1>
+                                        <h1 className="">未取餐</h1>
                                         <Button
                                             variant="contained"
                                             color={item.status === 'NOTAKEN' ? 'secondary' : ''}

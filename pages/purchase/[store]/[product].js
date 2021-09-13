@@ -77,14 +77,13 @@ function Purchase({ data, storeName }) {
                     })
                     await router.push('/')
                 } else {
-                    if (response.error === "OrderTime is not allowed.") {
-                        setLoading(false)
-                        return await Swal.fire({
-                            icon: 'error',
-                            title: '非訂餐時間'
-                        })
-                    } else {
-                        throw `訂購失敗，請再試一次`
+                    switch(response.error.status){
+                        case "TRANSACTION/ORDER-TIME":
+                            throw "訂餐時間錯誤";
+                        case "TRANSACTION/BANNED":
+                            throw "哈哈你被停權了";
+                        default:
+                            throw "訂購失敗，下一次會更好？";
                     }
                 }
             } catch (err) {
@@ -108,7 +107,7 @@ function Purchase({ data, storeName }) {
         <div id="page-wrapper">
             <Title title={`${storeName}-${data.name}`}
                 link={`/purchase/${store}/${product}`} />
-            <Authenticate seller="noSeller" redirect={`/purchase/${store}/${product}`}/>
+            <Authenticate seller="noSeller" redirect={`/purchase/${store}/${product}`} />
             <section id="main">
                 <div className="px-12 py-2">
                     <div className="flex flex-col bg-blue-100 rounded-xl p-16 items-center md:justify-center md:flex-row md:items-center md:space-x-16">
