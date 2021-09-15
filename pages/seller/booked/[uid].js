@@ -83,34 +83,6 @@ export default function DetailBooked() {
         }
     }
 
-    function finished(transaction_id) {
-        const url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/transactions/' + transaction_id
-        sendStatus(url, 'OK').then(() => {
-            setChanges(changes + 1)
-        })
-    }
-
-    function preparing(transaction_id) {
-        const url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/transactions/' + transaction_id
-        sendStatus(url, 'PREPARE').then(() => {
-            setChanges(changes + 1)
-        })
-    }
-
-    function taken(transaction_id) {
-        const url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/transactions/' + transaction_id
-        sendStatus(url, 'DONE').then(() => {
-            setChanges(changes + 1)
-        })
-    }
-
-    function notaken(transaction_id) {
-        const url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/transactions/' + transaction_id
-        sendStatus(url, 'NOTAKEN').then(() => {
-            setChanges(changes + 1)
-        })
-    }
-
     const sendStatus = async (url, status) => {
         let flag = null
         try {
@@ -158,64 +130,122 @@ export default function DetailBooked() {
                 <div className="px-10 py-5 space-y-5">
                     {
                         data ? data.map((item) => (
-                            <div className="flex flex-row bg-white h-40 justify-between px-10 py-2" key={item.id}>
+                            <div className="flex flex-row bg-white h-40 justify-between px-2 md:px-10 py-2" key={item.id}>
                                 <div>
                                     <h1>交易編號：{item.id}</h1>
-                                    <p>備註：{item.comment}</p>
+                                    <h1>訂購數量：{item.qty}</h1>
+                                    <h1>金額：{item.total}</h1>
+                                    <h1>留言：{typeof (item.comment) === "undefined" || item.comment === null ? '' : (item.comment.length > 50 ? item.comment.slice(0, 50) + ' ...' : item.comment)}</h1>
+                                    <h1>購買日期：{new Date(item.updated_at).toLocaleString('zh-TW')}</h1>
                                 </div>
                                 <div className="flex flex-col self-center space-y-1">
-                                    <div className="flex space-x-2">
-                                        <h1 className="">準備中</h1>
-                                        <Button
-                                            variant="contained"
-                                            color={item.status === 'PREPARE' ? 'secondary' : ''}
-                                            className="space-x-5"
-                                            onClick={() => {
-                                                preparing(item.id)
-                                            }}
-                                        >
-                                            <FontAwesomeIcon icon={faTimes} />
-                                        </Button>
-                                    </div>
-                                    <div className="flex space-x-2">
-                                        <h1 className="">可取餐</h1>
-                                        <Button
-                                            variant="contained"
-                                            color={item.status === 'OK' ? 'primary' : ''}
-                                            onClick={() => {
-                                                finished(item.id)
-                                            }}>
-                                            <FontAwesomeIcon icon={faCheck} />
-                                        </Button>
-                                    </div>
-                                    <div className="flex space-x-2">
-                                        <h1 className="">已取餐</h1>
-                                        <Button
-                                            variant="contained"
-                                            color={item.status === 'DONE' ? 'primary' : ''}
-                                            onClick={() => {
-                                                taken(item.id)
-                                            }}>
-                                            <FontAwesomeIcon icon={faUserCheck} />
-                                        </Button>
-                                    </div>
-                                    <div className="flex space-x-2">
-                                        <h1 className="">未取餐</h1>
-                                        <Button
-                                            variant="contained"
-                                            color={item.status === 'NOTAKEN' ? 'secondary' : ''}
-                                            onClick={() => {
-                                                notaken(item.id)
-                                            }}>
-                                            <FontAwesomeIcon icon={faUserSlash} />
-                                        </Button>
-                                    </div>
+                                    <CustomButton1 sendStatus={sendStatus} item={item} />
+
+                                    <CustomButton2 sendStatus={sendStatus} item={item} />
+
+                                    <CustomButton3 sendStatus={sendStatus} item={item} />
+
+                                    <CustomButton4 sendStatus={sendStatus} item={item} />
                                 </div>
                             </div>
                         )) : <><br /><h2 className="text-center">查無資料</h2></>
                     }
                 </div>
-            </section>
+            </section >
+        </div >
+    )
+}
+
+function CustomButton1(props) {
+    const item = props.item;
+    function preparing(transaction_id) {
+        const url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/transactions/' + transaction_id
+        props.sendStatus(url, 'PREPARE').then(() => {
+            setChanges(changes + 1)
+        })
+    }
+    return (
+        <div className="flex space-x-2">
+            <h1 className="">準備中</h1>
+            <Button
+                variant="contained"
+                color={item.status === 'PREPARE' ? 'secondary' : ''}
+                className="space-x-5"
+                onClick={() => {
+                    preparing(item.id)
+                }}
+            >
+                <FontAwesomeIcon icon={faTimes} />
+            </Button>
+        </div>
+    )
+}
+
+function CustomButton2(props) {
+    const item = props.item;
+    function finished(transaction_id) {
+        const url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/transactions/' + transaction_id
+        props.sendStatus(url, 'OK').then(() => {
+            setChanges(changes + 1)
+        })
+    }
+    return (
+        <div className="flex space-x-2">
+            <h1 className="">可取餐</h1>
+            <Button
+                variant="contained"
+                color={item.status === 'OK' ? 'primary' : ''}
+                onClick={() => {
+                    finished(item.id)
+                }}>
+                <FontAwesomeIcon icon={faCheck} />
+            </Button>
+        </div>
+    )
+}
+
+function CustomButton3(props) {
+    const item = props.item;
+    function taken(transaction_id) {
+        const url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/transactions/' + transaction_id
+        props.sendStatus(url, 'DONE').then(() => {
+            setChanges(changes + 1)
+        })
+    }
+    return (
+        <div className="flex space-x-2">
+            <h1 className="">已取餐</h1>
+            <Button
+                variant="contained"
+                color={item.status === 'DONE' ? 'primary' : ''}
+                onClick={() => {
+                    taken(item.id)
+                }}>
+                <FontAwesomeIcon icon={faUserCheck} />
+            </Button>
+        </div>
+    )
+}
+
+function CustomButton4(props) {
+    const item = props.item;
+    function notaken(transaction_id) {
+        const url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/transactions/' + transaction_id
+        props.sendStatus(url, 'NOTAKEN').then(() => {
+            setChanges(changes + 1)
+        })
+    }
+    return (
+        <div className="flex space-x-2">
+            <h1 className="">未取餐</h1>
+            <Button
+                variant="contained"
+                color={item.status === 'NOTAKEN' ? 'secondary' : ''}
+                onClick={() => {
+                    notaken(item.id)
+                }}>
+                <FontAwesomeIcon icon={faUserSlash} />
+            </Button>
         </div>
     )
 }

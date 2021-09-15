@@ -4,92 +4,52 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie'
 import Swal from 'sweetalert2';
-import { SnackbarProvider, useSnackbar } from 'notistack';
-import Echo from 'laravel-echo'
+import {add} from "date-fns"
 
 //deprecated
 import { Button, Card, Spinner } from "react-bootstrap";
 
-function Service() {
+export default function Service() {
     const [loading, setLoading] = useState(true)
-    const { enqueueSnackbar } = useSnackbar();
     const [data, setData] = useState({})
     const [newOrder, setNewOrder] = useState(false);
+    const [empty, setEmpty] = useState(true);
+    const today = new Date()
+    const [option, setOption] = useState("today"); //["today" | "tomorrow" | "all"]
 
     const cookies = new Cookies()
     const session = cookies.get('session')
     const storeId = cookies.get('store_id')
     useEffect(() => {
-        /*init(); //websocket not working
-        getMe();
-        window.newMessage = false*/
+        setLoading(true)
         getData()
         const id = setInterval(() => {
             getData();
         }, 5000)
         return () => clearInterval(id);
         // eslint-disable-next-line
-    }, [])
-
-    function init() {
-        window.Pusher = require('pusher-js')
-
-        window.Echo = new Echo({
-            broadcaster: 'pusher',
-            key: process.env.NEXT_PUBLIC_WS_KEY,
-            wsHost: process.env.NEXT_PUBLIC_WS_HOST,
-            wsPath: process.env.NEXT_PUBLIC_WS_PATH,
-            wsPort: process.env.NEXT_PUBLIC_WS_PORT,
-            disableStats: true,
-            forceTLS: false,
-            authorizer: (channel, options) => {
-                return {
-                    authorize: (socketId, callback) => {
-                        fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/broadcasting/auth`, {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                "socket_id": socketId,
-                                "channel_name": channel.name
-                            }),
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${cookies.get('session')}`
-                            }
-                        }).then(response => {
-                            return response.json()
-                        }).then(r => {
-                            callback(false, r.data)
-                        }).catch(error => {
-                            callback(true, error)
-                        })
-                    }
-                }
-            }
-        })
-    }
-
-
-    function handleWebsockets(e) {
-        console.log(e)
-        new Notification(`${e.transaction.id} ${e.transaction?.product?.name}`);
-        enqueueSnackbar(`新增: (${e.transaction?.product?.id.substring(0, 5)}) ${e.transaction?.product?.name} ${e.transaction?.qty}份`, 'success');
-    }
-
-    async function getMe() {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/me`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${session}`
-            }
-        })
-        const response = await res.json()
-        window.Echo.private(`user.${response.id}`).listen('.transaction.created', handleWebsockets);
-    }
+    }, [option])
 
     const getData = async () => {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions`, {
+            let url = ""
+            switch (option) {
+                case "today":
+                    url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions/${today.toISOString()}`
+                    break;
+                case "tomorrow":
+                    const next_day = add(today,{
+                        days: 1
+                    })
+                    url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions/${next_day.toISOString()}`
+                    break;
+                case "all":
+                    url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions`
+                    break;
+                default:
+                    url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions`
+            }
+            const res = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -97,12 +57,18 @@ function Service() {
                 }
             })
             const response = await res.json()
-            //window.data = response
             console.log(response)
             if (data === response) {
                 setNewOrder = true;
             }
             setData(response)
+
+            if (data.length !== 0) {
+                setEmpty(false)
+            } else {
+                setEmpty(true)
+            }
+
             setLoading(false)
         } catch {
             // wrong request or expired session
@@ -112,26 +78,6 @@ function Service() {
                 title: '網路錯誤',
                 text: '請檢察連線狀況或重新整理此頁'
             })
-            //await router.push('/')
-        }
-    }
-
-    function requestNotification() {
-        if (Notification && Notification.permission === "granted") {
-            new Notification("測試通知");
-        } else if (Notification && Notification.permission !== "denied") {
-            Notification.requestPermission(function (status) {
-                if (Notification.permission !== status) {
-                    Notification.permission = status;
-                }
-                if (status === "granted") {
-                    new Notification("測試通知");
-                } else {
-                    alert("你不開通知我也不能提醒你");
-                }
-            });
-        } else {
-            alert("你不開通知我也不能提醒你");
         }
     }
 
@@ -145,14 +91,17 @@ function Service() {
                     有新訂單
                 </div>
             }
+
             <section id="main">
+                <DaySelection setOption={setOption} option={option} />
+
                 {loading &&
                     <center><Spinner animation="border" /></center>
                 }
+
                 <div className="p-5">
-                    {/*<Button onClick={requestNotification}>提醒我</Button>*/}
                     {
-                        data ? Object.keys(data).map((item) =>
+                        !empty ? data.map((item) => (
                             <Card key={item}>
                                 <Card.Body style={{ display: "flex" }}>
                                     <div>
@@ -164,27 +113,27 @@ function Service() {
                                     </div>
                                 </Card.Body>
                             </Card>
-                        ) : <><br /><h2 className="text-center">查無資料</h2></>
+                        )) :
+                            <>
+                                <br />
+                                <h2 className="text-center text-3xl">尚無資料</h2>
+                            </>
                     }
-                    <hr />
                 </div>
             </section>
         </div>
     )
 }
 
-export default function Viewbooked() {
+function DaySelection(props) {
     return (
-        <SnackbarProvider maxSnack={3}
-            action={(key) => (
-                <Button onClick={() => {
-                    router.reload()
-                }} variant={"dark"}>
-                    重新載入
-                </Button>
-            )}
-        >
-            <Service />
-        </SnackbarProvider>
-    );
+        <div className="flex flex-row px-5 py-2 bg-yellow-500 justify-between">
+            <div className="space-x-3">
+                <button className="bg-yellow-300 px-3 py-1 focus:bg-blue-300 rounded-lg" onClick={() => { props.setOption("today") }}>今日訂餐紀錄</button>
+                <button className="bg-yellow-300 px-3 py-1 active:bg-blue-300 rounded-lg" onClick={() => { props.setOption("tomorrow") }}>明日訂餐紀錄</button>
+                <button className="bg-yellow-300 px-3 py-1 focus:bg-blue-300 rounded-lg" onClick={() => { props.setOption("all") }}>歷史訂餐紀錄</button>
+            </div>
+            <button className="w-44 bg-white text-center" disabled>目前狀態：{props.option}</button>
+        </div>
+    )
 }
