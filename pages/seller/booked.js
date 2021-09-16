@@ -60,10 +60,7 @@ export default function Service() {
             if (data === response) {
                 setNewOrder = true;
             }
-
-
             setData(response)
-
             setLoading(false)
         } catch {
             // wrong request or expired session
@@ -96,7 +93,7 @@ export default function Service() {
 
                 <div className="p-5">
                     {
-                        data.lengh > 0 ? data.map((item) => (
+                        data.length > 0 ? data.map((item) => (
                             <Card key={item}>
                                 <Card.Body style={{ display: "flex" }}>
                                     <div>

@@ -15,7 +15,7 @@ export default function CustomTimePicker(props){
                 }
                 ampm={false}
                 autoOk={true}
-                minutesStep={10}
+                minutesStep={5}
                 onChange={(time) => props.setSelectedTime(time)}
                 error={props.errorMessage ? true : false}
                 />

@@ -39,8 +39,8 @@ export default function Home({ qna, news }) {
                     </div>
                     <footer>
                         <ul className="flex justify-center space-x-5">
-                            <li><Link href="/login" passHref><a className="bg-red-700 hover:bg-red-800 text-3xl px-4 py-2 text-center align-middle inline-block no-underline rounded-md outline-none text-white font-bold">現在開始</a></Link></li>
-                            <li><a href="https://docs.tnfsa.org/" className="bg-green-700 hover:bg-green-800 text-3xl px-4 py-2 text-center inline-block no-underline rounded-md outline-none text-white font-bold">了解更多</a></li>
+                            <li><Link href="/login" passHref><a className="bg-red-700 hover:bg-red-800 text-xl md:text-3xl px-4 py-2 text-center align-middle inline-block no-underline rounded-md outline-none text-white font-bold">現在開始</a></Link></li>
+                            <li><a href="https://docs.tnfsa.org/" className="bg-green-700 hover:bg-green-800 text-xl md:text-3xl px-4 py-2 text-center inline-block no-underline rounded-md outline-none text-white font-bold">了解更多</a></li>
                         </ul>
                     </footer>
                 </section>
@@ -90,7 +90,7 @@ export default function Home({ qna, news }) {
                                 </p>
                                 <footer>
                                     <ul className="actions">
-                                        <li><Link href="/about" passHref><a className="bg-red-700 hover:bg-red-800 text-3xl px-4 py-2 text-center align-middle inline-block no-underline rounded-md outline-none text-white font-bold">Find out more</a></Link></li>
+                                        <li><Link href="/about" passHref><a className="bg-red-700 hover:bg-red-800 text-lg md:text-3xl px-4 py-2 text-center align-middle inline-block no-underline rounded-md outline-none text-white font-bold">Find out more</a></Link></li>
                                     </ul>
                                 </footer>
                             </section>

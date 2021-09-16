@@ -1,7 +1,7 @@
 import Title from "../../../components/Title";
 import Footer from '../../../components/Footer'
 import { useRouter } from "next/router";
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Swal from 'sweetalert2'
 import Cookies from 'universal-cookie'
 import * as ga from '../../../components/GA'
@@ -10,17 +10,22 @@ import Authenticate from "../../../components/authenticate";
 import Image from 'next/image'
 import CustomTimePicker from "../../../components/time/CustomTimePicker";
 import CustomDatePicker from "../../../components/time/CustomDatePicker";
-import moment from "moment"
+import {add, set} from "date-fns"
 
 function Purchase({ data, storeName }) {
     const [comment, setComment] = useState('')
     const [loading, setLoading] = useState(false)
-    let a = Date.now()
-    a = Math.ceil(a / 86400000) + 1;
-    a *= 86400000;
-    a += 16200000;
-    const today = a;
-    const [order_time, setOrderTime] = useState(new Date(a));
+    let temp_time = add(new Date(),{
+        days:1
+    })
+    
+    temp_time = set(temp_time,{
+        hours:12,
+        minutes:0,
+        seconds:0
+    })
+    
+    const [order_time,setOrderTime] = useState(temp_time);
     const router = useRouter()
     const { store, product } = router.query
     const cookies = new Cookies()
@@ -132,10 +137,10 @@ function Purchase({ data, storeName }) {
                                 value={order_time}
                                 label="取餐日期"
                                 setSelectedTime={time => {
-                                    const maxTime = today + 86400000 * 6;
-                                    const date = new Date(time)
-                                    const nowTime = date.getTime();
-                                    if (today <= nowTime && maxTime >= nowTime) {
+                                    const maxTime = add(new Date(),{days:7});
+                                    const nowTime = new Date();
+
+                                    if (time < maxTime && time > nowTime) {
                                         setOrderTime(time);
                                     } else {
                                         Swal.fire({
