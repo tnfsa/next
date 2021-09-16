@@ -80,7 +80,7 @@ export default function Navigation() {
                 variant={color}
                 onToggle={navToggle}
             >
-                <Navbar.Brand><Link href="/">美廣訂餐系統</Link></Navbar.Brand>
+                <Navbar.Brand><Link href="/" prefetch={false}>美廣訂餐系統</Link></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">

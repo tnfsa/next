@@ -14,10 +14,9 @@ import { Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
-export default function DetailBooked() {
+export default function DetailBooked({ productName }) {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState([])
-    const [productName, setProductName] = useState('')
     const cookies = new Cookies()
     const allcookies = cookies.getAll()
     const storeId = cookies.get('store_id')
@@ -29,20 +28,9 @@ export default function DetailBooked() {
     const transactions = async () => {
         let url = ""
         let day = ""
-        switch (option) {
-            case "today":
-                day = new Date()
-                url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions?date=${day.toISOString()}`
-                break;
-            case "tomorrow":
-                day = add(new Date(), { days: 1 })
-                url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions?date=${day.toISOString()}`
-                break;
-            case "all":
-                url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions`
-                break;
-            default:
-        }
+
+        url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions`
+
         console.log(url)
         console.log(storeId)
         let result = await fetch(url, {
@@ -55,43 +43,49 @@ export default function DetailBooked() {
         const json = await result.json()
         let toReturn = []
 
-        for (const index in json) {
-            if (json[index]['product_id'] === uid) {
-                toReturn.push(json[index])
-            }
+        switch (option) {
+            case "today":
+                day = new Date();
+                for (const index in json) {
+                    if (json[index]['product_id'] === uid) {
+                        if (datesAreTheSame(day, json[index][order_time])) {
+                            toReturn.push(json[index])
+                        }
+                    }
+                }
+                break;
+            case "tomorrow":
+                day = add(new Date(), { days: 1 })
+                for (const index in json) {
+                    if (json[index]['product_id'] === uid) {
+                        if (datesAreTheSame(day, json[index][order_time])) {
+                            toReturn.push(json[index])
+                        }
+                    }
+                }
+                break;
+            default:
+                for (const index in json) {
+                    if (json[index]['product_id'] === uid) {
+                        toReturn.push(json[index])
+                    }
+                }
         }
 
         return toReturn
     }
 
-    const getName = async () => {
-        console.log(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/products`)
-        let result = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/products`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${allcookies['session']}`
-            }
-        })
-        const json = await result.json()
-        let foodName = 'temp'
-
-        for (const index in json) {
-            if (json[index]['id'] === uid) {
-                foodName = json[index]['name']
-                break;
-            }
-        }
-
-        return foodName
+    function datesAreTheSame(first, second) {
+        return first.getDate() === second.getDate() && first.getMonth() === second.getMonth() && first.getFullYear() === second.getFullYear();
     }
+
+
 
     const getInfo = async () => {
         try {
-            const result = await Promise.all([transactions(), getName()])
+            const result = await Promise.all([transactions()])
 
             setLoading(false)
-            setProductName(result[1])
             setData(result[0])
             setChanges(0)
             console.log(result[0])
@@ -158,6 +152,7 @@ export default function DetailBooked() {
                                     <h1>金額：{item.total}</h1>
                                     <h1>留言：{typeof (item.comment) === "undefined" || item.comment === null ? '' : (item.comment.length > 50 ? item.comment.slice(0, 50) + ' ...' : item.comment)}</h1>
                                     <h1>購買日期：{new Date(item.updated_at).toLocaleString('zh-TW')}</h1>
+                                    <h1>取餐時間：{new Date(item.order_time).toLocaleString('zh-TW')}</h1>
                                 </div>
                                 <div className="flex flex-col self-center space-y-1">
                                     <CustomButton1 sendStatus={sendStatus} setChanges={setChanges} changes={changes} item={item} />
@@ -271,10 +266,33 @@ function CustomButton4(props) {
     )
 }
 
+async function getName(uid) {
+    let result = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/products/query`, {
+        method: 'POST',
+        body: JSON.stringify({term: ""}),
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    const json = await result.json()
+    let foodName = 'temp'
+
+    for (const index in json) {
+        if (json[index]['id'] === uid) {
+            foodName = json[index]['name']
+            break;
+        }
+    }
+
+    return foodName
+}
+
+
 export async function getStaticProps(context) {
     const uid = context.params.uid
+    const productName = await getName(uid)
     return {
-        props: { uid }
+        props: { productName }
     }
 }
 

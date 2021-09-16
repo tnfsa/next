@@ -81,7 +81,7 @@ function Cell(props) {
         <div className="w-80 h-96 shadow-lg rounded-xl">
             <div className="px-4 pt-4 content-center">
                 <div className="h-40 w-64 relative">
-                    <Image src={item.image}
+                    <Image src={typeof(item.image) !== "string" ? `${process.env.NEXT_PUBLIC_STATIC}/not_selected.png` : item.image}
                         alt={`${item.name}的照片`}
                         layout="fill"
                         className="rounded-3xl" />

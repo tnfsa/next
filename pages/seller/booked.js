@@ -70,16 +70,6 @@ export default function Service() {
             }
             console.log(temp);
 
-            /*
-            if (temp !== data) {
-                if (firstFetch > 2) {
-                    setNewOrder(true)
-                } else {
-                    setFirstFetch(firstFetch + 1)
-                }
-            }
-            */
-
             if (typeof (response["message"]) === "undefined") {
                 setData(temp)
             } else {
