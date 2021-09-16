@@ -81,7 +81,7 @@ function Cell(props) {
         <div className="w-80 h-96 shadow-lg rounded-xl">
             <div className="px-4 pt-4 content-center">
                 <div className="h-40 w-64 relative">
-                    <Image src={typeof (item.image) === "undefined" ? "https://raw.sivir.pw/public/images/pic04.jpg" : item.image.split(":")[0] !== "https" ? `${process.env.NEXT_PUBLIC_API_HOST}${item.image}` : item.image}
+                    <Image src={item.image}
                         alt={`${item.name}的照片`}
                         layout="fill"
                         className="rounded-3xl" />

@@ -99,10 +99,6 @@ function Purchase({ data, storeName }) {
         }
     }
 
-    useEffect(() => {
-        console.log(order_time)
-    }, [])
-
     return (
         <div id="page-wrapper">
             <Title title={`${storeName}-${data.name}`}
@@ -113,7 +109,7 @@ function Purchase({ data, storeName }) {
                     <div className="flex flex-col bg-blue-100 rounded-xl p-16 items-center md:justify-center md:flex-row md:items-center md:space-x-16">
                         <div className="rounded-full">
                             <div className="h-72 w-64 relative">
-                                <Image src={data.image.split(":")[0] !== "https" ? `${process.env.NEXT_PUBLIC_API_HOST}${data.image}` : data.image}
+                                <Image src={typeof(data.image) !== "string" ? `${process.env.NEXT_PUBLIC_STATIC}/not_selected.png` : data.image}
                                     alt={`${data.name} from ${storeName}`}
                                     layout="responsive"
                                     height="100"

@@ -13,7 +13,6 @@ export default function Service() {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState({})
     const [newOrder, setNewOrder] = useState(false);
-    const [empty, setEmpty] = useState(true);
     const today = new Date()
     const [option, setOption] = useState("today"); //["today" | "tomorrow" | "all"]
 
@@ -61,13 +60,9 @@ export default function Service() {
             if (data === response) {
                 setNewOrder = true;
             }
-            setData(response)
 
-            if (data.length !== 0) {
-                setEmpty(false)
-            } else {
-                setEmpty(true)
-            }
+
+            setData(response)
 
             setLoading(false)
         } catch {
@@ -101,7 +96,7 @@ export default function Service() {
 
                 <div className="p-5">
                     {
-                        !empty ? data.map((item) => (
+                        data.lengh > 0 ? data.map((item) => (
                             <Card key={item}>
                                 <Card.Body style={{ display: "flex" }}>
                                     <div>
