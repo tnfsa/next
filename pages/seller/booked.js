@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie'
 import Swal from 'sweetalert2';
-import {add} from "date-fns"
+import { add } from "date-fns"
 
 //deprecated
 import { Button, Card, Spinner } from "react-bootstrap";
@@ -15,12 +15,15 @@ export default function Service() {
     const [newOrder, setNewOrder] = useState(false);
     const today = new Date()
     const [option, setOption] = useState("today"); //["today" | "tomorrow" | "all"]
+    const [firstFetch, setFirstFetch] = useState(0)
 
     const cookies = new Cookies()
     const session = cookies.get('session')
     const storeId = cookies.get('store_id')
     useEffect(() => {
         setLoading(true)
+        setFirstFetch(0)
+        setNewOrder(false)
         getData()
         const id = setInterval(() => {
             getData();
@@ -34,13 +37,13 @@ export default function Service() {
             let url = ""
             switch (option) {
                 case "today":
-                    url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions/${today.toISOString()}`
+                    url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions?time=${today.toISOString()}`
                     break;
                 case "tomorrow":
-                    const next_day = add(today,{
+                    const next_day = add(today, {
                         days: 1
                     })
-                    url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions/${next_day.toISOString()}`
+                    url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions?time=${next_day.toISOString()}`
                     break;
                 case "all":
                     url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions`
@@ -56,11 +59,32 @@ export default function Service() {
                 }
             })
             const response = await res.json()
-            console.log(response)
-            if (data === response) {
-                setNewOrder = true;
+
+            let temp = []
+
+            for (const temparary in response) {
+                temp.push({
+                    id: temparary,
+                    ...response[temparary]
+                })
             }
-            setData(response)
+            console.log(temp);
+
+            /*
+            if (temp !== data) {
+                if (firstFetch > 2) {
+                    setNewOrder(true)
+                } else {
+                    setFirstFetch(firstFetch + 1)
+                }
+            }
+            */
+
+            if (typeof (response["message"]) === "undefined") {
+                setData(temp)
+            } else {
+                setData([])
+            }
             setLoading(false)
         } catch {
             // wrong request or expired session
@@ -78,14 +102,15 @@ export default function Service() {
             <Title title="出餐"
                 link="/seller/booked" />
             <Authenticate seller="true" />
-            {newOrder &&
-                <div>
-                    有新訂單
-                </div>
-            }
 
             <section id="main">
                 <DaySelection setOption={setOption} option={option} />
+                {newOrder &&
+                    <div>
+                        有新訂單
+                        <button onClick={() => { setNewOrder(false) }}>我知道了</button>
+                    </div>
+                }
 
                 {loading &&
                     <center><Spinner animation="border" /></center>
@@ -97,11 +122,11 @@ export default function Service() {
                             <Card key={item}>
                                 <Card.Body style={{ display: "flex" }}>
                                     <div>
-                                        <Card.Title>{data[item].name}</Card.Title>
-                                        <Card.Text>{data[item].total}份</Card.Text>
+                                        <Card.Title>{item.name}</Card.Title>
+                                        <Card.Text>{item.total}份</Card.Text>
                                     </div>
                                     <div style={{ marginLeft: "auto" }}>
-                                        <Link href={`/seller/booked/${item}`} passHref><Button variant="primary">立即查看</Button></Link>
+                                        <Link href={`/seller/booked/${item.id}/${option}`} passHref><Button variant="primary">立即查看</Button></Link>
                                     </div>
                                 </Card.Body>
                             </Card>

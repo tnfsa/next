@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react'
-import Title from '../../../components/Title'
-import Authenticate from '../../../components/authenticate'
+import Title from '../../../../components/Title'
+import Authenticate from '../../../../components/authenticate'
 import Cookies from 'universal-cookie'
 import Swal from 'sweetalert2'
 import { Button } from '@material-ui/core'
 import { faCheck, faTimes, faUserCheck, faUserSlash } from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'next/router'
+import { add } from "date-fns"
+
+
 //deprecated
 import { Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 export default function DetailBooked() {
     const [loading, setLoading] = useState(true)
@@ -20,9 +24,28 @@ export default function DetailBooked() {
     const [changes, setChanges] = useState(0)
     const router = useRouter()
     const uid = router.query["uid"]
+    const option = router.query["option"]
+
     const transactions = async () => {
-        console.log(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions`)
-        let result = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions`, {
+        let url = ""
+        let day = ""
+        switch (option) {
+            case "today":
+                day = new Date()
+                url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions?date=${day.toISOString()}`
+                break;
+            case "tomorrow":
+                day = add(new Date(), { days: 1 })
+                url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions?date=${day.toISOString()}`
+                break;
+            case "all":
+                url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions`
+                break;
+            default:
+        }
+        console.log(url)
+        console.log(storeId)
+        let result = await fetch(url, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -112,9 +135,7 @@ export default function DetailBooked() {
     }
 
     useEffect(() => {
-        console.log(uid)
         getInfo()
-
         // eslint-disable-next-line
     }, [changes])
 
@@ -129,7 +150,7 @@ export default function DetailBooked() {
                 }
                 <div className="px-10 py-5 space-y-5">
                     {
-                        data ? data.map((item) => (
+                        data.length > 0 ? data.map((item) => (
                             <div className="flex flex-row bg-white h-40 justify-between px-2 md:px-10 py-2" key={item.id}>
                                 <div>
                                     <h1>交易編號：{item.id}</h1>
@@ -139,16 +160,16 @@ export default function DetailBooked() {
                                     <h1>購買日期：{new Date(item.updated_at).toLocaleString('zh-TW')}</h1>
                                 </div>
                                 <div className="flex flex-col self-center space-y-1">
-                                    <CustomButton1 sendStatus={sendStatus} item={item} />
+                                    <CustomButton1 sendStatus={sendStatus} setChanges={setChanges} changes={changes} item={item} />
 
-                                    <CustomButton2 sendStatus={sendStatus} item={item} />
+                                    <CustomButton2 sendStatus={sendStatus} setChanges={setChanges} changes={changes} item={item} />
 
-                                    <CustomButton3 sendStatus={sendStatus} item={item} />
+                                    <CustomButton3 sendStatus={sendStatus} setChanges={setChanges} changes={changes} item={item} />
 
-                                    <CustomButton4 sendStatus={sendStatus} item={item} />
+                                    <CustomButton4 sendStatus={sendStatus} setChanges={setChanges} changes={changes} item={item} />
                                 </div>
                             </div>
-                        )) : <><br /><h2 className="text-center">查無資料</h2></>
+                        )) : <><br /><h2 className="text-center">無訂餐紀錄</h2></>
                     }
                 </div>
             </section >
@@ -161,7 +182,7 @@ function CustomButton1(props) {
     function preparing(transaction_id) {
         const url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/transactions/' + transaction_id
         props.sendStatus(url, 'PREPARE').then(() => {
-            setChanges(changes + 1)
+            props.setChanges(props.changes + 1)
         })
     }
     return (
@@ -186,7 +207,7 @@ function CustomButton2(props) {
     function finished(transaction_id) {
         const url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/transactions/' + transaction_id
         props.sendStatus(url, 'OK').then(() => {
-            setChanges(changes + 1)
+            props.setChanges(props.changes + 1)
         })
     }
     return (
@@ -209,7 +230,7 @@ function CustomButton3(props) {
     function taken(transaction_id) {
         const url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/transactions/' + transaction_id
         props.sendStatus(url, 'DONE').then(() => {
-            setChanges(changes + 1)
+            props.setChanges(props.changes + 1)
         })
     }
     return (
@@ -232,7 +253,7 @@ function CustomButton4(props) {
     function notaken(transaction_id) {
         const url = process.env.NEXT_PUBLIC_API_ENDPOINT + '/transactions/' + transaction_id
         props.sendStatus(url, 'NOTAKEN').then(() => {
-            setChanges(changes + 1)
+            props.setChanges(props.changes + 1)
         })
     }
     return (
@@ -264,20 +285,10 @@ async function getFoods(storeId) {
 }
 
 export async function getStaticPaths() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores`)
-    const response = await res.json()
-    const fetchingFoods = response.map(store => (getFoods(store.id)))
-
-    const mixed = await Promise.all(fetchingFoods)
-    let paths = []
-    for (const item of mixed) {
-        for (const route of item) {
-            paths.push(`/seller/booked${route}`)
-        }
-    }
+    let paths = [`/seller/booked/uid/option`]
 
     return {
         paths,
-        fallback: false
+        fallback: true
     }
 }
