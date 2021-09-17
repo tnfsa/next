@@ -30,6 +30,16 @@ export default function Service() {
     }
 
     useEffect(() => {
+        if(typeof(storeId) !== "string"){
+            Swal.fire({
+                icon: "info",
+                title: "請先啟用商店",
+                context: "將立即重新導向"
+            }).then(()=>{
+                router.push("/settings/store#updatepassword")
+            })
+            return;
+        }
         getData()
         // eslint-disable-next-line
     }, [])

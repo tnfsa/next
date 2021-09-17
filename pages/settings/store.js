@@ -53,6 +53,7 @@ function ActivateStore(props) {
             return;
         }
         setLoading(true)
+        console.log(props.session)
         try{
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores`,{
                 method: 'POST',
@@ -65,6 +66,7 @@ function ActivateStore(props) {
                     'Authorization': `Bearer ${props.session}`
                 }
             })
+            
             if(res.ok){
                 await Swal.fire({
                     icon: 'success',
@@ -211,7 +213,7 @@ function Deactivate(props) {
                 update()
             }}>
                 <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                    刪除
+                    刪除店家
                 </button>
             </form>
         </div>

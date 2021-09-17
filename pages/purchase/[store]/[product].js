@@ -39,6 +39,8 @@ function Purchase({ data, storeName }) {
 按 OK 送出；cancel 取消`
         if (window.confirm(confirmText)) {
             setLoading(true)
+            console.log(order_time)
+            console.log(order_time.toLocaleDateString("ch-TW"))
             try {
                 console.log(order_time)
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/transactions`, {
