@@ -38,6 +38,7 @@ export default function Service() {
             switch (option) {
                 case "today":
                     url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions?time=${today.toISOString()}`
+                    console.log(today.toISOString())
                     break;
                 case "tomorrow":
                     const next_day = add(today, {
@@ -135,10 +136,12 @@ export default function Service() {
 function DaySelection(props) {
     return (
         <div className="flex flex-row px-5 py-2 bg-yellow-500 justify-between">
-            <div className="space-x-3">
-                <button className="bg-yellow-300 px-3 py-1 focus:bg-blue-300 rounded-lg" onClick={() => { props.setOption("today") }}>今日訂餐紀錄</button>
-                <button className="bg-yellow-300 px-3 py-1 active:bg-blue-300 rounded-lg" onClick={() => { props.setOption("tomorrow") }}>明日訂餐紀錄</button>
-                <button className="bg-yellow-300 px-3 py-1 focus:bg-blue-300 rounded-lg" onClick={() => { props.setOption("all") }}>歷史訂餐紀錄</button>
+            <div className="w-full overflow-hidden">
+                <div className="gap-3 w-full flex flex-wrap -m-1">
+                    <button className="bg-yellow-300 px-3 py-1 focus:bg-blue-300 rounded-lg" onClick={() => { props.setOption("today") }}>今日訂餐紀錄</button>
+                    <button className="bg-yellow-300 px-3 py-1 active:bg-blue-300 rounded-lg" onClick={() => { props.setOption("tomorrow") }}>明日訂餐紀錄</button>
+                    <button className="bg-yellow-300 px-3 py-1 focus:bg-blue-300 rounded-lg" onClick={() => { props.setOption("all") }}>歷史訂餐紀錄</button>
+                </div>
             </div>
             <button className="w-44 bg-white text-center" disabled>目前狀態：{props.option}</button>
         </div>
