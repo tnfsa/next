@@ -137,7 +137,7 @@ function DaySelection(props) {
     return (
         <div className="flex flex-row px-5 py-2 bg-yellow-500 justify-between">
             <div className="w-full overflow-hidden">
-                <div className="gap-3 w-full flex flex-wrap -m-1">
+                <div className="gap-3 w-full flex flex-wrap -m-1 justify-start">
                     <button className="bg-yellow-300 px-3 py-1 focus:bg-blue-300 rounded-lg" onClick={() => { props.setOption("today") }}>今日訂餐紀錄</button>
                     <button className="bg-yellow-300 px-3 py-1 active:bg-blue-300 rounded-lg" onClick={() => { props.setOption("tomorrow") }}>明日訂餐紀錄</button>
                     <button className="bg-yellow-300 px-3 py-1 focus:bg-blue-300 rounded-lg" onClick={() => { props.setOption("all") }}>歷史訂餐紀錄</button>

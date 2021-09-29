@@ -8,24 +8,26 @@ import * as ga from '../../../components/GA'
 import Link from 'next/link'
 import Authenticate from "../../../components/authenticate";
 import Image from 'next/image'
-import CustomTimePicker from "../../../components/time/CustomTimePicker";
+// import CustomTimePicker from "../../../components/time/CustomTimePicker";
 import CustomDatePicker from "../../../components/time/CustomDatePicker";
-import {add, set} from "date-fns"
+import { add, set } from "date-fns"
 
 function Purchase({ data, storeName }) {
     const [comment, setComment] = useState('')
     const [loading, setLoading] = useState(false)
-    let temp_time = add(new Date(),{
-        days:1
+    const [timeOptions, setTimeOptions] = useState(["10", "11", "12"])
+    const [datePicked, setDatePicked] = useState(false)
+    let temp_time = add(new Date(), {
+        days: 1
     })
-    
-    temp_time = set(temp_time,{
-        hours:12,
-        minutes:0,
-        seconds:0
+
+    temp_time = set(temp_time, {
+        hours: 0,
+        minutes: 0,
+        seconds: 0
     })
-    
-    const [order_time,setOrderTime] = useState(temp_time);
+
+    const [order_time, setOrderTime] = useState(temp_time);
     const router = useRouter()
     const { store, product } = router.query
     const cookies = new Cookies()
@@ -39,6 +41,14 @@ function Purchase({ data, storeName }) {
 按 OK 送出；cancel 取消`
         if (window.confirm(confirmText)) {
             setLoading(true)
+            if (!datePicked) {
+                await Swal.fire({
+                    icon: "error",
+                    title: "請選擇時間"
+                })
+                return
+            }
+
             try {
                 console.log(order_time)
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/transactions`, {
@@ -82,7 +92,7 @@ function Purchase({ data, storeName }) {
                     })
                     await router.push('/')
                 } else {
-                    switch(response.error.status){
+                    switch (response.error.status) {
                         case "TRANSACTION/ORDER-TIME":
                             throw "訂餐時間錯誤";
                         case "TRANSACTION/BANNED":
@@ -104,6 +114,21 @@ function Purchase({ data, storeName }) {
         }
     }
 
+    function setTimeSelected(obj) {
+        if (obj === undefined)
+            return
+        if (typeof (obj.target[obj.target.options.selectedIndex].value) !== "number") {
+            setDatePicked(false)
+            return
+        }
+        setDatePicked(true)
+        setOrderTime(
+            set(order_time, {
+                hours: obj.target[obj.target.options.selectedIndex].value
+            })
+        )
+    }
+
     return (
         <div id="page-wrapper">
             <Title title={`${storeName}-${data.name}`}
@@ -114,7 +139,7 @@ function Purchase({ data, storeName }) {
                     <div className="flex flex-col bg-blue-100 rounded-xl p-16 items-center md:justify-center md:flex-row md:items-center md:space-x-16">
                         <div className="rounded-full">
                             <div className="h-72 w-64 relative">
-                                <Image src={typeof(data.image) !== "string" ? `${process.env.NEXT_PUBLIC_STATIC}/not_selected.png` : data.image}
+                                <Image src={typeof (data.image) !== "string" ? `${process.env.NEXT_PUBLIC_STATIC}/not_selected.png` : data.image}
                                     alt={`${data.name} from ${storeName}`}
                                     layout="responsive"
                                     height="100"
@@ -137,7 +162,7 @@ function Purchase({ data, storeName }) {
                                 value={order_time}
                                 label="取餐日期"
                                 setSelectedTime={time => {
-                                    const maxTime = add(new Date(),{days:7});
+                                    const maxTime = add(new Date(), { days: 7 });
                                     const nowTime = new Date();
 
                                     if (time < maxTime && time > nowTime) {
@@ -152,7 +177,18 @@ function Purchase({ data, storeName }) {
                                 }}
                             />
                             <br />
-                            <CustomTimePicker
+                            <div id="timeSelect" className="flex flex-col space-y-2">
+                                <label className="text-xs"> 請選擇點餐時間 </label>
+                                <select onChange={setTimeSelected} className="w-44 text-center border-b-2 border-black bg-blue-200 rounded-md text-black font-semibold">
+                                    <option className="text-red-300">請選擇取餐時間</option>
+                                    {timeOptions.map(item => (
+                                        <option key={item} value={item}>
+                                            {item}:00
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            {/*<CustomTimePicker
                                 label="取餐時間"
                                 value={order_time}
                                 setSelectedTime={time => {
@@ -173,7 +209,7 @@ function Purchase({ data, storeName }) {
                                         })
                                     }
                                 }}
-                            />
+                            />*/}
 
                             <br />
 
