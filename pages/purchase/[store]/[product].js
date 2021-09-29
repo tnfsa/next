@@ -15,8 +15,8 @@ import { add, set } from "date-fns"
 function Purchase({ data, storeName }) {
     const [comment, setComment] = useState('')
     const [loading, setLoading] = useState(false)
-    const [timeOptions, setTimeOptions] = useState(["10", "11", "12"])
-    const [datePicked, setDatePicked] = useState(false)
+    const timeOptions = [10, 11, 12]
+    const [datePicked, setDatePicked] = useState(0)
     let temp_time = add(new Date(), {
         days: 1
     })
@@ -41,7 +41,7 @@ function Purchase({ data, storeName }) {
 按 OK 送出；cancel 取消`
         if (window.confirm(confirmText)) {
             setLoading(true)
-            if (!datePicked) {
+            if (datePicked === 0) {
                 await Swal.fire({
                     icon: "error",
                     title: "請選擇時間"
@@ -50,6 +50,11 @@ function Purchase({ data, storeName }) {
             }
 
             try {
+                setOrderTime(
+                    set(order_time, {
+                        hours: datePicked
+                    })
+                )
                 console.log(order_time)
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/transactions`, {
                     method: 'POST',
@@ -117,16 +122,8 @@ function Purchase({ data, storeName }) {
     function setTimeSelected(obj) {
         if (obj === undefined)
             return
-        if (typeof (obj.target[obj.target.options.selectedIndex].value) !== "number") {
-            setDatePicked(false)
-            return
-        }
-        setDatePicked(true)
-        setOrderTime(
-            set(order_time, {
-                hours: obj.target[obj.target.options.selectedIndex].value
-            })
-        )
+
+        setDatePicked(obj.target[obj.target.options.selectedIndex].value)
     }
 
     return (
