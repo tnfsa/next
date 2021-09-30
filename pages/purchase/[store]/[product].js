@@ -8,7 +8,6 @@ import * as ga from '../../../components/GA'
 import Link from 'next/link'
 import Authenticate from "../../../components/authenticate";
 import Image from 'next/image'
-// import CustomTimePicker from "../../../components/time/CustomTimePicker";
 import CustomDatePicker from "../../../components/time/CustomDatePicker";
 import { add, set } from "date-fns"
 
@@ -16,7 +15,7 @@ function Purchase({ data, storeName }) {
     const [comment, setComment] = useState('')
     const [loading, setLoading] = useState(false)
     const timeOptions = [10, 11, 12]
-    const [datePicked, setDatePicked] = useState("not picked")
+    const [datePicked, setDatePicked] = useState("none")
     let temp_time = add(new Date(), {
         days: 1
     })
@@ -33,7 +32,7 @@ function Purchase({ data, storeName }) {
     const cookies = new Cookies()
 
     async function Send() {
-        if (typeof(datePicked) !== "number") {
+        if (datePicked === "none") {
             await Swal.fire({
                 icon: "error",
                 title: "請選擇時間"
@@ -174,7 +173,7 @@ function Purchase({ data, storeName }) {
                             <div id="timeSelect" className="flex flex-col space-y-2">
                                 <label className="text-xs"> 請選擇點餐時間 </label>
                                 <select onChange={setTimeSelected} className="w-44 text-center border-b-2 border-black bg-blue-200 rounded-md text-black font-semibold">
-                                    <option className="text-red-300">請選擇取餐時間</option>
+                                    <option className="text-red-300" value="none">請選擇取餐時間</option>
                                     {timeOptions.map(item => (
                                         <option key={item} value={item}>
                                             {item}:00
