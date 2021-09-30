@@ -50,12 +50,10 @@ function Purchase({ data, storeName }) {
             }
 
             try {
-                setOrderTime(
-                    set(order_time, {
-                        hours: datePicked
-                    })
-                )
-                console.log(order_time)
+                const submit_time = add(order_time,{
+                    hours: datePicked
+                })
+                console.log(submit_time)
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/transactions`, {
                     method: 'POST',
                     body: JSON.stringify({
@@ -64,7 +62,7 @@ function Purchase({ data, storeName }) {
                         store_id: store,
                         product_id: product,
                         comment: comment,
-                        order_time: order_time.toISOString(),
+                        order_time: submit_time.toISOString(),
                         options: {}
                     }),
                     headers: {
