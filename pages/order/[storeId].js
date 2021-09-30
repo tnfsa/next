@@ -107,12 +107,18 @@ export async function getStaticPaths() {
     const posts = await res.json()
 
     let paths = []
-    const garbage = posts.map((data) => {
-        if(data.name !== "bananaTiger"){
-            paths.push(`/order/${data.id}`)
-        }
-    })
 
+    if(process.env.NEXT_PUBLIC_DEVELOPEMENT === "TRUE"){
+        const garbage = posts.map((data) => {
+                paths.push(`/order/${data.id}`)
+        })
+    }else{
+        const garbage = posts.map((data) => {
+            if(data.name !== "bananaTiger"){
+                paths.push(`/order/${data.id}`)
+            }
+        })
+    }
 
     return {
         paths,

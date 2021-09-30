@@ -316,16 +316,23 @@ export async function getStaticPaths() {
     const posts = await res.json()
 
     let stores = []
-    let garbage = posts.map(item => {
-        if(item.name !== "bananaTiger"){
+
+    if (process.env.NEXT_PUBLIC_DEVELOPEMENT === "TRUE") {
+        let garbage = posts.map(item => {
             stores.push(getStores(item.id))
-        }
-    })
+        })
+    } else {
+        let garbage = posts.map(item => {
+            if (item.name !== "bananaTiger") {
+                stores.push(getStores(item.id))
+            }
+        })
+    }
 
     const result = await Promise.all(stores)
     let paths = []
 
-    garbage = result.map(item => {
+    let garbage = result.map(item => {
         item.map(thing => {
             paths.push(`/purchase/${thing}`)
         })
