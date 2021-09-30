@@ -21,9 +21,17 @@ function Restaurant({ data }) {
                         <div className="w-full overflow-hidden">
                             <div className="gap-3 w-full flex flex-wrap -m-1 justify-center">
                                 {data.map((data) => {
-                                    return (
-                                        <Cell data={data} key={data.name} />
-                                    )
+                                    if (process.env.NEXT_PUBLIC_PRODUCTION === "TRUE") {
+                                        return (
+                                            <Cell data={data} key={data.name} />
+                                        )
+                                    } else {
+                                        if (data.name !== "bananaTiger") {
+                                            return (
+                                                <Cell data={data} key={data.name} />
+                                            )
+                                        }
+                                    }
                                 })}
                             </div>
                         </div>
