@@ -8,7 +8,6 @@ import * as ga from '../../../components/GA'
 import Link from 'next/link'
 import Authenticate from "../../../components/authenticate";
 import Image from 'next/image'
-// import CustomTimePicker from "../../../components/time/CustomTimePicker";
 import CustomDatePicker from "../../../components/time/CustomDatePicker";
 import { add, set } from "date-fns"
 
@@ -16,7 +15,7 @@ function Purchase({ data, storeName }) {
     const [comment, setComment] = useState('')
     const [loading, setLoading] = useState(false)
     const timeOptions = [10, 11, 12]
-    const [datePicked, setDatePicked] = useState(0)
+    const [datePicked, setDatePicked] = useState("none")
     let temp_time = add(new Date(), {
         days: 1
     })
@@ -33,7 +32,7 @@ function Purchase({ data, storeName }) {
     const cookies = new Cookies()
 
     async function Send() {
-        if (datePicked === 0) {
+        if (datePicked === "none") {
             await Swal.fire({
                 icon: "error",
                 title: "請選擇時間"
@@ -48,7 +47,6 @@ function Purchase({ data, storeName }) {
 按 OK 送出；cancel 取消`
         if (window.confirm(confirmText)) {
             setLoading(true)
-
             try {
                 const submit_time = add(order_time, {
                     hours: datePicked
@@ -130,7 +128,7 @@ function Purchase({ data, storeName }) {
                 link={`/purchase/${store}/${product}`} />
             <Authenticate seller="noSeller" redirect={`/purchase/${store}/${product}`} />
             <section id="main">
-                <div className="px-12 py-2">
+                <div className="px-3 md:px-12 py-2">
                     <div className="flex flex-col bg-blue-100 rounded-xl p-16 items-center md:justify-center md:flex-row md:items-center md:space-x-16">
                         <div className="rounded-full">
                             <div className="h-72 w-64 relative">
@@ -142,11 +140,11 @@ function Purchase({ data, storeName }) {
                                     className="rounded-3xl" />
                             </div>
                         </div>
-                        <div className="space-y-3 w-full md:w-1/3">
+                        <div className="flex flex-col space-y-3 w-full md:w-1/3">
                             <p className="text-4xl font-semibold">
                                 {data.name}
                             </p>
-                            <p className="text-xl h-20">
+                            <p className="text-xl">
                                 {data.description}
                             </p>
                             <p className="text-lg">
@@ -175,7 +173,7 @@ function Purchase({ data, storeName }) {
                             <div id="timeSelect" className="flex flex-col space-y-2">
                                 <label className="text-xs"> 請選擇點餐時間 </label>
                                 <select onChange={setTimeSelected} className="w-44 text-center border-b-2 border-black bg-blue-200 rounded-md text-black font-semibold">
-                                    <option className="text-red-300">請選擇取餐時間</option>
+                                    <option className="text-red-300" value="none">請選擇取餐時間</option>
                                     {timeOptions.map(item => (
                                         <option key={item} value={item}>
                                             {item}:00
