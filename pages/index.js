@@ -1,12 +1,15 @@
 import Link from 'next/link'
-import Spotlight from "../components/Home/Spotlight"
+//import Spotlight from "../components/Home/Spotlight"
 import Footer from "../components/Footer"
 import { useState } from 'react'
 import LatestNews from '../components/Home/LatestNews'
 import Swal from 'sweetalert2'
 import Image from 'next/image'
+import Cookies from 'universal-cookie'
 
 export default function Home({ qna, news }) {
+    const cookies = new Cookies()
+    const loggedIn = cookies.get("session") !== "" ? true : false
     return (
         <div id="page-wrapper">
             <section id="header">
@@ -19,7 +22,7 @@ export default function Home({ qna, news }) {
                 </section>
 
                 <section id="intro" className="container">
-                    <div className="flex flex-col md:flex-row items-center">
+                    {/*<div className="flex flex-col md:flex-row items-center">
                         <Spotlight position="first"
                             icon="icon solid featured fa-cog"
                             title="PWA技術加持"
@@ -36,11 +39,22 @@ export default function Home({ qna, news }) {
                             icon="icon solid featured alt2 fa-star"
                             key="third" />
 
-                    </div>
+    </div>*/}
                     <footer>
+                        <br />
                         <ul className="flex justify-center space-x-5">
-                            <li><Link href="/login" passHref><a className="bg-red-700 hover:bg-red-800 text-xl md:text-3xl px-4 py-2 text-center align-middle inline-block no-underline rounded-md outline-none text-white font-bold">現在開始</a></Link></li>
-                            <li><a href="https://docs.tnfsa.org/" className="bg-green-700 hover:bg-green-800 text-xl md:text-3xl px-4 py-2 text-center inline-block no-underline rounded-md outline-none text-white font-bold">了解更多</a></li>
+                            <li>
+                                {loggedIn ?
+                                    <Link href="/restaurant" passHref>
+                                        <a className="bg-red-700 hover:bg-red-800 text-xl md:text-3xl px-4 py-2 text-center align-middle inline-block no-underline rounded-md outline-none text-white font-bold">現在開始</a>
+                                    </Link>
+                                    :
+                                    <Link href="/login" passHref>
+                                        <a className="bg-red-700 hover:bg-red-800 text-xl md:text-3xl px-4 py-2 text-center align-middle inline-block no-underline rounded-md outline-none text-white font-bold">現在開始</a>
+                                    </Link>
+                                }
+                            </li>
+                            <li><a href="https://docs.tnfsa.org/" className="bg-green-700 hover:bg-green-800 text-xl md:text-3xl px-4 py-2 text-center inline-block no-underline rounded-md outline-none text-white font-bold">使用說明</a></li>
                         </ul>
                     </footer>
                 </section>

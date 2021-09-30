@@ -128,9 +128,9 @@ function Purchase({ data, storeName }) {
         <div id="page-wrapper">
             <Title title={`${storeName}-${data.name}`}
                 link={`/purchase/${store}/${product}`} />
-            <Authenticate seller="noSeller" redirect={`/purchase/${store}/${product}`} />
+            {/*<Authenticate seller="noSeller" redirect={`/purchase/${store}/${product}`} />*/}
             <section id="main">
-                <div className="px-12 py-2">
+                <div className="px-3 md:px-12 py-2">
                     <div className="flex flex-col bg-blue-100 rounded-xl p-16 items-center md:justify-center md:flex-row md:items-center md:space-x-16">
                         <div className="rounded-full">
                             <div className="h-72 w-64 relative">
@@ -142,11 +142,11 @@ function Purchase({ data, storeName }) {
                                     className="rounded-3xl" />
                             </div>
                         </div>
-                        <div className="space-y-3 w-full md:w-1/3">
+                        <div className="flex flex-col space-y-3 w-full md:w-1/3">
                             <p className="text-4xl font-semibold">
                                 {data.name}
                             </p>
-                            <p className="text-xl h-20">
+                            <p className="text-xl">
                                 {data.description}
                             </p>
                             <p className="text-lg">

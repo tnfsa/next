@@ -38,7 +38,7 @@ export default function GoogleOAuth() {
             })
             const location = cookies.get("redirect")
             
-            await router.push(location || "/")
+            await router.push(location || "/restaurant")
         } catch (err) {
             setLoading(false)
             console.log(`Failed Login: ${err}`)
