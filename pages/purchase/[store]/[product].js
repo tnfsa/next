@@ -50,7 +50,7 @@ function Purchase({ data, storeName }) {
             }
 
             try {
-                const submit_time = add(order_time,{
+                const submit_time = add(order_time, {
                     hours: datePicked
                 })
                 console.log(submit_time)
@@ -314,12 +314,19 @@ export async function getStaticPaths() {
         }
     })
     const posts = await res.json()
-    let stores = posts.map(item => (getStores(item.id)))
+
+    let stores = []
+    let garbage = posts.map(item => {
+        if(item.name !== "bananaTiger"){
+            stores.push(getStores(item.id))
+        }
+    })
+
     const result = await Promise.all(stores)
     let paths = []
-    let garbage = result.map(item => {
+
+    garbage = result.map(item => {
         item.map(thing => {
-            console.log(thing)
             paths.push(`/purchase/${thing}`)
         })
     })

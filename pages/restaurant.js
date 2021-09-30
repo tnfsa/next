@@ -21,17 +21,9 @@ function Restaurant({ data }) {
                         <div className="w-full overflow-hidden">
                             <div className="gap-3 w-full flex flex-wrap -m-1 justify-center">
                                 {data.map((data) => {
-                                    if (process.env.NEXT_PUBLIC_PRODUCTION === "TRUE") {
-                                        return (
-                                            <Cell data={data} key={data.name} />
-                                        )
-                                    } else {
-                                        if (data.name !== "bananaTiger") {
-                                            return (
-                                                <Cell data={data} key={data.name} />
-                                            )
-                                        }
-                                    }
+                                    return (
+                                        <Cell data={data} key={data.name} />
+                                    )
                                 })}
                             </div>
                         </div>
@@ -79,9 +71,18 @@ export async function getStaticProps() {
     })
 
     const data = await res.json()
-
+    console.log(data)
+    let returnData = []
+    const garbage = data.map(item=>{
+        if(item.name !== "bananaTiger"){
+            returnData.push(item)
+        }
+    })
+    console.log(returnData)
     return {
-        props: { data }
+        props: { 
+            data: returnData 
+        }
     }
 }
 
