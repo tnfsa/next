@@ -16,7 +16,7 @@ function Purchase({ data, storeName }) {
     const [comment, setComment] = useState('')
     const [loading, setLoading] = useState(false)
     const timeOptions = [10, 11, 12]
-    const [datePicked, setDatePicked] = useState(0)
+    const [datePicked, setDatePicked] = useState("not picked")
     let temp_time = add(new Date(), {
         days: 1
     })
@@ -33,7 +33,7 @@ function Purchase({ data, storeName }) {
     const cookies = new Cookies()
 
     async function Send() {
-        if (datePicked === 0) {
+        if (typeof(datePicked) !== "number") {
             await Swal.fire({
                 icon: "error",
                 title: "請選擇時間"
@@ -48,7 +48,6 @@ function Purchase({ data, storeName }) {
 按 OK 送出；cancel 取消`
         if (window.confirm(confirmText)) {
             setLoading(true)
-
             try {
                 const submit_time = add(order_time, {
                     hours: datePicked
@@ -128,7 +127,7 @@ function Purchase({ data, storeName }) {
         <div id="page-wrapper">
             <Title title={`${storeName}-${data.name}`}
                 link={`/purchase/${store}/${product}`} />
-            {/*<Authenticate seller="noSeller" redirect={`/purchase/${store}/${product}`} />*/}
+            <Authenticate seller="noSeller" redirect={`/purchase/${store}/${product}`} />
             <section id="main">
                 <div className="px-3 md:px-12 py-2">
                     <div className="flex flex-col bg-blue-100 rounded-xl p-16 items-center md:justify-center md:flex-row md:items-center md:space-x-16">
