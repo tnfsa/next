@@ -71,9 +71,26 @@ export async function getStaticProps() {
     })
 
     const data = await res.json()
+    console.log(data)
+    let returnData = []
+    
+    if(process.env.NEXT_PUBLIC_DEVELOPEMENT === "TRUE"){
+        const garbage = data.map(item=>{
+                returnData.push(item)
+        })
+    }else{
+        const garbage = data.map(item=>{
+            if(item.name !== "bananaTiger"){
+                returnData.push(item)
+            }
+        })
+    }
 
+    console.log(returnData)
     return {
-        props: { data }
+        props: { 
+            data: returnData 
+        }
     }
 }
 

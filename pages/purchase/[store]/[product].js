@@ -33,6 +33,13 @@ function Purchase({ data, storeName }) {
     const cookies = new Cookies()
 
     async function Send() {
+        if (datePicked === 0) {
+            await Swal.fire({
+                icon: "error",
+                title: "請選擇時間"
+            })
+            return
+        }
         const confirmText =
             `請確認您的訂購資訊
 名稱：${data.name}
@@ -41,16 +48,9 @@ function Purchase({ data, storeName }) {
 按 OK 送出；cancel 取消`
         if (window.confirm(confirmText)) {
             setLoading(true)
-            if (datePicked === 0) {
-                await Swal.fire({
-                    icon: "error",
-                    title: "請選擇時間"
-                })
-                return
-            }
 
             try {
-                const submit_time = add(order_time,{
+                const submit_time = add(order_time, {
                     hours: datePicked
                 })
                 console.log(submit_time)
@@ -97,7 +97,7 @@ function Purchase({ data, storeName }) {
                 } else {
                     switch (response.error.status) {
                         case "TRANSACTION/ORDER-TIME":
-                            throw "訂餐時間錯誤";
+                            throw "訂餐時間錯誤!!<br>目前時間為 " + (new Date()).toLocaleString("zh-TW") + "<br>訂餐時間為 " + submit_time.toLocaleString('zh-TW');
                         case "TRANSACTION/BANNED":
                             throw "哈哈你被停權了";
                         default:
@@ -108,11 +108,11 @@ function Purchase({ data, storeName }) {
                 setLoading(false)
                 await Swal.fire({
                     title: '錯誤!',
-                    text: err,
+                    html: err,
                     icon: 'error',
                     confirmButtonText: 'Ok'
                 })
-                await router.push('/')
+                document.location.reload()
             }
         }
     }
@@ -314,12 +314,26 @@ export async function getStaticPaths() {
         }
     })
     const posts = await res.json()
-    let stores = posts.map(item => (getStores(item.id)))
+
+    let stores = []
+
+    if (process.env.NEXT_PUBLIC_DEVELOPEMENT === "TRUE") {
+        let garbage = posts.map(item => {
+            stores.push(getStores(item.id))
+        })
+    } else {
+        let garbage = posts.map(item => {
+            if (item.name !== "bananaTiger") {
+                stores.push(getStores(item.id))
+            }
+        })
+    }
+
     const result = await Promise.all(stores)
     let paths = []
+
     let garbage = result.map(item => {
         item.map(thing => {
-            console.log(thing)
             paths.push(`/purchase/${thing}`)
         })
     })
