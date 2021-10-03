@@ -154,7 +154,9 @@ function List(props, update) {
         }
         setLoading(false);
     }
-
+    const startTime = new Date(item.order_time);
+    console.log("ordered")
+    console.log(startTime.getTimezoneOffset())
     return (
         <div className="md:flex rounded-lg">
             <LinearProgress hidden={!loading} />
@@ -165,7 +167,7 @@ function List(props, update) {
                     <h1>金額：{item.total}</h1>
                     <h1>留言：{typeof (item.comment) === "undefined" || item.comment === null ? '' : (item.comment.length > 50 ? item.comment.slice(0, 50) + ' ...' : item.comment)}</h1>
                     <h1>購買日期：{new Date(item.created_at).toLocaleString('zh-TW')}</h1>
-                    <h1>取餐日期：{new Date(item.order_time).toLocaleString('zh-TW')}</h1>
+                    <h1>取餐日期：{new Date(startTime.getTime() - (startTime.getTimezoneOffset() * 60000)).toLocaleString("zh-TW")}</h1>
                     <h1>訂單編號：<b>{item.id.substring(0, 8)}</b>{item.id.substr(8)}</h1>
                     <h1>出餐狀態：{item.status === "PREPARE" && "準備中"} {item.status === "OK" && "可取餐"}  {item.status === "DONE" && "已取餐"} {item.status === "NOTAKEN" && "拒收"}</h1>
                 </div>
