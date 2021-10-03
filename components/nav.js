@@ -113,7 +113,7 @@ export default function Navigation() {
                     </Nav>
                     {isLoggedIn ?
                         <NavDropdown title={`嗨~ ${cookies.get('user_name')}`} id="basic-nav-dropdown">
-                            <Link href="/history" passHref><NavDropdown.Item>歷史紀錄</NavDropdown.Item></Link>
+                            <Link href="/history" passHref><NavDropdown.Item>訂購紀錄</NavDropdown.Item></Link>
                             <Link href="/settings" passHref><NavDropdown.Item>設定</NavDropdown.Item></Link>
                             <Link href="/logout" passHref><NavDropdown.Item>登出</NavDropdown.Item></Link>
                         </NavDropdown>
