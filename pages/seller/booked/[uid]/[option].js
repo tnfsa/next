@@ -24,114 +24,27 @@ export default function DetailBooked({ productName }) {
     const router = useRouter()
     const uid = router.query["uid"]
     const option = router.query["option"]
-
-    const transactions = async () => {
-        let url = ""
-        let day = ""
-
-        url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions`
-
-        console.log(url)
-        console.log(storeId)
-        let result = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                "Authorization": `Bearer ${allcookies['session']}`
+    const today = new Date()
+    
+    useEffect(()=>{
+        async function getData(){
+            let url = ""
+            switch (option){
+                case "today":
+                    url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions/${uid}`
+                    break;
+                case "tomorrow":
+                    break;
+                default:
+                    
             }
-        })
-        const json = await result.json()
-        let toReturn = []
-
-        switch (option) {
-            case "today":
-                day = new Date();
-                for (const index in json) {
-                    if (json[index]['product_id'] === uid) {
-                        if (datesAreTheSame(day, json[index][order_time])) {
-                            toReturn.push(json[index])
-                        }
-                    }
-                }
-                break;
-            case "tomorrow":
-                day = add(new Date(), { days: 1 })
-                for (const index in json) {
-                    if (json[index]['product_id'] === uid) {
-                        if (datesAreTheSame(day, json[index][order_time])) {
-                            toReturn.push(json[index])
-                        }
-                    }
-                }
-                break;
-            default:
-                for (const index in json) {
-                    if (json[index]['product_id'] === uid) {
-                        toReturn.push(json[index])
-                    }
-                }
         }
-
-        return toReturn
-    }
-
-    function datesAreTheSame(first, second) {
-        return first.getDate() === second.getDate() && first.getMonth() === second.getMonth() && first.getFullYear() === second.getFullYear();
-    }
-
-
-
-    const getInfo = async () => {
-        try {
-            const result = await Promise.all([transactions()])
-
-            setLoading(false)
-            setData(result[0])
-            setChanges(0)
-            console.log(result[0])
-        } catch (err) {
-            window.alert(err)
-            await Swal.fire({
-                icon: 'error',
-                title: '讀取錯誤',
-                text: err
-            })
-            await router.push('/')
-        }
-    }
-
-    const sendStatus = async (url, status) => {
-        let flag = null
-        try {
-            const rawData = await fetch(url, {
-                method: 'PUT',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${allcookies['session']}`
-                },
-                body: JSON.stringify({
-                    'status': status
-                })
-            })
-            const parsed = await rawData.json()
-            console.log(parsed)
-            if (rawData.ok) {
-                flag = true
-            } else {
-                flag = false
-            }
-        } catch (err) {
-            window.alert(`狀態更新失敗：${err}`)
-            flag = false
-        }
-        return flag
-    }
-
-    useEffect(() => {
-        getInfo()
+        const id = setInterval(() => {
+            getData();
+        }, 5000)
+        return () => clearInterval(id);
         // eslint-disable-next-line
-    }, [changes])
+    },[])
 
     return (
         <div id="page-wrapper">
