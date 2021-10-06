@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { Spinner } from 'react-bootstrap'
 import { useRouter } from "next/router";
-import Cookies from 'universal-cookie'
 import Swal from 'sweetalert2'
+
+import { useDispatch } from "react-redux";
+import { setProfile } from "../../redux/actions";
+
 export default function LoginForm() {
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const router = useRouter()
-    const cookies = new Cookies();
+
+    const dispatch = useDispatch()
 
     const Send = async () => {
         setLoading(true)
@@ -17,7 +21,7 @@ export default function LoginForm() {
         if (response['status'] !== 'error') {
             await fetchInfo(response)
         }
-        await router.push('/')
+        //window.document.location = "/"
     }
 
     const postFile = async () => {
@@ -35,10 +39,11 @@ export default function LoginForm() {
                     'Accept': 'application/json'
                 }
             })
+            
             const response = await data.json()
             toReturn = response
+            
             if (response['status'] !== 'error') {
-                cookies.set('session', response['access_token'])
                 await Swal.fire({
                     icon: 'success',
                     title: '登入成功'
@@ -71,13 +76,13 @@ export default function LoginForm() {
                 }
             })
             const response = await data.json()
-            cookies.set('user_name', response['name'])
-            cookies.set('id', response['id'])
-            cookies.set('account_type', '2')
-            if (response['stores'][0] !== undefined) {
-                cookies.set('store_id', response['stores'][0]['id'])
-            }
-            await router.push('/')
+            dispatch(setProfile({
+                session: loginResponse.access_token,
+                username: response.name,
+                avatar: null,
+                account_type: "store_manager",
+                store_id: response.stores[0] === undefined ? null : response['stores'][0]['id'],
+            }))
         } catch (err) {
             await Swal.fire({
                 icon: 'error',

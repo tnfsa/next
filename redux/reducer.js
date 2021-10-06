@@ -26,7 +26,7 @@ export const initialState = {
 
 export const reducer = (state = initialState, action) => {
     switch(action.type){
-        case "RESET":
+        case "RESETPROFILE":
             return {
                 ...state,
                 profile:{
@@ -37,7 +37,8 @@ export const reducer = (state = initialState, action) => {
                     store_id: null,
                 }
             }
-        case "SET":
+        case "SETPROFILE":
+            console.log(action.payload)
             return{
                 ...state,
                 profile:{
