@@ -37,11 +37,12 @@ function Restaurant({ data }) {
 
 function Cell(props) {
     const data = props.data;
+    console.log(data.image)
     return (
         <div className="bg-white p-3 rounded-lg w-80 whitespace-no-wrap">
             <div className="p-4 content-center">
                 <div className="h-40 w-64 relative">
-                    <Image src={typeof (data.image) === "undefined" ? `${process.env.NEXT_PUBLIC_STATIC}/images/pic01.jpg` : `${process.env.NEXT_PUBLIC_API_HOST}${data.image}`}
+                    <Image src={data.image === null ? `${process.env.NEXT_PUBLIC_STATIC}/images/pic01.jpg` : `${process.env.NEXT_PUBLIC_API_HOST}${data.image}`}
                         alt={`${data.name}的照片`}
                         layout="fill" />
                 </div>

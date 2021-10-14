@@ -8,12 +8,6 @@ import {useDispatch} from "react-redux"
 export default function Logout(){
     const dispatch = useDispatch()
     useEffect(()=>{
-        const cookies = new Cookies()
-        cookies.remove('account_type')
-        cookies.remove('session')
-        cookies.remove('user_name')
-        cookies.remove('store_id')
-        
         dispatch(resetProfile())
 
         document.location.replace('/')

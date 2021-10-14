@@ -12,7 +12,6 @@ export const profile = (state = initialState, action) => {
         case "RESETPROFILE":
             return initialState
         case "SETPROFILE":
-            console.log(action.payload)
             return {
                 ...state,
                 session: action.payload.session,

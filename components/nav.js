@@ -11,9 +11,7 @@ export default function Navigation() {
     const [accountType, setAccountType] = useState(useSelector(state => state.profile.account_type));
     const [session,setSession] = useState(useSelector(state => state.profile.session))
     const [user_name,setUserName] = useState(useSelector(state => state.profile.username))
-
-    console.log(useSelector(state => state.profile.username))
-
+    
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
     const [loadingProcess, setLoadingProcess] = useState(0);
@@ -21,18 +19,13 @@ export default function Navigation() {
     const [navbarExpanded, setNavbarExpended] = useState(false)
     const router = useRouter();
 
-    function select(state,doc){
-        return state.profile[doc]
-    }
+    store.subscribe(()=>{
+        setUserName(store.getState().profile.username)
+        setSession(store.getState().profile.session)
+        setAccountType(store.getState().profile.account_type)
+    })
 
     function handleRouteChange(url, status) {
-        const newSession = select(store.getState(),"session")
-        if(newSession !== session){
-            setSession(select(store.getState(),"session"))
-            setAccountType(select(store.getState(),"account_type"))
-            setUserName(select(store.getState,"username"))
-        }
-
         switch (status) {
             case "start":
                 setNavbarExpended(false)

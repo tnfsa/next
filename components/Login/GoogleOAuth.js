@@ -5,9 +5,13 @@ import Cookies from 'universal-cookie';
 import Swal from 'sweetalert2'
 import { useState } from 'react'
 
+import { useDispatch } from 'react-redux';
+import { setProfile } from '../../redux/actions';
+
 export default function GoogleOAuth() {
     const [loading, setLoading] = useState(false)
     const router = useRouter()
+    const dispatch = useDispatch()
     const cookies = new Cookies()
     async function responseGoogle(google_response) {
         setLoading(true)
@@ -28,23 +32,29 @@ export default function GoogleOAuth() {
                 }
             })
             const response = await data.json()
-            cookies.set('session', response['access_token'])
-            cookies.set('account_type', 1)
-            cookies.set('user_name', google_response['profileObj']['givenName'])
+            console.log(google_response)
+            dispatch(setProfile({
+                session: response['access_token'],
+                account_type: "student",
+                username: google_response['profileObj']['givenName'],
+                avatar: google_response['profileObj']['imageUrl'],
+            }))
+            
             setLoading(false)
             await Swal.fire({
                 icon: 'success',
                 title: '登入成功'
             })
-            const location = cookies.get("redirect")
             
+            const location = cookies.get("redirect")
             await router.push(location || "/restaurant")
         } catch (err) {
             setLoading(false)
             console.log(`Failed Login: ${err}`)
             await Swal.fire({
                 icon: 'error',
-                title: '與伺服器連線錯誤'
+                title: '錯誤!!',
+                text: err
             })
         }
     }
