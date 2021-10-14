@@ -5,11 +5,14 @@ import * as ga from '../components/GA'
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { TextField, LinearProgress } from "@material-ui/core";
 import { useSelector } from "react-redux"
+import { store } from '../redux/store';
 
 export default function Navigation() {
     const [accountType, setAccountType] = useState(useSelector(state => state.profile.account_type));
     const [session,setSession] = useState(useSelector(state => state.profile.session))
     const [user_name,setUserName] = useState(useSelector(state => state.profile.username))
+
+    console.log(useSelector(state => state.profile.username))
 
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
@@ -18,7 +21,18 @@ export default function Navigation() {
     const [navbarExpanded, setNavbarExpended] = useState(false)
     const router = useRouter();
 
+    function select(state,doc){
+        return state.profile[doc]
+    }
+
     function handleRouteChange(url, status) {
+        const newSession = select(store.getState(),"session")
+        if(newSession !== session){
+            setSession(select(store.getState(),"session"))
+            setAccountType(select(store.getState(),"account_type"))
+            setUserName(select(store.getState,"username"))
+        }
+
         switch (status) {
             case "start":
                 setNavbarExpended(false)
@@ -34,7 +48,7 @@ export default function Navigation() {
         }
 
     }
-
+    
     useEffect(() => {
         router.events.on('routeChangeStart', (event) => { handleRouteChange(event, "start") })
         router.events.on('routeChangeComplete', (event) => { handleRouteChange(event, "end") })

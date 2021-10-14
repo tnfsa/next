@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Spinner } from 'react-bootstrap'
-import { useRouter } from "next/router";
 import Swal from 'sweetalert2'
 
 import { useDispatch } from "react-redux";
@@ -10,7 +9,6 @@ export default function LoginForm() {
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const router = useRouter()
 
     const dispatch = useDispatch()
 
