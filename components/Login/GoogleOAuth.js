@@ -32,7 +32,7 @@ export default function GoogleOAuth() {
                 }
             })
             const response = await data.json()
-            console.log(google_response)
+            
             dispatch(setProfile({
                 session: response['access_token'],
                 account_type: "student",
@@ -45,7 +45,7 @@ export default function GoogleOAuth() {
                 icon: 'success',
                 title: '登入成功'
             })
-            
+
             const location = cookies.get("redirect")
             await router.push(location || "/restaurant")
         } catch (err) {
