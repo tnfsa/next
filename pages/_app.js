@@ -10,7 +10,7 @@ import Head from 'next/head'
 
 // redux
 import { Provider } from "react-redux"
-import { store,persistor } from "../redux/store"
+import { store, persistor } from "../redux/store"
 import { PersistGate } from "redux-persist/integration/react"
 
 function MyApp({ Component, pageProps }) {
@@ -34,3 +34,12 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp
+
+
+function Loading() {
+    return (
+        <>
+            Loading...
+        </>
+    )
+}

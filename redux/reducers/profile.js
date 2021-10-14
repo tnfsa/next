@@ -1,0 +1,38 @@
+
+const initialState = {
+    session: null,
+    username: "incognito",
+    avatar: null, // link of avatar
+    account_type: null, // [ admin | store_manager | student ]
+    store_id: null, // exist only when account_type is store_manager
+}
+
+export const profile = (state = initialState, action) => {
+    switch (action.type) {
+        case "RESETPROFILE":
+            return {
+                ...state,
+                profile: {
+                    session: null,
+                    username: "incognito",
+                    avatar: null,
+                    account_type: null,
+                    store_id: null,
+                }
+            }
+        case "SETPROFILE":
+            console.log(action.payload)
+            return {
+                ...state,
+                profile: {
+                    session: action.payload.session,
+                    username: action.payload.username,
+                    avatar: action.payload.avatar,
+                    account_type: action.payload.account_type,
+                    store_id: action.payload.store_id,
+                }
+            }
+        default:
+            return state;
+    }
+}

@@ -1,27 +1,23 @@
-import { createStore, applyMiddleware } from "redux";
-import { reducer } from "./reducer";
-import { createWrapper,HYDRATE } from "next-redux-wrapper";
-import thunkMiddleware from "redux-thunk"
-import { persistStore, persistReducer } from "redux-persist"
+import { combineReducers, createStore } from "redux";
 import storage from "redux-persist/lib/storage";
 
+import {profile} from './reducers/profile'
 
-const makeStore = ({isServer})=>{
-    if(isServer){
-        return createStore(reducer,bindMiddleware([thunkMiddleware]))
-    }else{
-        const persistConfig = {
-            key: "nextjs",
-            storage
-        }
-        const PReducer = persistReducer(persistConfig,reducer)
-        const store = createStore(
-            PReducer,
-            bindMiddleware([thunkMiddleware])
-        )
-        store.__persistor = persistStore(store)
-        return store
-    }
+import {
+    persistStore,
+    persistReducer,
+} from "redux-persist"
+
+const persistConfig = {
+    key: 'storage',
+    storage
 }
 
-export const wrapper = createWrapper(makeStore)
+const reducers = combineReducers({
+    profile: profile
+})
+
+const persistedReducer = persistReducer(persistConfig, reducers);
+
+export const store = createStore(persistedReducer)
+export const persistor = persistStore(store)
