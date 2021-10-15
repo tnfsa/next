@@ -1,68 +1,71 @@
-import { useEffect } from 'react'
-import Cookies from 'universal-cookie'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 
+import { useSelector, useDispatch } from 'react-redux'
+import { setRedirect } from '../redux/actions'
+
 export default function Authenticate(props) {
-    const cookies = new Cookies()
     const router = useRouter()
+    const session = useSelector(state => state.profile.session)
+    const account_type = useSelector(state => state.profile.account_type)
 
-    useEffect(() => {
-        if (typeof (props.seller) === "undefined") {
-            normalAuth()
-        } else if (props.seller === "noSeller") { 
-            noSellerAuth()
-        } else {
-            sellerAuth()
-        }
-        // eslint-disable-next-line
-    }, [])
+    const dispatch = useDispatch()
 
-    async function normalAuth() {
-        const loggedIn = typeof (cookies.get('session'))
-        if (loggedIn === "undefined") {
-            await Swal.fire({
-                icon: 'error',
-                title: '請先登入'
-            })
-            await router.push('/')
-        }
+    switch (props.option) {
+        case "student":
+            if (account_type !== "student") {
+                if (session === null) {
+                    // not signed in
+                    Swal.fire({
+                        icon: 'error',
+                        title: "請先登入",
+                    }).then(() => {
+                        dispatch(setRedirect({
+                            redirect: document.location.href
+                        }))
+                        router.push('/login')
+                    })
+                } else {
+                    // signed in but not student
+                    Swal.fire({
+                        icon: 'error',
+                        title: "僅學生可以使用",
+                    }).then(() => {
+                        router.push('/')
+                    })
+                }
+            }
+            break;
+        case "seller":
+            if(account_type !== "store_manager"){
+                Swal.fire({
+                    icon: "error",
+                    title: "非法使用者登入",
+                }).then(() => {
+                    router.push('/')
+                })
+            }
+            break;
+        case "admin":
+            if(account_type !== "admin"){
+                Swal.fire({
+                    icon: "error",
+                    title: "非法使用者登入",
+                }).then(() => {
+                    router.push('/')
+                })
+            }
+            break;
+        default:
+            if (session === null) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '請先登入'
+                }).then(() => {
+                    router.push('/')
+                })
+            }
     }
-
-    async function noSellerAuth() {
-        const loggedIn = typeof (cookies.get('session'))
-        if (loggedIn === "undefined") {
-            await Swal.fire({
-                icon: 'error',
-                title: '請先登入'
-            })
-            cookies.set("redirect",props.redirect || "/")
-            await router.push('/login')
-        }
-        if (cookies.get('account_type') === '2') {
-            router.prefetch('/')
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: '此功能商家無法使用',
-            }).then(() => {
-                router.push('/')
-            })
-        }
-    }
-
-    async function sellerAuth() {
-        const account_type = cookies.get('account_type')
-        const session = cookies.get('session')
-        if (account_type !== "2" || typeof (session) === "undefined") {
-            await Swal.fire({
-                icon: 'error',
-                title: '未經授權'
-            })
-            await router.push('/')
-        }
-    }
-
     return (
         <div id="authenticate" />
     )

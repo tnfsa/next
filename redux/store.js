@@ -2,6 +2,7 @@ import { combineReducers, createStore } from "redux";
 import storage from "redux-persist/lib/storage";
 
 import {profile} from './reducers/profile'
+import {settings} from './reducers/settings'
 
 import {
     persistStore,
@@ -14,7 +15,8 @@ const persistConfig = {
 }
 
 const reducers = combineReducers({
-    profile: profile
+    profile,
+    settings,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);
