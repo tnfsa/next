@@ -17,7 +17,7 @@ export default function Personal() {
 
                     <div className="px-10 w-full">
                         <div className="bg-white w-full px-5 divide-y-4 divide-solid">
-                            <Password />
+                            {/*<Password />*/}
                         </div>
                     </div>
                 </div>

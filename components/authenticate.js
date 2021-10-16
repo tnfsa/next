@@ -29,7 +29,7 @@ export default function Authenticate(props) {
                     // signed in but not student
                     Swal.fire({
                         icon: 'error',
-                        title: "僅學生可以使用",
+                        title: "僅學生或教師可以購買",
                     }).then(() => {
                         router.push('/')
                     })

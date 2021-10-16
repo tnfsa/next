@@ -5,7 +5,7 @@ import Swal from 'sweetalert2'
 import { useState } from 'react'
 
 import { useDispatch } from 'react-redux';
-import { setProfile } from '../../redux/actions';
+import { setProfile,setRedirect } from '../../redux/actions';
 import {store} from '../../redux/store'
 
 export default function GoogleOAuth() {
@@ -47,6 +47,9 @@ export default function GoogleOAuth() {
             })
 
             const location = store.getState().settings.redirect
+            dispatch(setRedirect({
+                redirect: null
+            }))
             console.log(location)
             
             await router.push(location || "/restaurant")

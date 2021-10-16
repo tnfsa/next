@@ -22,17 +22,16 @@ export default function Input() {
             setPasswordConfirm('')
             return
         }
-        const dataPack = {
-            'email': email,
-            'name': username,
-            'password': password,
-            'registration_code': activation
-        }
         setLoading(true)
         try {
             const data = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/register`, {
                 method: 'POST',
-                body: JSON.stringify(dataPack),
+                body: JSON.stringify({
+                    email,
+                    name: username,
+                    password,
+                    registration_code: activation,
+                }),
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -44,7 +43,7 @@ export default function Input() {
                 title: '註冊成功'
             })
             setLoading(false)
-            await router.push('/')
+            document.location.href = '/'
         } catch (err) {
             console.log(`Error: ${err}`)
             await Swal.fire({
@@ -118,7 +117,7 @@ export default function Input() {
                         </svg>
                         請稍候
                     </button>}
-                {loading || <button className="bg-pink-500 hover:bg-ping-700 p-2 float-right inline-block rounded-md text-black font-bold"
+                {loading || <button className="bg-red-500 hover:bg-ping-700 p-2 float-right inline-block rounded-md text-black font-bold"
                     type="submit">
                     送出
                 </button>}

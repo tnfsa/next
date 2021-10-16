@@ -126,7 +126,7 @@ function Purchase({ data, storeName }) {
         <div id="page-wrapper">
             <Title title={`${storeName}-${data.name}`}
                 link={`/purchase/${store}/${product}`} />
-            <Authenticate seller="noSeller" redirect={`/purchase/${store}/${product}`} />
+            <Authenticate option="student" redirect={`/purchase/${store}/${product}`} />
             <section id="main">
                 <div className="px-3 md:px-12 py-2">
                     <div className="flex flex-col bg-blue-100 rounded-xl p-16 items-center md:justify-center md:flex-row md:items-center md:space-x-16">
@@ -226,7 +226,7 @@ function Purchase({ data, storeName }) {
                                     <div id="buttons" className="flex justify-between">
                                         <div>
                                             <Link href={`/order/${store}`} passHref>
-                                                <button className="p-2 rounded-2xl text-lg bg-pink-500 hover:bg-pink-700 font-bold text-white inline-block">
+                                                <button className="p-2 rounded-2xl text-lg bg-red-500 hover:bg-red-700 font-bold text-white inline-block">
                                                     回上一頁
                                                 </button>
                                             </Link>
