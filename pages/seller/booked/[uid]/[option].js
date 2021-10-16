@@ -13,33 +13,27 @@ import { Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
-export default function DetailBooked({ productName }) {
+export default function DetailBooked({ productName, option, uid }) {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState([])
     const [changes, setChanges] = useState(0)
     const router = useRouter()
-    const uid = router.query["uid"]
-    const option = router.query["option"]
-
     const session = useSelector(state => state.profile.session)
     const storeId = useSelector(state => state.profile.store_id)
 
     const transactions = async () => {
-        console.log("storeId:")
         let url = ""
-
-        switch (option) {
-            case "today":
-                const today = new Date();
-                url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions?time=${today.toISOString()}`
-                break;
-            case "tomorrow":
-                const next_day = add(new Date(), { days: 1 })
-                url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions?time=${next_day.toISOString()}`
-                break;
-            default:
-                url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions`
+        console.log(option)
+        if (option === "today") {
+            const today = new Date();
+            url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions?time=${today.toISOString()}`
+        } else if (option === "tomorrow") {
+            const next_day = add(new Date(), { days: 1 })
+            url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions?time=${next_day.toISOString()}`
+        } else {
+            url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions`
         }
+
         let result = await fetch(url, {
             method: 'GET',
             headers: {
@@ -72,7 +66,6 @@ export default function DetailBooked({ productName }) {
     }
 
     const sendStatus = async (url, status) => {
-        let flag = null
         try {
             const rawData = await fetch(url, {
                 method: 'PUT',
@@ -95,9 +88,12 @@ export default function DetailBooked({ productName }) {
     }
 
     useEffect(() => {
+        if(!uid){
+            return;
+        }
         getInfo()
         // eslint-disable-next-line
-    }, [changes])
+    }, [changes,uid])
 
     return (
         <div id="page-wrapper">
@@ -143,7 +139,6 @@ export default function DetailBooked({ productName }) {
 }
 
 function DateSelected(props) {
-    console.log(props.select)
     return (
         <div className="flex flex-row px-5 py-2 bg-yellow-500 justify-between">
             <button className="w-44 bg-white text-center" disabled>目前狀態：{props.select}</button>
@@ -269,16 +264,11 @@ async function getName(uid) {
 
 export async function getStaticProps(context) {
     const uid = context.params.uid
+    const option = context.params.option
     const productName = await getName(uid)
     return {
-        props: { productName }
+        props: { productName, option, uid }
     }
-}
-
-async function getFoods(storeId) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/products`)
-    const result = await res.json()
-    return result.map(food => (`/${food.id}`))
 }
 
 export async function getStaticPaths() {
