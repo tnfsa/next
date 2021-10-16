@@ -3,13 +3,13 @@ import Footer from '../../../components/Footer'
 import { useRouter } from "next/router";
 import { useState } from 'react'
 import Swal from 'sweetalert2'
-import Cookies from 'universal-cookie'
 import * as ga from '../../../components/GA'
 import Link from 'next/link'
 import Authenticate from "../../../components/authenticate";
 import Image from 'next/image'
 import CustomDatePicker from "../../../components/time/CustomDatePicker";
 import { add, set } from "date-fns"
+import { useSelector } from 'react-redux'
 
 function Purchase({ data, storeName }) {
     const [comment, setComment] = useState('')
@@ -29,7 +29,7 @@ function Purchase({ data, storeName }) {
     const [order_time, setOrderTime] = useState(temp_time);
     const router = useRouter()
     const { store, product } = router.query
-    const cookies = new Cookies()
+    const session = useSelector(state => state.profile.session)
 
     async function Send() {
         if (datePicked === "none") {
@@ -66,7 +66,7 @@ function Purchase({ data, storeName }) {
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${cookies.get('session')}`
+                        'Authorization': `Bearer ${session}`
                     }
                 })
                 const response = await res.json()

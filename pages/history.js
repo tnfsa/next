@@ -4,17 +4,18 @@ import { Rating } from "@material-ui/lab";
 import { Delete } from "@material-ui/icons";
 import { useEffect, useState } from "react";
 import Footer from '../components/Footer'
-import Cookies from 'universal-cookie'
 import Swal from "sweetalert2";
 import QRCode from 'qrcode.react'
 import Authenticate from '../components/authenticate'
+import { useSelector } from "react-redux";
 
 export default function History() {
     const [transaction, setTransaction] = useState([]);
     const [loading, setLoading] = useState(false);
     const [highlight, setHightLight] = useState(false);
     const [today, setToday] = useState([]);
-    const cookies = new Cookies()
+    
+    const session = useSelector(state => state.profile.session)
 
     async function Update() {
         try {
@@ -24,7 +25,7 @@ export default function History() {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
-                    'Authorization': `Bearer ${cookies.get('session')}`
+                    'Authorization': `Bearer ${session}`
                 }
             })
             let response = await res.json()
@@ -72,7 +73,7 @@ export default function History() {
     }
 
     useEffect(() => {
-        const status = typeof (cookies.get('session'))
+        const status = typeof (session)
         if (status !== "undefined") {
             Update()
         }
@@ -97,7 +98,7 @@ export default function History() {
                                     {/*Booked today*/}
                                     {highlight && today.map((item)=>{
                                         return(
-                                            <List item={item} update={Update} key={item.id}/>
+                                            <List item={item} update={Update} key={item.id} session={session}/>
                                         )
                                     })}
                                 </div>
@@ -122,10 +123,10 @@ export default function History() {
     )
 }
 
-function List(props, update) {
+function List(props) {
     const [loading, setLoading] = useState(false);
-    const cookies = new Cookies();
     const item = props.item;
+    
 
     async function setNewRate(val, id, index = null) {
         console.log(`val: ${val}; id: ${id};index: ${index}`)
@@ -137,7 +138,7 @@ function List(props, update) {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${cookies.get('session')}`
+                    'Authorization': `Bearer ${props.session}`
                 }, body: JSON.stringify({
                     rate: val
                 })

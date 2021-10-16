@@ -1,12 +1,12 @@
 import Authenticate from '../../components/authenticate';
 import Title from '../../components/Title'
 import { useState, useEffect } from 'react'
-import Cookies from 'universal-cookie'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router';
 import Link from 'next/link'
 //import { getDerivedStateFromError } from 'qrcode.react';
 import { LinearProgress } from '@material-ui/core'
+import { useSelector } from 'react-redux';
 
 //deprecated
 import { Card, Button } from 'react-bootstrap'
@@ -14,11 +14,9 @@ import { Card, Button } from 'react-bootstrap'
 export default function Service() {
     const [data, setData] = useState([])
     const [quota, setQuota] = useState(0)
-    const cookies = new Cookies()
-    const allcookies = cookies.getAll()
     const router = useRouter()
-    const storeId = allcookies['store_id']
-    const session = cookies.get('session')
+    const session = useSelector(state => state.profile.session)
+    const storeId = useSelector(state => state.profile.store_id)
 
     if (typeof (storeId) === "undefined") {
         Swal.fire({

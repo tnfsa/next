@@ -1,6 +1,5 @@
 import Title from "../components/Title";
 import {useEffect} from "react";
-import Cookies from 'universal-cookie'
 
 import { resetProfile } from "../redux/actions";
 import {useDispatch} from "react-redux"
@@ -11,6 +10,7 @@ export default function Logout(){
         dispatch(resetProfile())
 
         document.location.replace('/')
+        // eslint-disable-next-line
     },[])
     return(
         <div id="page-wrapper">
