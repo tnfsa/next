@@ -1,14 +1,14 @@
 import Title from '../../../components/Title'
 import Authenticate from '../../../components/authenticate'
 import { useRouter } from 'next/router'
-import Cookies from "universal-cookie";
 import { Button, Spinner } from "react-bootstrap";
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 import Image from 'next/image'
+import { useSelector } from 'react-redux';
+
 
 export default function ConfigMenu() {
-    const cookies = new Cookies()
     const router = useRouter()
     const { uid } = router.query
     
@@ -19,8 +19,8 @@ export default function ConfigMenu() {
     const [uploading, setUploading] = useState(false)
     const [imageUrl, setImageUrl] = useState('')
 
-    const storeId = cookies.get('store_id')
-    const session = cookies.get('session')
+    const storeId = useSelector(state => state.profile.store_id)
+    const session = useSelector(state => state.profile.session)
 
     async function Send() {
         const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/products/${uid}`

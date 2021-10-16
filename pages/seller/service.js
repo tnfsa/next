@@ -1,11 +1,10 @@
 import Authenticate from '../../components/authenticate';
 import Title from '../../components/Title'
 import { useState, useEffect } from 'react'
-import Cookies from 'universal-cookie'
 import Swal from "sweetalert2";
 import { faHeadphones } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import {useSelector} from 'react-redux'
 //deprecated
 import { Card, Col, Row, Spinner, Table } from "react-bootstrap";
 
@@ -15,9 +14,9 @@ export default function Service() {
     const [loading, setLoading] = useState(false)
     const [subscriptions, setSubscriptions] = useState([])
     const [plans, setPlans] = useState([])
-    const cookies = new Cookies()
-    const storeId = cookies.get('store_id')
-    const session = cookies.get('session')
+    
+    const storeId = useSelector(state => state.profile.store_id)
+    const session = useSelector(state => state.profile.session)
 
     async function getDiskQuota() {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/disk_quota`, {

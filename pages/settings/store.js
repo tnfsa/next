@@ -3,14 +3,13 @@ import Footer from '../../components/Footer'
 import SettingsMenu from '../../components/settings/sidebar'
 import { useState } from 'react'
 import { LinearProgress } from '@material-ui/core'
-import Cookies from 'universal-cookie'
 import Authenticate from '../../components/authenticate'
 import Swal from 'sweetalert2'
+import { useSelector } from 'react-redux'
 
 export default function Personal() {
-    const cookies = new Cookies()
-    const storeId = cookies.get('store_id')
-    const session = cookies.get("session")
+    const storeId = useSelector(state => state.profile.store_id)
+    const session = useSelector(state => state.profile.session)
     return (
         <div id="page-wrapper">
             <Authenticate seller="true" />

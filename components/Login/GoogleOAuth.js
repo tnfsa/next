@@ -1,14 +1,18 @@
 import GoogleLogin from 'react-google-login';
 import { Spinner } from 'react-bootstrap'
 import { useRouter } from "next/router";
-import Cookies from 'universal-cookie';
 import Swal from 'sweetalert2'
 import { useState } from 'react'
+
+import { useDispatch } from 'react-redux';
+import { setProfile } from '../../redux/actions';
+import store from '../../redux/store'
 
 export default function GoogleOAuth() {
     const [loading, setLoading] = useState(false)
     const router = useRouter()
-    const cookies = new Cookies()
+    const dispatch = useDispatch()
+    
     async function responseGoogle(google_response) {
         setLoading(true)
         console.log(JSON.stringify(google_response))
@@ -28,23 +32,30 @@ export default function GoogleOAuth() {
                 }
             })
             const response = await data.json()
-            cookies.set('session', response['access_token'])
-            cookies.set('account_type', 1)
-            cookies.set('user_name', google_response['profileObj']['givenName'])
+            
+            dispatch(setProfile({
+                session: response['access_token'],
+                account_type: "student",
+                username: google_response['profileObj']['givenName'],
+                avatar: google_response['profileObj']['imageUrl'],
+            }))
+            
             setLoading(false)
             await Swal.fire({
                 icon: 'success',
                 title: '登入成功'
             })
-            const location = cookies.get("redirect")
-            
+
+            const location = store.getState().settings.redirect
+            console.log(location)
             await router.push(location || "/restaurant")
         } catch (err) {
             setLoading(false)
             console.log(`Failed Login: ${err}`)
             await Swal.fire({
                 icon: 'error',
-                title: '與伺服器連線錯誤'
+                title: '錯誤!!',
+                text: err
             })
         }
     }
@@ -58,7 +69,7 @@ export default function GoogleOAuth() {
                     hostedDomain={process.env.NEXT_PUBLIC_GOOGLE_ACCOUNT_SUFFIX}
                     cookiePolicy={'single_host_origin'}
                     render={renderProps => (
-                        <button className="bg-pink-500 hover:bg-ping-700 p-2 disabled:opacity-50 inline-block rounded-md text-black font-bold"
+                        <button className="bg-red-500 hover:bg-red-700 p-2 px-3 disabled:opacity-50 inline-block rounded-md text-black font-bold"
                             disabled={loading}
                             onClick={renderProps.onClick}>
                             利用google登入

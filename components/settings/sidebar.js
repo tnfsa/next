@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import Authenticate from '../authenticate'
-import Cookies from 'universal-cookie'
+
+import {useSelector} from 'react-redux'
 
 export default function SideBar() {
-    const cookies = new Cookies()
-    const accountType = cookies.get('account_type')
+    const accountType = useSelector(state => state.profile.account_type)
+
     return (
         <>
             <Authenticate />
@@ -15,7 +16,7 @@ export default function SideBar() {
                         <a className="block md:text-2xl text-md">個人設定</a>
                     </Link>
                 </li>
-                {accountType === "2" &&
+                {accountType === "store_manager" &&
                     < li className="block w-full bg-gray-200 rounded-2xl text-center p-2">
                         <Link href="/settings/store" passHref>
                             <a className="block md:text-2xl text-md">商家設定</a>
