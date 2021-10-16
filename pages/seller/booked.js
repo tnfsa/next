@@ -2,12 +2,12 @@ import Authenticate from '../../components/authenticate';
 import Title from '../../components/Title'
 import Link from 'next/link'
 import { useEffect, useState } from 'react';
-import Cookies from 'universal-cookie'
 import Swal from 'sweetalert2';
 import { add } from "date-fns"
 
 //deprecated
 import { Button, Card, Spinner } from "react-bootstrap";
+import { useSelector } from 'react-redux';
 
 export default function Service() {
     const [loading, setLoading] = useState(true)
@@ -17,9 +17,9 @@ export default function Service() {
     const [option, setOption] = useState("today"); //["today" | "tomorrow" | "all"]
     const [firstFetch, setFirstFetch] = useState(0)
 
-    const cookies = new Cookies()
-    const session = cookies.get('session')
-    const storeId = cookies.get('store_id')
+    const session = useSelector(state => state.profile.session)
+    const storeId = useSelector(state => state.profile.store_id)
+    
     useEffect(() => {
         setLoading(true)
         setFirstFetch(0)

@@ -78,7 +78,7 @@ export default function Navigation() {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
                         <Link href="/restaurant" passHref><Nav.Link className="no-underline">餐廳</Nav.Link></Link>
-                        {accountType === "2" &&
+                        {accountType === "store_manager" &&
                             <NavDropdown title="商家管理" id="basic-nav-dropdown">
                                 <Link href="/seller/menu" passHref><NavDropdown.Item className="no-underline">菜單設定</NavDropdown.Item></Link>
                                 <Link href="/seller/service" passHref><NavDropdown.Item className="no-underline">客服服務</NavDropdown.Item></Link>
