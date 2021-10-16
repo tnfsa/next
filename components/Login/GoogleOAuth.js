@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 import { useDispatch } from 'react-redux';
 import { setProfile } from '../../redux/actions';
-import store from '../../redux/store'
+import {store} from '../../redux/store'
 
 export default function GoogleOAuth() {
     const [loading, setLoading] = useState(false)
@@ -48,6 +48,7 @@ export default function GoogleOAuth() {
 
             const location = store.getState().settings.redirect
             console.log(location)
+            
             await router.push(location || "/restaurant")
         } catch (err) {
             setLoading(false)
