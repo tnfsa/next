@@ -1,4 +1,14 @@
+import { useState } from "react"
+
 export default function Footer() {
+    const [update_time,setUpdateTime] = useState()
+
+    fetch('/api/last_update').then(response=>{
+        return response.json()
+    }).then(response=>{
+        setUpdateTime(response.update_time)
+    })
+
     return (
         <>
             <section id="footer">
@@ -11,7 +21,7 @@ export default function Footer() {
                                     <li>Frontend: <a href="https://sivir.pw">Milliax</a></li>
                                     <li>Backend: <a href="https://hsuan.app">Hsuan</a></li>
                                     <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-                                    <li>最後更新時間：{new Date().toUTCString()}</li>
+                                    <li>最後更新時間：{new Date(update_time).toDateString()}</li>
                                 </ul>
                             </div>
                         </div>
