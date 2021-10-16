@@ -5,11 +5,13 @@ import { useState } from 'react'
 import LatestNews from '../components/Home/LatestNews'
 import Swal from 'sweetalert2'
 import Image from 'next/image'
-import Cookies from 'universal-cookie'
+
+import { store } from '../redux/store'
+import { useSelector } from 'react-redux'
 
 export default function Home({ qna, news }) {
-    const cookies = new Cookies()
-    const loggedIn = cookies.get("session") !== "" ? true : false
+    const session = useSelector(state => state.profile.session)
+    
     return (
         <div id="page-wrapper">
             <section id="header">
@@ -44,7 +46,7 @@ export default function Home({ qna, news }) {
                         <br />
                         <ul className="flex justify-center space-x-5">
                             <li>
-                                {loggedIn ?
+                                {session !== null ?
                                     <Link href="/restaurant" passHref>
                                         <a className="bg-red-700 hover:bg-red-800 text-xl md:text-3xl px-4 py-2 text-center align-middle inline-block no-underline rounded-md outline-none text-white font-bold">現在開始</a>
                                     </Link>

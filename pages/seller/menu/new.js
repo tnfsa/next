@@ -1,6 +1,5 @@
 import Title from '../../../components/Title'
 import Authenticate from '../../../components/authenticate'
-import Cookies from 'universal-cookie'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
@@ -8,6 +7,7 @@ import Image from 'next/image'
 //deprecated
 import { Button, Spinner } from "react-bootstrap";
 import Swal from 'sweetalert2'
+import { useSelector } from 'react-redux'
 
 export default function NewMenu() {
     const [image, setImage] = useState('')
@@ -16,9 +16,9 @@ export default function NewMenu() {
     const [name, setName] = useState('')
     const [price, setPrice] = useState('')
     const [description, setDescription] = useState('')
-    const cookies = new Cookies()
-    const storeId = cookies.get('store_id')
-    const session = cookies.get('session')
+    const storeId = useSelector(state => state.profile.store_id)
+    const session = useSelector(state => state.profile.session)
+    
     const router = useRouter()
 
     async function Send() {

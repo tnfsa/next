@@ -3,13 +3,13 @@ import Footer from '../../../components/Footer'
 import { useRouter } from "next/router";
 import { useState } from 'react'
 import Swal from 'sweetalert2'
-import Cookies from 'universal-cookie'
 import * as ga from '../../../components/GA'
 import Link from 'next/link'
 import Authenticate from "../../../components/authenticate";
 import Image from 'next/image'
 import CustomDatePicker from "../../../components/time/CustomDatePicker";
 import { add, set } from "date-fns"
+import { useSelector } from 'react-redux'
 
 function Purchase({ data, storeName }) {
     const [comment, setComment] = useState('')
@@ -29,7 +29,7 @@ function Purchase({ data, storeName }) {
     const [order_time, setOrderTime] = useState(temp_time);
     const router = useRouter()
     const { store, product } = router.query
-    const cookies = new Cookies()
+    const session = useSelector(state => state.profile.session)
 
     async function Send() {
         if (datePicked === "none") {
@@ -66,7 +66,7 @@ function Purchase({ data, storeName }) {
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${cookies.get('session')}`
+                        'Authorization': `Bearer ${session}`
                     }
                 })
                 const response = await res.json()
@@ -126,7 +126,7 @@ function Purchase({ data, storeName }) {
         <div id="page-wrapper">
             <Title title={`${storeName}-${data.name}`}
                 link={`/purchase/${store}/${product}`} />
-            <Authenticate seller="noSeller" redirect={`/purchase/${store}/${product}`} />
+            <Authenticate option="student" redirect={`/purchase/${store}/${product}`} />
             <section id="main">
                 <div className="px-3 md:px-12 py-2">
                     <div className="flex flex-col bg-blue-100 rounded-xl p-16 items-center md:justify-center md:flex-row md:items-center md:space-x-16">
@@ -226,7 +226,7 @@ function Purchase({ data, storeName }) {
                                     <div id="buttons" className="flex justify-between">
                                         <div>
                                             <Link href={`/order/${store}`} passHref>
-                                                <button className="p-2 rounded-2xl text-lg bg-pink-500 hover:bg-pink-700 font-bold text-white inline-block">
+                                                <button className="p-2 rounded-2xl text-lg bg-red-500 hover:bg-red-700 font-bold text-white inline-block">
                                                     回上一頁
                                                 </button>
                                             </Link>

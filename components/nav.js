@@ -4,29 +4,28 @@ import { useRouter } from "next/router";
 import * as ga from '../components/GA'
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { TextField, LinearProgress } from "@material-ui/core";
-import Cookies from 'universal-cookie'
-
+import { useSelector } from "react-redux"
+import { store } from '../redux/store';
 
 export default function Navigation() {
-    const [accountType, setAccountType] = useState(0);
+    const [accountType, setAccountType] = useState(useSelector(state => state.profile.account_type));
+    const [session,setSession] = useState(useSelector(state => state.profile.session))
+    const [user_name,setUserName] = useState(useSelector(state => state.profile.username))
+    
     const [searchTerm, setSearchTerm] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loading, setLoading] = useState(false);
     const [loadingProcess, setLoadingProcess] = useState(0);
     const [color, setColor] = useState('light');
     const [navbarExpanded, setNavbarExpended] = useState(false)
     const router = useRouter();
-    const cookies = new Cookies();
+
+    store.subscribe(()=>{
+        setUserName(store.getState().profile.username)
+        setSession(store.getState().profile.session)
+        setAccountType(store.getState().profile.account_type)
+    })
 
     function handleRouteChange(url, status) {
-        if (typeof (cookies.get('session')) === "undefined") {
-            setIsLoggedIn(false)
-        } else {
-            setIsLoggedIn(true)
-        }
-        setAccountType(cookies.get('account_type'))
-
-        console.log(`status ${isLoggedIn}`)
         switch (status) {
             case "start":
                 setNavbarExpended(false)
@@ -42,14 +41,8 @@ export default function Navigation() {
         }
 
     }
-
+    
     useEffect(() => {
-        if (typeof (cookies.get('session')) === "undefined") {
-            setIsLoggedIn(false)
-        } else {
-            setIsLoggedIn(true)
-        }
-        setAccountType(cookies.get('account_type'))
         router.events.on('routeChangeStart', (event) => { handleRouteChange(event, "start") })
         router.events.on('routeChangeComplete', (event) => { handleRouteChange(event, "end") })
 
@@ -85,12 +78,12 @@ export default function Navigation() {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
                         <Link href="/restaurant" passHref><Nav.Link className="no-underline">餐廳</Nav.Link></Link>
-                        {accountType === "2" && 
-                        <NavDropdown title="商家管理" id="basic-nav-dropdown">
-                            <Link href="/seller/menu" passHref><NavDropdown.Item className="no-underline">菜單設定</NavDropdown.Item></Link>
-                            <Link href="/seller/service" passHref><NavDropdown.Item className="no-underline">客服服務</NavDropdown.Item></Link>
-                            <Link href="/seller/booked" passHref><NavDropdown.Item className="no-underline">出餐</NavDropdown.Item></Link>
-                        </NavDropdown>}
+                        {accountType === "store_manager" &&
+                            <NavDropdown title="商家管理" id="basic-nav-dropdown">
+                                <Link href="/seller/menu" passHref><NavDropdown.Item className="no-underline">菜單設定</NavDropdown.Item></Link>
+                                <Link href="/seller/service" passHref><NavDropdown.Item className="no-underline">客服服務</NavDropdown.Item></Link>
+                                <Link href="/seller/booked" passHref><NavDropdown.Item className="no-underline">出餐</NavDropdown.Item></Link>
+                            </NavDropdown>}
                         <NavDropdown title="外部連結" id="basic-nav-dropdown">
                             <NavDropdown.Item href="https://sites.google.com/view/tnfshsu/"
                                 rel="noreferrer noopener"
@@ -111,8 +104,8 @@ export default function Navigation() {
                             />
                         </form>
                     </Nav>
-                    {isLoggedIn ?
-                        <NavDropdown title={`嗨~ ${cookies.get('user_name')}`} id="basic-nav-dropdown">
+                    {session !== null ?
+                        <NavDropdown title={`嗨~ ${user_name}`} id="basic-nav-dropdown">
                             <Link href="/history" passHref><NavDropdown.Item>訂購紀錄</NavDropdown.Item></Link>
                             <Link href="/settings" passHref><NavDropdown.Item>設定</NavDropdown.Item></Link>
                             <Link href="/logout" passHref><NavDropdown.Item>登出</NavDropdown.Item></Link>
