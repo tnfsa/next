@@ -17,9 +17,10 @@ import { PersistGate } from "redux-persist/integration/react"
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
 
 function MyApp({ Component, pageProps }) {
-    const fpPromise = FingerprintJS.load()
-
-        (async () => {
+    
+    if (typeof(window) !== "undefined") {
+        const fpPromise = FingerprintJS.load()
+        ; (async () => {
             // Get the visitor identifier when you need it.
             const fp = await fpPromise
             const result = await fp.get()
@@ -27,7 +28,7 @@ function MyApp({ Component, pageProps }) {
             // This is the visitor identifier:
             const visitorId = result.visitorId
             console.log(visitorId)
-            await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/log`,{
+            await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/log`, {
                 method: "POST",
                 body: JSON.stringify({
                     fingerprint: visitorId,
@@ -40,6 +41,7 @@ function MyApp({ Component, pageProps }) {
             })
 
         })()
+    }
 
     return (
         <Provider store={store}>
