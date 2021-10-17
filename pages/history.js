@@ -105,7 +105,7 @@ export default function History() {
                                 :
                                 <div className="border border-indigo-600 bg-red-100">
                                     {/*No product booking today*/}
-                                    <h1 className="text-2xl text-center">今日尚未訂餐</h1>
+                                    {/*<h1 className="text-2xl text-center">今日尚未訂餐</h1>*/}
                                 </div>
                         }
                         {

@@ -44,7 +44,7 @@ export default function Service() {
                     const next_day = add(today, {
                         days: 1
                     })
-                    url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions?time=${next_day.toISOString()}`
+                    url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions/?time=${next_day.toISOString()}`
                     break;
                 case "all":
                     url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions`
