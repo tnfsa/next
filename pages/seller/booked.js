@@ -3,7 +3,7 @@ import Title from '../../components/Title'
 import Link from 'next/link'
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import { add } from "date-fns"
+import { add, set } from "date-fns"
 
 //deprecated
 import { Button, Card, Spinner } from "react-bootstrap";
@@ -13,16 +13,19 @@ export default function Service() {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState({})
     const [newOrder, setNewOrder] = useState(false);
-    const today = new Date()
+    const today = set(new Date(), {
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        milliseconds: 0,
+    })
     const [option, setOption] = useState("today"); //["today" | "tomorrow" | "all"]
-    const [firstFetch, setFirstFetch] = useState(0)
 
     const session = useSelector(state => state.profile.session)
     const storeId = useSelector(state => state.profile.store_id)
-    
+
     useEffect(() => {
         setLoading(true)
-        setFirstFetch(0)
         setNewOrder(false)
         getData()
         const id = setInterval(() => {
@@ -44,7 +47,8 @@ export default function Service() {
                     const next_day = add(today, {
                         days: 1
                     })
-                    url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions?time=${next_day.toISOString()}`
+                    console.log(next_day.toISOString())
+                    url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions/?time=${next_day.toISOString()}`
                     break;
                 case "all":
                     url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/simpleTransactions`
@@ -60,22 +64,8 @@ export default function Service() {
                 }
             })
             const response = await res.json()
-
-            let temp = []
-
-            for (const temparary in response) {
-                temp.push({
-                    id: temparary,
-                    ...response[temparary]
-                })
-            }
-            console.log(temp);
-
-            if (typeof (response["message"]) === "undefined") {
-                setData(temp)
-            } else {
-                setData([])
-            }
+            
+            setData(response)
             setLoading(false)
         } catch {
             // wrong request or expired session
@@ -109,19 +99,21 @@ export default function Service() {
 
                 <div className="p-5">
                     {
-                        data.length > 0 ? data.map((item) => (
-                            <Card key={item}>
-                                <Card.Body style={{ display: "flex" }}>
-                                    <div>
-                                        <Card.Title>{item.name}</Card.Title>
-                                        <Card.Text>{item.total}份</Card.Text>
-                                    </div>
-                                    <div style={{ marginLeft: "auto" }}>
-                                        <Link href={`/seller/booked/${item.id}/${option}`} passHref><Button variant="primary">立即查看</Button></Link>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        )) :
+                        Object.keys(data).length !== 0 ? Object.keys(data).map((key,index) => {
+                            return (
+                                <Card key={index}>
+                                    <Card.Body style={{ display: "flex" }}>
+                                        <div>
+                                            <Card.Title>{data[key]['name']}</Card.Title>
+                                            <Card.Text>{data[key]['total']}份</Card.Text>
+                                        </div>
+                                        <div style={{ marginLeft: "auto" }}>
+                                            <Link href={`/seller/booked/${data.key}/${option}`} passHref><Button variant="primary">立即查看</Button></Link>
+                                        </div>
+                                    </Card.Body>
+                                </Card>
+                            )
+                        }) :
                             <>
                                 <br />
                                 <h2 className="text-center text-3xl">尚無資料</h2>

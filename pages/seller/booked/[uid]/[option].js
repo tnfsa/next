@@ -110,13 +110,13 @@ export default function DetailBooked({ productName, option, uid }) {
                         data.length > 0 ? data.map((item) => {
                             const startTime = new Date(item.order_time)
                             return (
-                                <div className="flex flex-row bg-white h-40 justify-between px-2 md:px-10 py-2" key={item.id}>
+                                <div className="flex flex-row bg-white h-auto justify-between px-2 md:px-10 py-2" key={item.id}>
                                     <div>
                                         <h1>交易編號：{item.id}</h1>
                                         <h1>訂購數量：{item.qty}</h1>
                                         <h1>金額：{item.total}</h1>
                                         <h1>留言：{typeof (item.comment) === "undefined" || item.comment === null ? '' : (item.comment.length > 50 ? item.comment.slice(0, 50) + ' ...' : item.comment)}</h1>
-                                        <h1>購買日期：{new Date(item.updated_at).toLocaleString('zh-TW')}</h1>
+                                        {/*<h1>購買日期：{new Date(item.updated_at).toLocaleString('zh-TW')}</h1>*/}
                                         <h1>取餐時間：{new Date(startTime.getTime() - (startTime.getTimezoneOffset() * 60000)).toLocaleString("zh-TW")}</h1>
                                     </div>
                                     <div className="flex flex-col self-center space-y-1">
@@ -156,10 +156,10 @@ function CustomButton1(props) {
     }
     return (
         <div className="flex space-x-2">
-            <h1 className="">準備中</h1>
+            <h1 className="hidden sm:inline">準備中</h1>
             <Button
                 variant="contained"
-                color={item.status === 'PREPARE' ? 'secondary' : ''}
+                color={item.status === 'PREPARE' ? 'secondary' : 'default'}
                 className="space-x-5"
                 onClick={() => {
                     preparing(item.id)
@@ -181,10 +181,10 @@ function CustomButton2(props) {
     }
     return (
         <div className="flex space-x-2">
-            <h1 className="">可取餐</h1>
+            <h1 className="hidden sm:inline">可取餐</h1>
             <Button
                 variant="contained"
-                color={item.status === 'OK' ? 'primary' : ''}
+                color={item.status === 'OK' ? 'primary' : 'default'}
                 onClick={() => {
                     finished(item.id)
                 }}>
@@ -204,10 +204,10 @@ function CustomButton3(props) {
     }
     return (
         <div className="flex space-x-2">
-            <h1 className="">已取餐</h1>
+            <h1 className="hidden sm:inline">已取餐</h1>
             <Button
                 variant="contained"
-                color={item.status === 'DONE' ? 'primary' : ''}
+                color={item.status === 'DONE' ? 'primary' : 'default'}
                 onClick={() => {
                     taken(item.id)
                 }}>
@@ -227,10 +227,10 @@ function CustomButton4(props) {
     }
     return (
         <div className="flex space-x-2">
-            <h1 className="">未取餐</h1>
+            <h1 className="hidden sm:inline">未取餐</h1>
             <Button
                 variant="contained"
-                color={item.status === 'NOTAKEN' ? 'secondary' : ''}
+                color={item.status === 'NOTAKEN' ? 'secondary' : 'default'}
                 onClick={() => {
                     notaken(item.id)
                 }}>
