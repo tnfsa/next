@@ -122,6 +122,7 @@ export default function ConfigMenu() {
             await router.push('/')
         }
     }
+
     useEffect(() => {
         firstFetch()
         // eslint-disable-next-line
@@ -206,8 +207,7 @@ export default function ConfigMenu() {
                                 </div>
                             </div>
                         </div>
-
-                        <button className="bg-pink-500 hover:bg-ping-700 py-2 float-right px-5 md:float-none md:w-full"
+                        <button className="bg-red-500 hover:bg-ping-700 py-2 float-right px-5 md:float-none md:w-full"
                             type="submit">
                             更新
                         </button>

@@ -18,12 +18,18 @@ export default function NewMenu() {
     const [description, setDescription] = useState('')
     const storeId = useSelector(state => state.profile.store_id)
     const session = useSelector(state => state.profile.session)
-    
+
     const router = useRouter()
 
+    async function Submit() {
+        console.log("submit")
+        const status = await Send()
+        if (status) {
+            await router.push('/seller/menu')
+        }
+    }
     async function Send() {
         const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/products`
-
         try {
             const res = await fetch(url, {
                 method: 'POST',
@@ -42,19 +48,29 @@ export default function NewMenu() {
             })
             const response = await res.json()
             console.log(response)
-            await Swal.fire({
-                icon: 'success',
-                title: '上傳成功'
-            })
+            return true
         } catch (err) {
             await Swal.fire({
                 icon: 'error',
                 title: '上傳錯誤',
                 text: err
             })
-
+            return false
         }
-        await router.push('/seller/menu')
+    }
+
+    async function add_next() {
+        console.log("add next")
+        const status = await Send()
+        if (status) {
+            setImage('')
+            setUploading(false)
+            setImageUrl(`${process.env.NEXT_PUBLIC_STATIC}/not_selected.png`)
+            setName('')
+            setPrice('')
+            setDescription('')
+        }
+
     }
 
     async function handleChangeImage(evt) {
@@ -94,6 +110,8 @@ export default function NewMenu() {
         console.log("Uploaded");
     }
 
+
+
     return (
         <div id="page-wrapper">
             <Title title="新菜單"
@@ -105,9 +123,8 @@ export default function NewMenu() {
                     <Options />
                     <form
                         className="w-auto"
-                        onSubmit={e => {
+                        onSubmit={e=>{
                             e.preventDefault()
-                            Send()
                         }}
                     >
                         <div className="flex md:flex-row flex-col">
@@ -146,10 +163,16 @@ export default function NewMenu() {
                             </div>
                         </div>
 
-                        <button className="bg-pink-500 hover:bg-ping-700 py-2 float-right px-5 md:float-none md:w-full"
-                            type="submit">
-                            新增
-                        </button>
+                        <div id="buttons" className="float-right md:float-none space-x-1">
+                            <button className="bg-blue-500 hover:bg-blue-700 py-2  px-5 rounded-lg text-black"
+                                onClick={() => add_next()}>
+                                繼續下一筆
+                            </button>
+                            <button className="bg-red-500 hover:bg-ping-700 py-2 px-5 rounded-lg text-black"
+                                onClick={()=>{Submit()}}>
+                                完成
+                            </button>
+                        </div>
                     </form>
                 </div>
             </section>
