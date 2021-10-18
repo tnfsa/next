@@ -5,7 +5,7 @@ import Swal from 'sweetalert2'
 import { Button } from '@material-ui/core'
 import { faCheck, faTimes, faUserCheck, faUserSlash } from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'next/router'
-import { add } from "date-fns"
+import { add,set } from "date-fns"
 import { useSelector } from 'react-redux'
 
 //deprecated
@@ -20,15 +20,21 @@ export default function DetailBooked({ productName, option, uid }) {
     const router = useRouter()
     const session = useSelector(state => state.profile.session)
     const storeId = useSelector(state => state.profile.store_id)
+    
+    const today = set(new Date(), {
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        milliseconds: 0,
+    })
 
     const transactions = async () => {
         let url = ""
         console.log(option)
         if (option === "today") {
-            const today = new Date();
             url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions?time=${today.toISOString()}`
         } else if (option === "tomorrow") {
-            const next_day = add(new Date(), { days: 1 })
+            const next_day = add(today, { days: 1 })
             url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions?time=${next_day.toISOString()}`
         } else {
             url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${storeId}/transactions`
@@ -121,11 +127,8 @@ export default function DetailBooked({ productName, option, uid }) {
                                     </div>
                                     <div className="flex flex-col self-center space-y-1">
                                         <CustomButton1 sendStatus={sendStatus} setChanges={setChanges} changes={changes} item={item} />
-
                                         <CustomButton2 sendStatus={sendStatus} setChanges={setChanges} changes={changes} item={item} />
-
                                         <CustomButton3 sendStatus={sendStatus} setChanges={setChanges} changes={changes} item={item} />
-
                                         <CustomButton4 sendStatus={sendStatus} setChanges={setChanges} changes={changes} item={item} />
                                     </div>
                                 </div>

@@ -64,7 +64,7 @@ export default function Service() {
                 }
             })
             const response = await res.json()
-            
+            console.log(response)
             setData(response)
             setLoading(false)
         } catch {
@@ -108,7 +108,7 @@ export default function Service() {
                                             <Card.Text>{data[key]['total']}份</Card.Text>
                                         </div>
                                         <div style={{ marginLeft: "auto" }}>
-                                            <Link href={`/seller/booked/${data.key}/${option}`} passHref><Button variant="primary">立即查看</Button></Link>
+                                            <Link href={`/seller/booked/${key}/${option}`} passHref><Button variant="primary">立即查看</Button></Link>
                                         </div>
                                     </Card.Body>
                                 </Card>
