@@ -84,19 +84,24 @@ export default function Debug() {
 
 
     return (
-        <div>
-            Testing
-            <>
-                <button onClick={subscribeButtonOnClick} disabled={isSubscribed}>
-                    Subscribe
-                </button>
-                <button onClick={unsubscribeButtonOnClick} disabled={!isSubscribed}>
-                    Unsubscribe
-                </button>
-                <button onClick={sendNotificationButtonOnClick} disabled={!isSubscribed}>
-                    Send Notification
-                </button>
-            </>
+        <div id="page-wrapper">
+            <section id="header">
+                <div className="flex flex-col text-center">
+                    Testing
+                    <div className="flex flex-row space-x-5">
+                        <button onClick={subscribeButtonOnClick} disabled={isSubscribed}>
+                            Subscribe
+                        </button>
+                        
+                        <button onClick={unsubscribeButtonOnClick} disabled={!isSubscribed}>
+                            Unsubscribe
+                        </button>
+                        <button onClick={sendNotificationButtonOnClick} disabled={!isSubscribed}>
+                            Send Notification
+                        </button>
+                    </div>
+                </div>
+            </section>
         </div>
     )
 }
