@@ -11,8 +11,13 @@ export default function Notification (req,res){
         const {subscription} = req.body;
 
         webPush.sendNotification(subscription,JSON.stringify({
-            title: 'Hello Web Push',
-            message: 'Your web push notification is here'
+            title: '取餐提醒',
+            message: 'bla bla bla',
+            icon: '/static/icons/android-chrome-192x192.png',
+            vibrate: [100,100],
+            data: {
+                dateOfArrival: Date.now()
+            }
         })).then(err =>{
             if('statusCode' in err){
                 res.writeHead(err.statusCode,err.headers).end(err.body)
