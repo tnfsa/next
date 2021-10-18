@@ -46,6 +46,8 @@ page_path: window.location.pathname,
                     <link rel='apple-touch-icon' sizes='180x180' href='/static/icons/touch-icon-iphone-retina.png' />
                     <link rel='apple-touch-icon' sizes='167x167' href='/static/icons/touch-icon-ipad-retina.png' />
 
+                    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+                    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
                     <link rel='icon' type='image/png' sizes='32x32' href='/static/icons/favicon-32x32.png' />
                     <link rel='icon' type='image/png' sizes='16x16' href='/static/icons/favicon-16x16.png' />
                     <link rel='manifest' href='/manifest.json' />

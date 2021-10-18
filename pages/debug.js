@@ -20,7 +20,7 @@ export default function Debug() {
     const [isSubscribed, setIsSubscribed] = useState(false)
     const [subscription, setSubscription] = useState(null)
     const [registration, setRegistration] = useState(null)
-
+    
     useEffect(() => {
         if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
             // run only in browser
