@@ -36,7 +36,7 @@ export default function History() {
                 )
             })
 
-            let todayDate = new Date().getTime()
+            /*let todayDate = new Date().getTime()
             todayDate = Math.ceil(todayDate / 86400000)
             
             let countingOnly = []
@@ -56,11 +56,11 @@ export default function History() {
                     setHightLight(true);
                     delete response[i];
                 }
-            }
-            console.log(countingOnly);
+            }*/
+            //console.log(countingOnly);
             console.log(response);
 
-            setToday(countingOnly);
+            //setToday(countingOnly);
             setTransaction(response)
             setLoading(false)
         } catch (err) {

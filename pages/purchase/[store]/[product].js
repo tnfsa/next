@@ -3,19 +3,22 @@ import Footer from '../../../components/Footer'
 import { useRouter } from "next/router";
 import { useState } from 'react'
 import Swal from 'sweetalert2'
-import * as ga from '../../../components/GA'
 import Link from 'next/link'
 import Authenticate from "../../../components/authenticate";
 import Image from 'next/image'
 import CustomDatePicker from "../../../components/time/CustomDatePicker";
 import { add, set } from "date-fns"
-import { useSelector } from 'react-redux'
+
+import { useDispatch } from "react-redux";
+import { cart_setInstant, cart_setFrom } from '../../../redux/actions'
 
 function Purchase({ data, storeName }) {
     const [comment, setComment] = useState('')
     const [loading, setLoading] = useState(false)
     const timeOptions = [10, 11, 12]
     const [datePicked, setDatePicked] = useState("none")
+    const dispatch = useDispatch()
+
     let temp_time = add(new Date(), {
         days: 1
     })
@@ -29,7 +32,6 @@ function Purchase({ data, storeName }) {
     const [order_time, setOrderTime] = useState(temp_time);
     const router = useRouter()
     const { store, product } = router.query
-    const session = useSelector(state => state.profile.session)
 
     async function Send() {
         if (datePicked === "none") {
@@ -47,71 +49,25 @@ function Purchase({ data, storeName }) {
 按 OK 送出；cancel 取消`
         if (window.confirm(confirmText)) {
             setLoading(true)
-            try {
-                const submit_time = add(order_time, {
-                    hours: datePicked
-                })
-                console.log(submit_time)
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/transactions`, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        name: data.title,
-                        qty: 1,
-                        store_id: store,
-                        product_id: product,
-                        comment: comment,
-                        order_time: submit_time.toISOString(),
-                        options: {}
-                    }),
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${session}`
-                    }
-                })
-                const response = await res.json()
-                console.log(`Response:`)
-                console.log(response)
-                if (res.ok) {
-                    ga.event({
-                        action: 'purchase', params: {
-                            store_name: storeName,
-                            item_name: data.name,
-                            price: data.price,
-                            qty: 1,
-                        }
-                    })
-                    setLoading(false)
-                    await Swal.fire({
-                        title: '訂購成功',
-                        html: (
-                            `感謝您利用本系統訂購產品<br>` +
-                            `請記得於選取時間取餐，謝謝<br>` +
-                            `您的交易ID為： <b>${response.id}</b>`),
-                        icon: 'success',
-                        confirmButtonText: 'Ok'
-                    })
-                    await router.push('/')
-                } else {
-                    switch (response.error.status) {
-                        case "TRANSACTION/ORDER-TIME":
-                            throw "訂餐時間錯誤!!<br>目前時間為 " + (new Date()).toLocaleString("zh-TW") + "<br>訂餐時間為 " + submit_time.toLocaleString('zh-TW');
-                        case "TRANSACTION/BANNED":
-                            throw "哈哈你被停權了";
-                        default:
-                            throw "訂購失敗，下一次會更好？";
-                    }
-                }
-            } catch (err) {
-                setLoading(false)
-                await Swal.fire({
-                    title: '錯誤!',
-                    html: err,
-                    icon: 'error',
-                    confirmButtonText: 'Ok'
-                })
-                document.location.reload()
-            }
+            const submit_time = add(order_time, {
+                hours: datePicked
+            })
+            console.log(submit_time)
+            dispatch(cart_setFrom({
+                from: "instant"
+            }))
+            dispatch(cart_setInstant({
+                store_id: store,
+                store_name: storeName,
+                product_id: product,
+                product_name: data.title,
+                qty: 1,
+                order_time: submit_time.toISOString(),
+                options: {},
+                comment,
+            }))
+            setLoading(false)
+            router.push('/submit')
         }
     }
 

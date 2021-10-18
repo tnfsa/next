@@ -107,6 +107,7 @@ export default function Navigation() {
                     {session !== null ?
                         <NavDropdown title={`嗨~ ${user_name}`} id="basic-nav-dropdown">
                             {accountType === "student" && <Link href="/history" passHref><NavDropdown.Item>訂購紀錄</NavDropdown.Item></Link>}
+                            {accountType === "student" && <Link href="/cart" passHref><NavDropdown.Item>Go物車</NavDropdown.Item></Link>}
                             <Link href="/settings" passHref><NavDropdown.Item>設定</NavDropdown.Item></Link>
                             <Link href="/logout" passHref><NavDropdown.Item>登出</NavDropdown.Item></Link>
                         </NavDropdown>
