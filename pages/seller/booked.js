@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { add, set } from "date-fns"
 
-//deprecated
+// TODO: replace react-bootstrap ASAP
 import { Button, Card, Spinner } from "react-bootstrap";
 import { useSelector } from 'react-redux';
 

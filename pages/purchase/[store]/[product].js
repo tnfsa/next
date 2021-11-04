@@ -291,7 +291,7 @@ export async function getStaticProps(context) {
         props: { data, storeName }
     }
 }
-
+// TODO: consider moving into dynamic fetching
 async function getStores(store) {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${store}/products`, {
         method: 'GET',

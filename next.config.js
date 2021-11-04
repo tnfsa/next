@@ -16,5 +16,8 @@ module.exports = withPWA({
             "raw.sivir.pw",
             "via.placeholder.com"
         ]
+    },i18n:{
+        locales: ['zh-TW','en'],
+        defaultLocale: 'zh-TW',
     }
 })

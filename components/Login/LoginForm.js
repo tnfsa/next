@@ -1,4 +1,5 @@
 import { useState } from "react";
+// TODO: use circular loading component to replace bootstrap
 import { Spinner } from 'react-bootstrap'
 import Swal from 'sweetalert2'
 

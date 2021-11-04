@@ -1,4 +1,5 @@
 import GoogleLogin from 'react-google-login';
+// TODO: use circular loading component to replace react-bootstrap
 import { Spinner } from 'react-bootstrap'
 import { useRouter } from "next/router";
 import Swal from 'sweetalert2'

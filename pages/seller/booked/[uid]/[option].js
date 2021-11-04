@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 import { add,set } from "date-fns"
 import { useSelector } from 'react-redux'
 
-//deprecated
+// TODO: use circular loading component to replace react-bootstrap
 import { Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

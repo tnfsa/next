@@ -1,17 +1,16 @@
-## Getting Started
+# FRONTEND OF TNFSH LUNCH SYSTEM 
 
-First, run the development server:
+## About
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+This program fully is built by Milliax.<br>
+Program is currently running on Vercel.<br>
+If you think there' s a better way to implement the frontend.<br>
+Please feel free to edit it and create a new pull request.<br>
+I will be willing to see that.
 
-Open [http://local.sivir.pw:3000](http://local.sivir.pw:3000) with your browser to see the result.
+## Feature
 
-UI bootstrapped with material-ui react-bootstrap and tailwindcss
-
-With the [backend](https://github.com/tnfsa/lunch-back) this app can be run properly.
-
-the final project is published at [link](https://lunch.tnfsa.org)
+* use React based framework Next.js
+* Currently working on moving to tailwind css
+* JSX written, if possible I would change it into TSX in the future
+* Static webpage generation powered by Vercel

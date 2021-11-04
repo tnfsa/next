@@ -1,11 +1,11 @@
 import Authenticate from '../../components/authenticate';
 import Title from '../../components/Title'
 import { useState, useEffect } from 'react'
-import Swal from "sweetalert2";
-import { faHeadphones } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+//import Swal from "sweetalert2";
+//import { faHeadphones } from '@fortawesome/free-solid-svg-icons'
+//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {useSelector} from 'react-redux'
-//deprecated
+// TODO: replace react-bootstrap
 import { Card, Col, Row, Spinner, Table } from "react-bootstrap";
 
 

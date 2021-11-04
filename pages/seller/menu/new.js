@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 
-//deprecated
+// TODO: replace react-bootstrap
 import { Button, Spinner } from "react-bootstrap";
 import Swal from 'sweetalert2'
 import { useSelector } from 'react-redux'

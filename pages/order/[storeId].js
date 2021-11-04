@@ -64,7 +64,7 @@ function Cell(props) {
         </div>
     )
 }
-
+// TODO: use dynamic fetching with caching
 export async function getStaticProps(context) {
     const page = context.params.storeId
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/stores/${page}/products`, {
