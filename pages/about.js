@@ -10,15 +10,19 @@ export default function about() {
                     <Title title="About"
                            link="/about"/>
                     <div className="container">
-                        <article className="box post">
+                        <article className="box post" locale="zh-TW">
                             暫待更新
+                        </article>
+                        <article className="box post" locale="en">
+                            Hang on while we update the info.
                         </article>
                     </div>
                 </section>
                 <Footer />
             </div>
             <Head>
-                <title key={"title"}>關於這個網站</title>
+                <title key="title" locale="zh-TW">關於這個網站</title>
+                <title key="title" locale="en">about this website</title>
             </Head>
         </>
     )
